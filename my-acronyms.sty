@@ -1,0 +1,113 @@
+\usepackage[acronym]{glossaries}
+\glsdisablehyper
+
+
+%magic commands to overload the default glossaries package commands
+
+\NewDocumentCommand{\acrodef}{m o m}{
+  % #1 = shortname
+  % #2 = optional acronym (if present)
+  % #3 = long form
+
+  \IfValueTF{#2}{
+    % Optional acronym provided
+    \newacronym{#1}{#2}{#3}
+  }{
+    % Optional acronym not provided
+    \newacronym{#1}{#1}{#3}
+  }
+}
+
+
+\newcommand{\ac}[1]{\gls{#1}} % for acronyms
+\newcommand{\acp}[1]{\glspl{#1}} % for plural acronyms
+\newcommand{\acl}[1]{\glsentrylong{#1}} % for long form of acronyms
+\newcommand{\aclp}[1]{\glsentrylongpl{#1}} % for long form of acronyms
+\newcommand{\acs}[1]{\glsentryshort{#1}} % for short form of acronyms
+\newcommand{\acsp}[1]{\glsentryshortpl{#1}} % for plural short form of acronyms
+
+
+%Digital Twins
+\acrodef{DT}{Digital Twin}
+\acrodef{PA}{Physical Asset}
+\acrodef{PT}{Physical Twin}
+
+\acrodef{DI}[$DI$]{Digital Interface}
+\acrodef{PI}[$PI$]{Physical Interface}
+\acrodef{M}[$M$]{Model}
+
+\acrodef{WoDT}{Web of \aclp{DT}}
+\acrodef{HWoDT}{Hypermedia \acl{WoDT}}
+\acrodef{DTC}{Digital Twin Continuum}
+\acrodef{DTE}{Digital Twin Ecosystem}
+
+\acrodef{WLDT}{White Label Digital Twins}
+
+
+%Internet of Things
+\acrodef{IoT}{Internet of Things}
+\acrodef{IIoT}{Industrial \acl{IoT}}
+
+\acrodef{WoT}{Web of Things}
+\acrodef{TD}{Thing Description}
+\acrodef{TM}{Thing Model}
+
+\acrodef{CPS}{Cyber-Physical System}
+
+%Web and Semantic Web Technologies
+\acrodef{W3C}{World Wide Web Consortium}
+\acrodef{RDF}{Resource Description Framework}
+\acrodef{OWL}{Web Ontology Language}
+\acrodef{SPARQL}{SPARQL Protocol and RDF Query Language}
+\acrodef{JSON-LD}{JavaScript Object Notation for Linked Data}
+\acrodef{JSON}{JavaScript Object Notation}
+\acrodef{XML}{eXtensible Markup Language}
+
+\acrodef{REST}{REpresentational State Transfer}
+\acrodef{HATEOAS}{Hypermedia as the Engine of Application State}
+
+\acrodef{API}{Application Programming Interface}
+\acrodef{HTTP}{Hypertext Transfer Protocol}
+
+%Artificial Intelligence
+
+\acrodef{AI}{Artificial Intelligence}
+\acrodef{XAI}{Explainable Artificial Intelligence}
+\acrodef{ML}{Machine Learning}
+\acrodef{DL}{Deep Learning}
+\acrodef{NLP}{Natural Language Processing}
+\acrodef{RL}{Reinforcement Learning}
+\acrodef{GenAI}{Generative Artificial Intelligence}
+\acrodef{LLM}{Large Language Model}
+
+%Simulation
+
+\acrodef{DES}{Discrete Event Simulation}
+\acrodef{MABS}{Multi-Agent Based Simulation}
+\acrodef{DTS}{Discrete Time Simulation}
+
+% Multi-Agent Systems
+\acrodef{MAS}{Multi-Agent System}
+\acrodef{BDI}{Belief-Desire-Intention}
+
+%\acrodef{hMAS}{hypermedia \acl{MAS}}
+\acrodef{MAMS}{Multi-Agent Microservice}
+
+% Software Engineering
+\acrodef{DDD}{Domain-Driven Design}
+
+
+% Healthcare
+\acrodef{ORM}{Operating Room Management}
+\acrodef{EHR}{Electronic Health Record}
+\acrodef{FHIR}{Fast Healthcare Interoperability Resources}
+\acrodef{HL7}{Health Level Seven}
+
+\acrodef{CDR}{Clinical Data Respository}
+\acrodef{RIS}{Radiological Information System}
+\acrodef{PACS}{Picture Archiving and Communication System}
+
+%Acronimi Italiani
+\acrodef{AUSL}{Azienda Unità Sanitaria Locale}
+\acrodef{CCE}{Cartella Clinica Elettronica}
+\acrodef{FSE}{Fascicolo Sanitario Elettronico}

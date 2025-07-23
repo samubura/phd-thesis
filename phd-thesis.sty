@@ -1,13 +1,22 @@
 \usepackage[english]{babel}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{xargs}
+\usepackage{xparse}
 \usepackage{amsmath}
+\usepackage{my-acronyms}
 \usepackage[english]{cleveref}
+
+
 \usepackage{geometry}
 \usepackage{titling}
 \usepackage[inline]{enumitem}
 \usepackage{setspace}
 \usepackage{fancyhdr}
+
+\usepackage{code-lstlistings}
+\usepackage{notes}
+\usepackage{shortcuts}
 
 \fancypagestyle{plain}{
 	\fancyhf{}
@@ -40,17 +49,21 @@
 \newcommand{\cycle}[1]{\def\thecycle{#1}}
 \newcommand{\examyear}[1]{\def\theexamyear{#1}}
 
-\newenvironment{abstract}{\chapter*{\centering\abstractname}\addcontentsline{toc}{chapter}{\abstractname}}{} 
+\newenvironment{abstract}{\chapter*{\centering\abstractname}\addcontentsline{toc}{part}{\abstractname}}{} 
 \newenvironment{acknowledgements}{\chapter*{\acknowledgementsname}}{} 
 \newenvironment{dedication}{\chapter*{}\begin{flushright}\itshape}{\normalfont\end{flushright}}
+
 \newenvironment{inlinelist}{\begin{enumerate*}[label=\emph{(\roman{*})}]}{\end{enumerate*}}
 
 \newcommand{\chapterWithoutNumber}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
 
+\newcommand{\chapterOutsidePart}[1]{\chapter*{#1}\addcontentsline{toc}{part}{#1}}
+
 \let\oldbibliography\bibliography
 \renewcommand{\bibliography}[1]{
-	\addcontentsline{toc}{part}{}
-	\addcontentsline{toc}{chapter}{\bibname}
+	\cleardoublepage
+	\phantomsection
+	\addcontentsline{toc}{part}{Bibliography}
 	\oldbibliography{#1}
 }
 

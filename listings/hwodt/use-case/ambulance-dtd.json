@@ -1,0 +1,32 @@
+{
+  ...
+  "id": <#ambulance-uri>,
+  "@type": [ "fhir:Location" ],
+  ...
+  "wodt:physicalAssetId": "AMBULANCE010203",
+  ...
+  "properties": {
+      "availableActions": {
+          "@type": "wodt:AvailableActions",
+          "readOnly": true
+      },
+      "position": {
+          "wodt:domainTag": "fhir:position",
+          "wodt:augmentedInteraction": false,
+          "readOnly": true
+      },
+      ...
+  },
+  "actions": {
+      "setDestination": {
+          "wodt:domainTag": "onto:SetDestinationCommand",
+          "wodt:augmentedInteraction": false,
+          "forms": [
+            {
+              "href":"<#ambulance-uri>/action/setDestination"
+            }
+          ]
+      }
+  },
+  ...
+}

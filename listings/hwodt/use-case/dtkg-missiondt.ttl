@@ -1,0 +1,9 @@
+PREFIX fhir: <http://www.hl7.org/fhir/>
+PREFIX onto: <https://patient.ontology#>
+
+<#mission>
+    a   fhir:Encounter;
+    fhir:location <#ambulance>;
+    fhir:participant <#rescuer>;
+    fhir:status "in-progress";
+    onto:patient <#patient> .

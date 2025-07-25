@@ -1,0 +1,22 @@
+@base <http://localhost:8080/>.
+@prefix ldp: <http://www.w3.org/ns/ldp#>.
+@prefix dto: <http://example.org/dtOntology#>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+
+<myDT> a dto:DigitalTwin;
+   dto:hasStateHistory <myDT/stateContainer>.
+
+##Container Description##
+
+<myDT/stateContainer> a dto:StateHistory;
+   a ldp:BasicContainer;
+   dcterms:title "The state of the DT";
+   ldp:contains <s1>, <s2>, <s3>.
+
+<s1> time:hasTime _:t1.
+<s2> time:hasTime _:t2.
+<s3> time:hasTime _:t3.
+
+_:t1 time:before _:t2.
+_:t2 time:before _:t3.

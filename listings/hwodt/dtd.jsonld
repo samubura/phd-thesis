@@ -1,0 +1,30 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "wodt": "https://raw.githubusercontent.com/Web-of-Digital-Twins/wodt-vocabulary/refs/heads/main/core.ttl#"
+        }
+    ],
+    "@type": "tm:ThingModel",
+    "title": "{{DT_TITLE}}",
+    "version": {"model": "1.0.0"},
+    "id": "{{DT_URI}}",
+    "wodt:physicalAssetId": "{{PA_ID}}",
+    "tm:optional": [
+        "/properties/availableActions",
+    ],
+    "properties": {
+        "availableActions": {
+            "@type": "wodt:AvailableActions",
+            "title": "Available actions",
+            "readOnly": true
+        }
+    },
+    "links": [{
+        "rel": "wodt:dtkg",
+        "href": "{{DTKG_URL}}"
+    }],
+    "forms": [{
+        "op": "observeallproperties"
+    }]
+}

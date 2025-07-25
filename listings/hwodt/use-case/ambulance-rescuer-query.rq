@@ -1,0 +1,17 @@
+PREFIX fhir: <http://www.hl7.org/fhir/>
+
+SELECT ?ambulance ?rescuer
+WHERE {
+    ?ambulance a fhir:Location ;
+                 fhir:status "inactive" .
+
+    ?rescuer a fhir:Practitioner ;
+               fhir:qualification ?qualification .
+    ?qualification fhir:code ?qualificationObj .
+    ?qualificationObj fhir:coding ?qualificationCoding .
+    ?qualificationCoding fhir:code ?qualificationCode .
+    ?qualificationCode fhir:v "397897005" .
+
+    FILTER NOT EXISTS { ?mission fhir:participant ?rescuer }
+    FILTER NOT EXISTS { ?mission fhir:location ?ambulance }
+}

@@ -1,0 +1,23 @@
+PREFIX fhir: <http://www.hl7.org/fhir/>
+PREFIX onto: <https://patient.ontology#>
+PREFIX wot: <https://www.w3.org/2019/wot/td#>
+PREFIX hypermedia: <https://www.w3.org/2019/wot/hypermedia#>
+
+SELECT ?ambulanceEndpoint ?patientEndpoint
+WHERE {
+	<#mission>
+			fhir:location ?ambulance ;
+			onto:patient ?patient .
+
+	?ambulance wot:hasForm ?ambulanceForm .
+	?ambulanceForm
+			hypermedia:hasOperationType wot:observeAllProperties ;
+			hypermedia:forSubProtocol "websocket" ;
+			hypermedia:hasTarget ?ambulanceEndpoint .
+
+	?patient wot:hasForm ?patientForm .
+	?patientForm
+			hypermedia:hasOperationType wot:observeAllProperties ;
+			hypermedia:forSubProtocol "websocket" ;
+			hypermedia:hasTarget ?patientEndpoint .
+}

@@ -1,0 +1,7 @@
+PREFIX fhir: <http://www.hl7.org/fhir/>
+
+SELECT ?mission ?status
+WHERE {
+	?mission fhir:status ?status .
+	FILTER (?status="on-hold" || ?status="in-progress")
+}

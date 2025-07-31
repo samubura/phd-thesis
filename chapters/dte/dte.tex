@@ -73,23 +73,31 @@ Moreover, relationships may cross ecosystem boundaries, offering paths to discov
 \label{sec:architecting-dte}
 %=======================================================
 
-\begin{figure*}[ht]
+\begin{figure}[ht]
     \centering
-    \subfigure[\textbf{Monolithic} \ac{DTE}]{
-        \includegraphics[width=0.25\textwidth]{figures/hwodt/ecosystems_types-monolithic.pdf}
+    \begin{subfigure}[b]{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/hwodt/ecosystems_types-monolithic.pdf}
+        \caption{\textbf{Monolithic} \ac{DTE}}
         \label{fig:ecosystem-monolithic}
-    }    
-    \subfigure[\textbf{Homogeneous} \ac{DTE}]{
-        \includegraphics[width=0.25\textwidth]{figures/hwodt/ecosystems_types-homogeneous.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/hwodt/ecosystems_types-homogeneous.pdf}
+        \caption{\textbf{Homogeneous} \ac{DTE}}
         \label{fig:ecosystem-homogeneous}
-    }    
-    \subfigure[\textbf{Heterogeneous} \ac{DTE}]{
-        \includegraphics[width=0.25\textwidth]{figures/hwodt/ecosystems_types-heterogeneous.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/hwodt/ecosystems_types-heterogeneous.pdf}
+        \caption{\textbf{Heterogeneous} \ac{DTE}}
         \label{fig:ecosystem-heterogeneous}
-    }    
+    \end{subfigure}
     \caption{Three architectural approaches for \acp{DTE}: in \ref{fig:ecosystem-monolithic} a single \ac{DT} models the whole scenario; in \ref{fig:ecosystem-homogeneous} a single platform is used to build and deploy all the \acp{DT} in the ecosystem; in \ref{fig:ecosystem-heterogeneous} maximum flexibility is allowed, possibly reusing existing \acp{DT} under a common interface.}
     \label{fig:ecosystem-types}
-\end{figure*}
+\end{figure}
 
 This section analyzes and compares approaches from current practice in applying \acp{DT} to complex scenarios involving multiple \acp{PA}.
 We focus on four aspects derived from our \ac{DTE} characterization in terms of heterogeneity and operational behvior:
@@ -134,7 +142,7 @@ We summarize our feature comparison in \Cref{tab:comparison-summary} and discuss
 %     \label{tab:comparison-summary}
 % \end{table}
 
-include\subsubsection{Monolithic \acl{DTE}}
+\subsubsection{Monolithic \acl{DTE}}
 \label{sssec:monolithic}
 
 The most straightforward approach is to model the entire targeted context as a single, monolithic \ac{DT}.

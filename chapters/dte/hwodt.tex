@@ -25,7 +25,7 @@ We conclude that, due to its multi-dimensional nature, heterogeneity should be r
 We suggest that an analysis of such heterogeneity along the identified dimensions can guide architectural decisions for implementing the \ac{DTE}.
 
 
-\note{table}
+ \note{table}
 % \begin{table*}[ht]
 %     \centering
 %     \renewcommand{\arraystretch}{1.1}
@@ -89,12 +89,12 @@ As illustrated in \Cref{fig:hwodt}, the resulting architecture is composed of \a
     \item and that are aggregated into \acp{DTE} by being registered to one or multiple WoDT Platforms.
 \end{inlinelist}    
 
-\begin{figure*}[ht]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/hwodt/hwodt.pdf}
   \caption{The Hypermedia WoDT scheme, in the real world PAs (squares) belonging to different organizations and domains are connected by relationships. In the digital world, cross-domain ecosystems of DTs (circles) mirror different portions of reality, supported by the WoDT Platform.}
   \label{fig:hwodt}
-\end{figure*}
+\end{figure}
 
 
 \subsection{A Uniform Interface for Heterogeneous \aclp{DT}}\label{ssec:uniform-interface}
@@ -260,12 +260,12 @@ We chose these representative technologies as they differ in terms of functional
 This section presents the overall architecture and its implementation.
 
 
-\begin{figure*}[ht]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/hwodt/abstract_arch.pdf}
   \caption{Overall abstract architecture of the \ac{HWoDT} framework, showing the main functional modules. On the bottom we have the existing \ac{DT} which, through the adapter, can implement the \ac{HWoDT} uniform interface and be integrated with a \ac{WoDT} platform.}
   \label{fig:abstract_arch}
-\end{figure*}
+\end{figure}
 
 
 \subsection{A \acs{WoT}-compatible \acl{DTD}}
@@ -294,12 +294,12 @@ which defines concepts to implement the \ac{DTD} and the \ac{DTKG}, as well as H
 
 The alignment with the \ac{WoT} is strategic for the \ac{DT} community~\cite{etsi2024tr103845,laurinaho2020datalink} as reusing the existing standard ensures compatibility with tools and favors the development of application mashups.
 
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=\columnwidth]{images/wot-dt-mashups.pdf}
-%   \caption{Keeping Digital Twin representations aligned with the \ac{WoT} Thing Description enables the creation of mixed mashups and interoperability with existing \ac{WoT} consumers.}
-%   \label{fig:wot-dt-mashups}
-% \end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/hwodt/wot-dt-mashups.pdf}
+  \caption{Keeping Digital Twin representations aligned with the \ac{WoT} Thing Description enables the creation of mixed mashups and interoperability with existing \ac{WoT} consumers.}
+  \label{fig:wot-dt-mashups}
+\end{figure}
 
 
 \subsection{\acs{DT} Adapters}
@@ -357,12 +357,12 @@ Despite Ditto being open-source and allowing the development of custom extension
 The middleware leverages Eclipse Ditto’s native WebSocket interface to retrieve data and performs two key transformations: converting the \ac{WoT} \ac{TD} exposed by Ditto into a \ac{DTD}, and serializing \ac{DT} data into a \ac{DTKG}.
 This process relies on a configurable mapping between Ditto features and their corresponding \ac{RDF} representations.
 
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=0.8\columnwidth]{images/ditto-adapter-c&c.pdf}
-%   \caption{The Eclipse Ditto adapter, implemented as a standalone component that maps a specific instance of a \ac{DT} hosted on the Ditto platform.}
-%   \label{fig:ditto-adapter-c&c}
-% \end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\columnwidth]{figures/hwodt/ditto-adapter-c&c.pdf}
+  \caption{The Eclipse Ditto adapter, implemented as a standalone component that maps a specific instance of a \ac{DT} hosted on the Ditto platform.}
+  \label{fig:ditto-adapter-c&c}
+\end{figure}
 
 \subsubsection{\acl{WLDT} Adapter}
 
@@ -373,26 +373,28 @@ Specifically, we leverage the concept of \emph{Digital Adapter}, used in the \ac
 The framework internal metamodel is already aligned with the \ac{HWoDT}, so no additional effort was required to map concepts.
 The adapter is provided as a reusable Java library, which \ac{WLDT} developers can easily import into their projects and use to configure the mapping towards the \ac{HWoDT} uniform interface leveraging the implementation of the necessary \ac{API} to manage the \ac{DTD} and \ac{DTKG}.
 
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/hwodt/wldt-adapter-c&c.pdf}
+  \caption{The architectural diagram of the \ac{WLDT} adapter, illustrating its integration with the other components of the framework.}
+  \label{fig:wldt-adapter-c&c}
+\end{figure}
+
+\note{subfigure}
 % \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=\columnwidth]{images/wldt-adapter-c&c.pdf}
-%   \caption{The architectural diagram of the \ac{WLDT} adapter, illustrating its integration with the other components of the framework.}
-%   \label{fig:wldt-adapter-c&c}
+%     \centering
+%     \subfigure[]{
+%         \includegraphics[width=0.48\textwidth]{figures/hwodt/observation-delay.pdf}
+%         \label{fig:observation-delay}
+%     }    
+%     \subfigure[]{
+%         \includegraphics[width=0.48\textwidth]{figures/hwodt/query-delay.pdf}
+%         \label{fig:query-delay}
+%     }    
+%     \caption{Average delay over time with (a) one client observing each \ac{DT} and one observing the Platform \ac{KG} and (b) one client or one client per \ac{DT} performing SPARQL queries every second.
+%      Results are plotted with a bucketed average with 3-second intervals, followed by a moving average with a window size of five.}
+%     \label{fig:sequence-interactions}
 % \end{figure}
-\begin{figure*}[ht]
-    \centering
-    \subfigure[]{
-        \includegraphics[width=0.48\textwidth]{figures/hwodt/observation-delay.pdf}
-        \label{fig:observation-delay}
-    }    
-    \subfigure[]{
-        \includegraphics[width=0.48\textwidth]{figures/hwodt/query-delay.pdf}
-        \label{fig:query-delay}
-    }    
-    \caption{Average delay over time with (a) one client observing each \ac{DT} and one observing the Platform \ac{KG} and (b) one client or one client per \ac{DT} performing SPARQL queries every second.
-     Results are plotted with a bucketed average with 3-second intervals, followed by a moving average with a window size of five.}
-    \label{fig:sequence-interactions}
-\end{figure*}
 
 
 \subsubsection{Implementing Custom Adapters}
@@ -715,6 +717,7 @@ Also, we present this as a core model, since we expect the development of extens
     \vspace{-1em}
     \label{fig:ontology}
 \end{figure}
+
 \subsection{A Linked Data Approach for State History}
 \label{ssec:ldp-history}
 %\samuele{Discuss the need to store historical version for DTs and the practical alignment with linked data platforms}

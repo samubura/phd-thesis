@@ -692,19 +692,19 @@ The proposed \ac{DT} architectural approach is showcased using the \emph{Fischer
 \begin{figure}[ht]
   \setlength{\belowcaptionskip}{-5pt}
   \centering
-  \begin{subfigure}{0.32\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/machine_complexity_index.pdf}
       \caption{Machine Digital Twin}
       \label{fig:machine_complexity_index}
   \end{subfigure}
-  \begin{subfigure}{0.32\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/station_complexity_index.pdf}
       \caption{Station (Indexed-Line) Digital Twin}
       \label{fig:station_complexity_index}
   \end{subfigure}
-  \begin{subfigure}{0.32\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/factory_complexity_index.pdf}
       \caption{Factory Digital Twin}
@@ -882,3 +882,100 @@ The composite DT leverages the PT lifecycle phases of individual machines to def
 % \end{algorithmic}
 % \label{code:soft-stop-logic}
 % \end{algorithm}
+
+
+
+\subsection{Industrial Digital Twins with WLDT}
+\label{sec:industrial-dt-wldt}
+
+The proposed DT architectural approach has been initially applied and validated in a realistic industrial environment: a microfactory which serves as an experimental platform for DTs and industrial ecosystems. The industrial environment has been strategically chosen since it represents one of the most challenging application scenarios for DTs, characterized by stringent requirements in terms of integration with heterogeneous systems, and the management of fragmented data through multiple stakeholders. 
+
+However, it is crucial to emphasize that the proposed approach is inherently flexible and designed to be applicable in a wide spectrum of other  contexts. While the initial validation focused on the industrial domain we foster the application of our framework in other domains and use cases, such as Smart Cities \cite{10.1145/3570361.3614070} and Health \cite{9325551} where the concepts of DTs can bring significant value. The modularity and scalability of our solution facilitate its adoption in various types of applications, and future work may explore in detail its effectiveness in these additional contexts.
+
+Specifically, the validation in the industrial domain was carried out using the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} Indexed-Line Station, featuring the \emph{Multiprocess Station with Oven} module.
+This microfactory setup provides a controlled yet dynamic environment for testing and refining DT technologies in a realistic industrial context.
+
+%%%
+\begin{figure*}
+    \setlength{\belowcaptionskip}{-13pt}
+    \centering
+    \includegraphics[width=0.92\textwidth]{figures/engineering-wldt/Fischer-relationships.pdf}
+    \caption{DTs relationships with both those existing in the physical space as well those belonging to the digital composition.}
+    \label{fig:dt-assets-relationships-overview}
+\end{figure*}
+%%%
+
+As shown in Figure~\ref{fig:discher-dt-first-level}, the module consists of five machines arranged in a flow shop layout: three material handling units (vacuum gripper carrier, turntable, and conveyor) and two transformation stations (oven and saw station).
+Each machine is equipped with sensors (light barriers and limit switches) and actuators (with two or three operational states), all managed by a 24V industry-grade digital board.
+A Raspberry Pi-based soft-PLC, connected to a 24V Digital I/O expansion board, controls the system and coordinates machine operations via sensors and actuators. Real-time process data is published to an MQTT broker DTs can subscribe to to receive data.
+
+The digitalization goal is to monitor the state, track production performance and power consumption, and regulate the production speed of each machine through a DT.
+Additionally, to compute the overall production performance and manage external action requests, and to track the overall power consumption, two department-level DTs are created, matching the two different modeling goals.
+Each machine-level DT processes incoming data on properties and events to generate insights such as production and energy KPIs, while also managing action requests to regulate their individual speed.
+Relationships between DTs are crucial, as they represent connections between physical assets, which can be used by external applications and other DTs, facilitating \emph{compositions} to form higher-level DTs.
+
+% The digitalization of the department begins with the machine layer, using DT compositions to create higher-level DTs. To capture different aspects of the department (e.g., overall production performance and energy consumption), machine-level DTs can be integrated into two distinct department-level compositions, each specializing in one of the targeted aspects.
+
+% This specialization is achieved by selecting specific information in the DT configuration and using the department DT model to manipulate, augment, and output relevant information. Department-level DTs, structured similarly to machine-level DTs, handle action requests through their internal models, just like the lower-level DTs. Relationships maintain their importance, representing actual connections between the department DT (whether specialized in performance or energy tracking) and other DTs within the system.
+
+%%%
+
+\subsection{Machines Digital Twins}
+\label{subsec:dt-machine-level} 
+
+The digitalization process creates five machine-level DTs, one for each machine in the factory (Figure~\ref{fig:discher-dt-first-level}). These DTs each interact via an MQTT broker through the PI, are equipped with an internal model implemented by the Shadowing Function, and have a Digital Interface to share data.
+The DT ecosystem digitalizes the physical system without replacing the PLC logic, allowing for the independent operation of the PLC if the DT ecosystem fails.
+DTs are deployed on edge nodes for monitoring and control without disrupting core operations.
+
+Each DT connects to the broker through MQTT Physical Adapters, which manage subscriptions to relevant topics and publish the description of PTs. The internal model of each DT calculates metrics like OEE (based on production rate, uptime, downtime, and quality) and tracks power consumption. Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are defined at startup and remain static during the experiment.
+Machine DT states are exposed via MQTT and HTTP Digital Adapters, enabling flexible interaction patterns and action requests through HTTP.
+
+%%%
+\begin{figure*}
+    \setlength{\belowcaptionskip}{-13pt}
+    \centering
+    \includegraphics[width=\textwidth]{figures/engineering-wldt/experimental_results.pdf}
+    \caption{Experimental Results: CPU usage percentage [\%], Memory usage [Mib], Network usage [KBit/sec] and OEE [\%]}
+    \label{fig:exp-results}
+\end{figure*}
+%%%
+
+%%%
+
+\subsection{Department Digital Twins}
+\label{subsec:dt-department-level}
+
+The identified department DTs model and monitor KPIs and energy metrics based on the machine DTs structure. The Department KPI DT focuses on tracking performance, including weighted OEE and throughput. Weighted OEE is calculated using OEEs received from each machine DT~\cite{OEE-manufacturing-cell-Gamberini-2017}.
+Throughput, defined as the number of processed pieces per time unit in production systems, is tracked by monitoring entry and exit events of pieces processed by machines within the department, facilitated by relationships in the DT ecosystem.
+
+The Department-KPI DT tracks piece processing start and completion, calculates throughput, and monitors total pieces processed.
+Relationships between lower and upper-level DTs are shown in Figure~\ref{fig:dt-assets-relationships-overview}.
+The Department DT accepts action requests via its HTTP digital adapter, adjusting production rates through its Shadowing Function, which cascades actions to underlying DTs and physical assets.
+The Department-Energy DT monitors energy consumption, aggregating data from machine-level DTs, and processes it through an internal model to derive target metrics.
+It also uses an HTTP digital adapter for external interaction.
+Department-level DTs use MQTT-based physical adapters to ensure consistent communication and enable external applications to coordinate actions across the underlying DT instances.
+
+% The Department-KPI DT can track the start and completion of piece processing, calculate throughput based on time per piece, and total pieces processed. Relationships between lower-level and upper-level DTs are illustrated in Figure~\ref{fig:dt-assets-relationships-overview}. The Department DT accepts action requests via its HTTP digital adapter, supporting operations to adjust production rates. Speed changes are processed through a simple algorithm in the Department DT's Shadowing Function, cascading actions to underlying DTs and associated physical assets. The Department Energy DT monitors overall energy consumption, aggregating data from machine-level DTs regardless of whether it's specific energy consumption or disaggregated voltage and current data. Its internal model handles this heterogeneity to derive target metrics. The Department Energy DT also utilizes an HTTP digital adapter for external interaction, providing access to its internal state information. Department DTs utilize MQTT physical adapters within their physical interface, ensuring consistent implementation of composed DTs. They enable external applications to interact with the department through HTTP digital adapters, managing actions across underlying DTs based on the department's internal model and behavior.
+
+
+%%%
+% \begin{figure*}
+%     \centering
+%     \setlength{\belowcaptionskip}{-13pt}
+%     \includegraphics[width=\textwidth]{images/masa_dt_result.png}
+%     \caption{Experimental evaluation of the MASA DT deployment with CPU\%, Memory usage\% and the cumulative Network I/O.}
+%     \label{fig:masa_dt_results}
+% \end{figure*}
+%%%
+
+\subsection{Experimental Evaluation}
+\label{ssec:masa_exp_evaluation}
+
+To validate the WLDT framework, we implemented the DTs for the Multiprocess Station with Oven, containerized using Docker, and deployed on an Edge node with an Intel i7 2.4GHz processor and 32 GB of RAM. We monitored three key metrics for each DT: CPU usage (percentage, with each container using one core), memory consumption (in MiB), and network traffic (cumulative inbound and outbound in Kbit/sec).
+Additionally, we calculated the OEE computed by each DT to assess the performance of both individual machines and the station. Figure \ref{fig:exp-results} shows the results of this experiment. The total duration was 10 minutes (600 seconds), as shown on the x-axis of each chart. The graphs illustrate CPU usage, memory usage, network traffic, and the computed OEE (from left to right). Analyzing CPU usage, we observe that there were no significant spikes during the production cycle. Even during the most computationally demanding moments, CPU utilization remained around 30\%, indicating a stable and efficient execution.
+The memory usage chart shows a similarly stable pattern, with DT instances settling around an average usage of 300 MiB, demonstrating consistent memory behavior over time.
+As for network traffic, values remained low—typically around a few tens of Kbit/sec.
+Noticeable traffic peaks correspond to active processing phases, where machines and their respective DTs exchange larger volumes of data.
+Finally, the OEE graph highlights the performance of industrial machines computed by each DT. The Oven, which is the first machine in the station and requires the longest processing time, shows the highest OEE, as it remains under constant workload.
+Conversely, the output conveyor exhibits a lower OEE, as it receives fewer parts to process due to the upstream bottleneck created by the Oven. This experimental phase aimed to demonstrate the effectiveness of WLDT-based DTs in an industrial setting.
+The collected metrics confirm that DT instances can operate efficiently on standard commercial Edge nodes, handling CPU, memory, and network constraints while also supporting domain-specific computations such as OEE. These results validate the potential of the WLDT framework for practical DT development and deployment in real-world industrial scenarios.

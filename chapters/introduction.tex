@@ -36,36 +36,54 @@ Moreover, healthcare processes often involve a variety of very different assets
 -- including facilities, medical devices, patients and healthcare professionals --
 whose interrelations are crucial for the understanding of workflows.
 %
-Finally, for an effective monitoring and decision-making support during the execution of workflows, it is crucial to have an always up-to-date view of all the assets involved.
+Finally, for an effective monitoring and decision-making support, it is crucial to have an always up-to-date view of all the assets involved.
 %
 Given the safety critical setting of healthcare, automated decisions must be transparent and reliable, albeit capable of adapting to the dynamic nature of healthcare environments.
 
 
-These challenges call for an integrated approach towards the development of both \acp{DT} and applications supporting and automating healthcare processes.
+These challenges call for an integrated approach towards the development of both \acp{DT} and applications.
 %
 In this thesis, we propose a framework for the development of \emph{\acp{DTE}} that can incorporate heterogeneous \acp{DT} and expose a holistic, synchronized view of the mirrored physical environment to applications under a unified interoperable interface.
 %
 To support the development of intelligent applications, we look at \ac{MAS}, which model distributed applications in dynamic environments through sets of autonomous entities~\missingref{}.
-We specifically focus on cognitive approaches such as the \ac{BDI} model, as they merge the required adaptability and responsiveness with the ability to declaratively encode domain knowledge and business rules.
+We specifically focus on cognitive approaches such as the \ac{BDI} model~\missingref{}, as they merge adaptability and responsiveness with a declarative encoding of domain knowledge and business rules.
 
 %--------------------------------------------------------
 \subsection*{Problem Statement}
 %--------------------------------------------------------
 Digital transformation, can be supported by \aclp{DT} creating personalized models of relevant assets and support their tracking over workflows.
 Yet, legacy systems, assets heterogeneity and dynamically evolving relationships hinder the creation of a holistic view that can be leveraged by intelligent, transparent, and adaptive applications to support and automate processes.
-Addressing this gap is essential for the successful implementation of \aclp{DTE} in healthcare, making processes more efficient and supporting decision-making.
+Addressing this gap is essential for the successful implementation of \aclp{DTE} making processes more efficient and supporting decision-making.
 
 Towards this goal, we are interested in answering these research questions:
 
 \begin{enumerate}[label=\textbf{RQ\arabic*}]
+
   \item\label{rq:1}
-  \emph{Question}
+  \emph{How can we engineer \acp{DT} to integrate heterogeneous data sources and provide an up-to-date uniform representation of the mirrored assets?}
   \newline
-  Explanation
+  To effectively implement \acp{DTE}, it is necessary to investigate first how to engineer \acp{DT} that can mediate interaction with their physical counterpart and give access to external consumers to the asset's state and capabilities.
+
   \item\label{rq:2}
-  \emph{Question}
+  \emph{How can we engineer \acp{DTE} that integrate heterogeneous \acp{DT} and support applications in interacting with them?}
   \newline
-  Explanation
+  Given the fragmented nature of \acp{DT} we need to ensure that \acp{DTE} can integrate heterogeneous \acp{DT} and offer features that facilitate the interaction of external applications with the set of \acp{DT} within an ecosystem.
+
+  \item\label{rq:3}
+  \emph{How can we support the operational management of \acp{DTE}?}
+  \newline
+  \acp{DT} have a complex development-to-deployment lifecycle that may involve multiple stakeholders. Supporting the operational management of \acp{DTE} requires addressing the challenges of supporting these stakeholders alongside the lifecycle, giving them access to a comprehensive view of the \acp{DT} involved in the ecosystem and possibly deployed to a complex cyber-physical computing infrastructure.
+  
+  \item\label{rq:4}
+  \emph{What are the synergies between \acp{DTE} and \acp{MAS} for the development of intelligent applications?}
+  \newline
+  Given the dynamic nature of \acp{DTE}, applications interacting with \acp{DT} need to be flexible, and encapsulate strategies and rules to automate decision-making. In this thesis, we are interested to explore how (cognitive) \acp{MAS} can be used to this purpose and in general how can we exploit both autonomous agents and \acp{DT} to engineer intelligent cyber-physical applications.  
+
+
+  \item\label{rq:5}
+  \emph{How can we make the development of \ac{BDI} agents more accessible and easier to integrate with external systems such as \ac{DT}?}
+  \newline
+  \ac{BDI} agents are a powerful tool for modeling intelligent applications, but their development is often complex as they require a deep understanding of the underlying concepts. We are interested in exploring how to make the development of \ac{BDI} agents more accessible and easier to integrate with external systems looking at the design of new tools and frameworks.
 \end{enumerate}
 
 
@@ -73,18 +91,31 @@ Towards this goal, we are interested in answering these research questions:
 \subsection*{Contributions}
 %--------------------------------------------------------
 
-\note{Something about how despite focusing on healthcare the thesis contributions can be interpreted in the broader scope of engineering \ac{CPS} with \ac{DT}}
-
-This thesis contributes to the area of \ac{DT} engineering with the following contributions:
+Despite being motivated by the digitalization of healthcare processes through \acp{DTE}, this thesis contributions can be interpreted in the broader scope of engineering \acp{CPS} with \acp{DT}.
+%
+The area of \ac{DT} engineering is a rapidly evolving field, with ongoing research aimed at improving the design, implementation, and management of \acp{DT} in various application domains where \acp{DT} are being employed~\missingref{}.
+%
+In this context, this thesis contributions can be applied to different application scenarios sharing similar challenges in terms of integration of heterogeneous data sources, heterogeneous assets connected by dynamic relationships.
+We identify the following key contributions to the area of \ac{DT} engineering:
+\note{Su ogni punto, citare i miei lavori pubblicati rilevanti}
 \begin{itemize}
-  \item 
+  \item Proposal of an architectural framework for the development of \acp{DT} focusing on integration of heterogeneous data sources and interoperability with external applications~\missingref{}.
+  \item Definition of architectural patterns and best practices for the implementation of \acp{DT} to accurately capture synchronization requirements and augmented features~\missingref{}.
+  \item Implementation of a prototype framework for the development of \acp{DT} that demonstrates the proposed architectural concepts and patterns~\missingref{}.
+  \item Definition of the concept of \acp{DTE} and its role in the context of \ac{DT}-based systems~\missingref{}.
+  \item Proposal for a framework to implement \acp{DTE} that can integrate heterogeneous \acp{DT} and expose a unified interface for external applications~\missingref{}.
+  \item Implementation of a prototype platform and toolkit to integrate \acp{DT} into a \ac{DTE}~\missingref{}.
+  \item Proposal of an abstraction layer to handle the operational management of \ac{DTE} and their deployment on a cyber-physical computing infrastructure~\missingref{}.
+  \item Alignment of the \ac{DT} and \ac{MAS} concepts to establish a synergetic approach for the development of intelligent applications~\missingref{}.
 \end{itemize}
 
-Additionally, the thesis contributes to the area of \ac{MAS} engineering by: 
+Additionally, as this thesis leverages cognitive \ac{MAS} to support the development of intelligent applications that can integrate with \acp{DTE}, it contributes to the area of \ac{BDI} \ac{MAS} engineering by:  
 \begin{itemize}
-  \item 
+  \item Proposing new tools for the implementation of \ac{BDI} agents in order to facilitate their integration with other programming paradigms~\missingref{}.
+  \item Exploring the use of simulation to test and verify \ac{BDI} \ac{MAS} in a controlled environment before deployment~\missingref{}.
+  \item Proposing a conceptual framework to derive explanations of \ac{BDI} agents' behavior, enhancing the transparency and trustworthiness of \ac{BDI} applications~\missingref{}.
+  \item Investigating the integration of \ac{BDI} agents with hypermedia environments~\missingref{}.
 \end{itemize}
-
 
 
 %=======================================================
@@ -92,3 +123,12 @@ Additionally, the thesis contributes to the area of \ac{MAS} engineering by:
 %=======================================================
 
 This thesis is organized as follows. 
+In \Cref{part:background} we provide the necessary context and background on the key concepts that underpin this research, including an overview of the challenges of healthcare digitalization and the reality of \ausl{} in \Cref{chap:back:health4.0}, moving on to introducing the concept of \ac{DT} its technological characterization  in \Cref{chap:back:DT}, and finally giving an overview of the concepts related to \ac{MAS} engineering that are relevant for this thesis in \Cref{chap:back:MAS}.
+
+In \Cref{part:dte} we delve into the contributions towards the definition of the concept of \ac{DTE}. Namely, in \Cref{chap:dte:egineering-dt} we present architectural proposals and patterns for the development of \ac{DT} that can be integrated into a \ac{DTE}, then in \Cref{chap:dte:dte} we introduce the concept of \ac{DTE}, and explore its operational management and prototype implementation through the integration of heterogeneous \acp{DT} in \Cref{chap:dte:dtc} and \Cref{chap:dte:hwodt} respectively.
+
+In \Cref{part:mas} we focus on the role of multi-agent systems in the development of intelligent applications, analyzing how they align with the requirements of healthcare applications in \Cref{chap:mas:requirements} before discussing their alignment for a synergetic exploitation with \acp{DTE} in \Cref{chap:mas:mas-dt} and the contributions to the engineering of \ac{BDI} agents towards the goal of making them more accessible for developers and users in \Cref{chap:mas:engineering}.
+
+Finally, in \Cref{part:validation} we present the application scenarios and validation of the proposed approaches demonstrating their effectiveness in tackling healthcare challenges proposed by our partner \ausl{}
+-- namely, pharmaceutical supply chain (\Cref{chap:val:irst}), trauma management (\Cref{chap:val:trauma}), and operating room management (\Cref{chap:val:orm}) --
+before concluding by discussing results and presenting open challenges to be addressed in future works.

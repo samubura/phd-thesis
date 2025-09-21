@@ -1,23 +1,163 @@
+This chapter provides an overview of the \ac{DT} concept,
+its historical development and the more recent models and technologies that have emerged
+to support its implementation.
+%
+The ever-growing literature on the subject reflects the increasing interest in \acp{DT}
+and its multi-faceted nature, encompassing various domains and applications.
+%
+In this thesis we focus on the software engineering perspective of \acp{DT}, 
+and the application of \acp{DT} to the engineering of \ac{IoT} systems.
+%
+Accordingly, this chapter focuses on how the \ac{DT} concept has been interpreted in this context.
+
+
 %=======================================================
 \section{History and Definitions}
 %=======================================================
 
-%=======================================================
-\section{Conceptual Models}
-%=======================================================
+The concept of \ac{DT} was introduced in the early 2000s by Michael Grieves
+in the context of Product-Lifecycle Management~\cite{Grieves_2023}
+where it was conceived as a virtual representation of a product throughout its lifecycle.
+%
+At its essence, Grieves defined what later came to be known as a \ac{DT} as a system composed of three main components:
+\begin{itemize}
+\item a \emph{physical space} and its products;
+\item a \emph{virtual space} containing the digital representation of the products;
+\item a \emph{connection} between the two, making data flow from the physical to the virtual space and information flow from the virtual to the physical space~\cite{Grieves2017}.
+\end{itemize}
+
+\note{TODO: add the classic DT figure might be nice here}
+
+Grieves referred to this concept as the \emph{Mirrored Spaces Model}~\cite{Grieves_2005},
+a name which echoes the idea of \emph{Mirror Worlds} introduced by David Gelernter in the 1990s~\cite{gelernter1991mirrorworlds}
+who also envisioned the ability to replicate the real world in a completely virtual space~\cite{Singh_Fuenmayor_Hinchy_Qiao_Murray_Devine_2021}.
+
+The idea was later associated with its modern \emph{\acl{DT}} name and popularized by NASA in the 2010s, when it was presented as a key technology
+for future development of aircraft and spacecraft in order to virtually simulate extreme conditions,
+integrate data from the physical system in operation, 
+and provide feedback on the conditions of the \emph{flying twin}
+while possibly enacting changes to mitigate damage~\cite{glaessgen2012dtnasa}.
+%
+NASA's definition hence focused on the ability of the \ac{DT} to integrate multiple simulation models and characterized the \ac{DT} as \emph{ultra-realistic}, as the goal was to virtually replicate the physical system with the highest possible degree of fidelity:
+
+\begin{quote}
+    A Digital Twin is an integrated multiphysics, multiscale, probabilistic simulation of an as-built vehicle or system that uses the best available physical models, sensor updates, fleet history, etc., to mirror the life of its corresponding flying twin~\cite{glaessgen2012dtnasa}.
+\end{quote}
+
+Given the various phases of a product's lifecycle, the \ac{DT} concept was later
+refined to distinguish between the \emph{Digital Twin Prototype} (DTP) and the \emph{Digital Twin Instance} (DTI)~\cite{Grieves2017}.
+The DTP is the virtual representation of the product during its design and development phase,
+while the DTI is the virtual representation of the product during its operational phase.
+%
+Interestingly, the DTP exists before the physical product is even produced, 
+and it is rather ``just'' a virtual model of the product. 
+%
+What could be considered a \emph{true} \ac{DT} is hence the DTI, which exists alongside its physical counterpart and is continuously updated with data from the physical world. 
+
+The role of such bidirectional data exchange between the physical and virtual parts
+of a \ac{DT} has been used to characterize the \ac{DT} concept and distinguish it from other related concepts.
+%
+A widely accepted taxonomy classified the concepts of \emph{Digital Model}, \emph{Digital Shadow} and \emph{Digital Twin} based on direction of the automatic data flow between the physical and virtual spaces~\cite{kritzinger2018dtmanufacturing}:
+namely, 
+a Digital Model is a static model of a physical system (similarly to the DTP) that can be manually updated over time,
+the Digital Shadow gets automatically updated through an inbound data flow from the physical space,
+while the Digital Twin is the only one that holds a bidirectional data flow which can provide feedback to the physical counterpart.
+
+
+Such connection has been referred to as the \emph{digital thread}~\cite{Singh_Willcox_2018,Grieves_2023} to evoke the idea of a tie that binds the physical and virtual spaces.
+%
+Other common terms include \emph{twinning}~\cite{JONES202036} or \emph{shadowing}~\cite{Jiang_Yin_Li_Luo_Kaynak_2021,web-of-dt-ricci-2022} process. 
+%
+This terminology emphasizes the continuous and dynamic nature of the relationship between the physical and virtual entities, 
+and highlights the active role of such process in maintaining the \ac{DT} up to date.
+
+\note{Maybe the figures for Digital Model, Shadow and Twin here?}
+
+The scope and applicability of the \ac{DT} concept has evolved and expanded
+to encompass a wide range of applications and domains.
+%
+Today, \acp{DT} are used in various fields such as manufacturing, healthcare, smart cities, and more.
+%
+This is also reflected in the abundance of terminology used to identify the physical counterpart of a \ac{DT}
+which is nowadays often referred to as the \emph{physical twin} or
+\emph{physical entity}~\cite{Singh_Fuenmayor_Hinchy_Qiao_Murray_Devine_2021,JONES202036,DBLP:journals/jss/DaliborJRSWWW22}.
+%
+This shift from identifying the physical counterpart as a \emph{product} to a more generic \emph{entity}
+highlights the broader applicability of the \ac{DT} concept beyond its original manufacturing context.
+%
+The \ac{DT} concept has been adopted also to represent people~\cite{Shengli_2021},
+processes (e.g., supply chain~\cite{Barykin_Bochkarev_Kalinina_Yadykin_2020}) and organizations~\cite{Parmar_Leiponen_Thomas_2020}, leading to a more abstract interpretation of what can be considered \emph{physical}. 
+%
+Accordingly, the definitions of \acp{DT} have also diversified, leading to a plethora of interpretations~\cite{DBLP:journals/jss/DaliborJRSWWW22}. 
+
+For the scope of this thesis, 
+since the focus is on how \acp{DT} can be used to engineer \ac{IoT} systems, taking as the reference context the healthcare domain,
+we adopt the following definition, adapted from \cite{dt-IoT-context-Minerva-2020}:
+
+\begin{quote}
+A \acl{DT} is a comprehensive software representation of an individual \acl{PA}.
+It includes the properties, conditions, and behavior(s) of the real-life object through models and data.
+A \acl{DT} is a set of realistic models that can simulate an object's behavior in the deployed environment.
+The DT represents and reflects its physical twin and remains its virtual counterpart across the object's entire lifecycle.
+\end{quote}
+
+The definition emphasizes the software nature of the \ac{DT} and its ability to model the properties and behavior of its physical counterpart.
+%
+We deliberately use the term \emph{\ac{PA}} to refer to the physical counterpart of a \ac{DT}
+to highlight the fact that an \emph{asset} is something that has a strategic
+value in the context of an application domain, and that the \ac{DT} is meant to represent and manage such assets.
+%
+Compared to the original Grieves model which characterized the \ac{DT} as having three parts (physical, digital and connection), for the reminder of this thesis we will instead consider:
+\begin{itemize}
+\item the \ac{PA} as the physical counterpart of a \ac{DT};
+\item the \ac{DT} as the software implementing the virtual representation of the \ac{PA} through a combination of models and data;
+\item the \emph{twinning process} implemented by the \ac{DT} software to keep the \ac{DT} up to date with the \ac{PA} and possibly provide feedback to it.
+\end{itemize}
 
 %=======================================================
-\section{\aclp{DT} in the \acs{IoT} Context}
+\section{Conceptual Models and Properties}
 %=======================================================
+
+\note{Tao's 5D model}
+
+
+
+\note{Minerva properties}
+
+
+
+% %=======================================================
+% \section{\aclp{DT} in the \acs{IoT} Context}
+% %=======================================================
 
 %=======================================================
 \section{\aclp{DT} and \acl{AI}}
 %=======================================================
 
+\note{This is here to serve the purpose of introducing "Cognitive Digital Twins"
+and link to MAS}
+
 %=======================================================
 \section{Technologies and Platforms}
 %=======================================================
 
+\note{The shift from silos to platforms}
+
+
+
+\note{Azure DT}
+
+\note{Ditto}
+
+
 %=======================================================
 \section{Towards \aclp{DTE}}
 %=======================================================
+
+\note{From platforms to ecosystems}
+
+\note{National Digital Twin}
+
+\note{Web of Digital Twins}
+
+\note{Digital Twin interoperability(?)}

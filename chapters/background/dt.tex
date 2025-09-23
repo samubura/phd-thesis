@@ -213,14 +213,14 @@ Accordingly, the second important contribution is the emphasis on \emph{contextu
 This shifts the focus from the ultra-realistic \ac{DT} envisioned by NASA to a more pragmatic approach where the \ac{DT} is representative of the \ac{PA} in a specific context,
 hence possibly abstracting away details of the \ac{PA} that are not relevant for the intended use of the \ac{DT} in the target system.
 %
-Additional properties emphasize the dynamic nature of the \ac{DT} and its ability to reflect changes in the \ac{PA} (\emph{reflection}), in a timely manner (\emph{entanglement}), persisting over time, memorizing past states and offering a reliable representation of the \ac{PA} (\emph{accountability}). 
+Additional properties emphasize the dynamic nature of the \ac{DT} and its ability to reflect changes in the \ac{PA} (\emph{reflection}), in a timely manner (\emph{entanglement}), persisting over time (\emph{persistence}), memorizing past states (\emph{memorization}) and offering a reliable representation of the \ac{PA} (\emph{accountability}). 
 %
 Finally, the properties also highlight the ability of \acp{DT} to provide value to users through services (\emph{servitization}) such as aggregation of multiple assets (\emph{composability}), augmentation of the \ac{PA} capabilities (\emph{augmentation}), management of access control (\emph{ownership}), and anticipation of future states and behaviors of the \ac{PA} (\emph{predictability}).
 
 \begin{table}[ht]
 \centering
 \caption{Characterizing Properties of \acp{DT}, defined in \cite{dt-IoT-context-Minerva-2020}.}
-
+\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{p{3.5cm}|p{\dimexpr\textwidth-4.5cm\relax}}
 \toprule
 \midrule
@@ -259,26 +259,120 @@ Finally, the properties also highlight the ability of \acp{DT} to provide value 
 
 
 %=======================================================
-\section{Technologies and Platforms}
+\section{Enabling Technologies and Platforms}
 %=======================================================
 
-\note{Enabling Technologies}
+On a practical level, the implementation of \acp{DT} has been enabled by the convergence of various technologies.
+%
+This includes the proliferation of \ac{IoT} devices, 
+advancements in Big Data analytics and \ac{AI}, 
+and an increased availability of computing power to run simulations, 
+which make possible to collect and analyze large amounts of data from the physical world, 
+derive models of the \ac{PA} and execute them to obtain insights~\cite{qi2021enablingtechdt,Fuller_Fan_Day_Barlow_2020,Mihai_survey_enabling_2022}.
 
+On the physical side, the availability of network-connected sensors and actuators enable the acquisition of real-time data from the \ac{PA}.
+%
+Sensing technologies for \ac{DT} broadly include classic \ac{IoT} techniques such as RFID, digital sensors,
+but also computer vision and image processing.
+%
+In many cases, the data that can be automatically collected from the \ac{PA} is complemented by manual data entry, making the \ac{DT} interact with other information systems.
+%
+Sensing is followed by connectivity and data exchange, through a variety of communication protocols and network technologies.
+%
+\acp{DT} may need to operate with different data sources, each with its own communication protocol and data format.
+%
+Classic examples of \ac{IoT} communication protocols include MQTT, CoAP, HTTP, and WebSocket, but also industrial protocols such as OPC-UA and Modbus~\cite{Fortino_Savaglio_2023}. 
+%
+Finally, the physical layer includes a computing infrastructure that can span from the edge to the cloud, to support the data acquisition, processing and storage needs of the \ac{DT}.
 
+On the virtual side, the \ac{DT} requires modeling techniques to represent its properties and behaviors.
+%
+Depending on the application domain this can range from geometrical and physical models, to behavioral models such as finite state machines or process models.
+%
+Models can be manually created by experts, or automatically derived from data through data-driven modeling and machine learning techniques~\cite{Tao_Xiao_Qi_Cheng_Ji_2022}.
+%
+Models can be used to simulate the behavior of the \ac{PA} with different simulation software.
+%
+The volume and variety of data that can be collected from the \ac{PA} and from the \ac{DT} models requires Big Data technologies to extract insights~\cite{Tao_Cheng_Qi_Zhang_Zhang_Sui_2018}. 
+%
+Finally, the \ac{DT} software needs to provide services to its users, including data visualization technologies, user interfaces and \acp{API} to interact with other software systems.
+%
+Some further include \ac{AR} and \ac{VR} technologies in the enabling technologies of \acp{DT} to provide immersive experiences to users and visualize \ac{DT}~\cite{Mihai_survey_enabling_2022}.
 
-\note{The shift from silos to platforms}
+\todo{maybe a table or something to break the text... }
 
-\note{Azure DT}
+Due to the complexity of the technological stack required to implement \acp{DT}, the industry has seen the emergence of various supporting tools.
+%
+First examples of \ac{DT} development tools were developed by large industrial companies such as General Electric's Predix, Siemens MindSphere, PTC ThingWorx, and IBM Watson \ac{IoT}~\cite{Fuller_Fan_Day_Barlow_2020,Adamenko_Kunnen_Nagarajah_2020}.
+%
+Additionally, several simulation tools such as  ANSYS Twin Builder~\cite{ansys_twinbuilder}, SimuLink~\cite{mathworks_digitaltwin} and AnyLogic~\cite{anylogic_digitaltwin} started to include features to support \ac{DT} development. 
+%
+Many of these tools, emerging from industrial domains, are tailored to specific use cases and application domains.
+%
+Additionally, being proprietary software, they often lack openness and interoperability becoming closed silos from a broader system engineering perspective. 
 
-\note{Ditto}
+More recently, cloud providers have started to offer so-called \emph{\ac{DT} platforms} such as Microsoft's \azureTwin{}\footnote{\url{https://azure.microsoft.com/en-us/services/digital-twin/}} and Amazon's \awsTwin{}\footnote{\url{https://aws.amazon.com/iot-twinmaker/}}.
+%
+These general-purpose platforms complement the existing cloud-based \ac{IoT} middlewares with specific features to support the implementation of \acp{DT}. 
+This includes the ability to model assets with defined data schemas, providing identification and tracking state properties,
+as well as tools to integrate data from various sources, and to grant access to the \ac{DT} data and functionalities through well-defined common \acp{API}.
+%
+Interestingly, these platforms put forth the idea of having multiple \acp{DT} connected together to represent a complex application domain. 
+%
+As an example, \azureTwin{} is based on the concept of a \emph{digital twin graph} where multiple \acp{DT} can be connected together to represent complex systems~\cite{Meijers_2022}.
+%
+Additionally, these platforms are not tied to specific application domains, paving the way for a broader adoption of the \ac{DT} concept. 
+
+Last, but not least, open-source \ac{DT} platforms are emerging~\cite{Gil_Mikkelsen_Gomes_Larsen_2024}.
+Among them, \ditto{}\footnote{\url{https://eclipse.dev/ditto/}} is a notable example, integrating with the Eclipse \ac{IoT} ecosystem. 
+%
+The platform allows storing and managing digital representations of \acp{PA}, providing a RESTful \ac{API} to interact with them. 
+%
+Other relevant examples from the academic community include
+the \ac{DT}-as-a-Service platform proposed in \cite{Talasila_Gomes_Mikkelsen_Arboleda_Kamburjan_Larsen_2023} supporting developers in developing and sharing \acp{DT} by managing a combination of services including simulation models and data sources,
+and TwinBase~\cite{Autiosalo_Siegel_Tammi_2021}, a platform to manage \ac{DT} models in the open Web with an implementation leveraging GitHub repositories to store and serve static \ac{DT} models.
+
+The shift towards more general and open \ac{DT} platforms is reflecting the broader application of \acp{DT} beyond their original industrial context, as well as the need of integrating \acp{DT} in larger software ecosystems, instead of being closed in application silos. 
 
 %=======================================================
 \section{\aclp{DT} and \acl{AI}}
 %=======================================================
 
-\note{This is here to serve the purpose of introducing "Cognitive Digital Twins"
-and link to MAS}
+As highlighted in the previous section, 
+despite not being considered a core requirement when \acp{DT} were initially introduced,
+\ac{AI} and machine learning techniques are increasingly being recognized as one of the fundamental enabling technologies for \acp{DT}~\cite{Kreuzer_Papapetrou_Zdravkovic_2024}.
+%
+This is due to the fact that the amount of data that can be collected from \acp{DT} is often too large and complex to be manually analyzed and interpreted. 
+%
+Hence, \ac{AI} techniques can be used to implement different \ac{DT} functionalities. 
 
+In \cite{Minerva_Crespi_Farahbakhsh_Awan_2023}, the authors propose a classification of \ac{DT} based on the level of behavioral intelligence, correlating the different levels to different \ac{AI} techniques as shown in \Cref{fig:ai-dt-pentagon}.
+%
+They introduce four levels of \ac{DT} intelligence: 
+\begin{itemize}
+    \item \textbf{Passive} if the \ac{DT} purpose is only to provide a virtual representation of the \ac{PA} for monitoring and simulation purposes;
+    \item \textbf{Predictive} if the \ac{DT} can forecast future \ac{PA} states and behaviors based on historical data and models;
+    \item \textbf{Reactive} if the \ac{DT} can respond to changes in the \ac{PA} state by diagnosing issues and taking corrective actions using reasoning techniques;
+    \item \textbf{Proactive or Autonomic} if the \ac{DT} can understand the \ac{PA} context and make decisions adapting to it to autonomously reach or maintain goals without human intervention.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/AI_DT_pentagon.pdf}
+    \caption{Artificial intelligence with respect to \ac{DT} capabilities, from \cite{Minerva_Crespi_Farahbakhsh_Awan_2023}.}
+    \label{fig:ai-dt-pentagon}
+\end{figure}
+
+
+
+
+%=======================================================
+\section{Digital Twin Interoperability and Standards}
+%=======================================================
+
+\note{Interoperability challenges}
+
+\note{AAS, OPC-UA, ISO, ETSI and other standards??}
 
 %=======================================================
 \section{Towards \aclp{DTE}}
@@ -286,8 +380,12 @@ and link to MAS}
 
 \note{From platforms to ecosystems}
 
-\note{Digital Twin interoperability(?)}
-
 \note{National Digital Twin}
 
 \note{Web of Digital Twins}
+
+
+%=======================================================
+\section{Final Remarks}
+%=======================================================
+

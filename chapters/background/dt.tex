@@ -386,7 +386,7 @@ The technologies tied to this vision include knowledge representation, ontologie
 The rapid development of \ac{DT} technologies and the adoption of \acp{DT} in various domains has led to a fragmentation of the field. 
 %
 Moving on from the technological silos of the early \ac{DT} implementations towards a more service-oriented view of \acp{DT},
-it is not surprising that interoperability is emerging as a key challenge for \acp{DT}~\cite{Rebelo_Moreira_2024}. 
+it is not surprising that interoperability is emerging as a key challenge for \acp{DT}~\cite{piroumian2021interoperability,Rebelo_Moreira_2024}. 
 
 
 Interoperability is seen as a necessary condition for \ac{DT} maturity.
@@ -484,7 +484,7 @@ Examples are the \ac{AAS}~\cite{platform_i40_aas_part1_v2}, the \ac{OPC-UA}~\cit
 These standards, given their different origins and motivations, cover different aspects of a \ac{DT}~\cite{Barnard_2024} and are generally tailored to a specific problem, namely \ac{AAS} focuses on creating a representation of an asset through its static and dynamic properties, operations and services;
 \ac{OPC-UA} primarily serves as a secure and efficient \ac{M2M} communication protocol and data model; and \ac{AML} captures the geometry, topology, and behavior of machines in automation processes.
 
-%
+
 At the semantic level, authors recognize the role of shared semantic models to provide common understanding of the exchanged data.
 %
 In this setting, ontologies and \acp{KG} are seen as essential tools to implement \acp{DT}~\cite{Karabulut_Pileggi_Groth_Degeler_2024}. They can provide a common vocabulary and shared understanding of an application domain, fostering interoperability, explainability and reasoning capabilities.
@@ -512,25 +512,44 @@ The survey finds that most \ac{DT} implementations use ontologies to represent t
 \section{Towards \aclp{DTE}}
 %=======================================================
 
+As discussed in the previous sections, \acp{DT} are evolving from the original view of virtual copies of physical products, to serve as a general-purpose engineering abstraction for the strategic design and development of \acp{CPS}.
+%
+This shift is reflected by both technological advancements with the emergence of \ac{DT} platforms that support the management of multiple \acp{DT}, and the increasing attention to interoperability to enable \acp{DT} to be integrated in larger systems.
 
 
+Complex \acp{CPS}, in fact, typically consist of interrelated assets whose connections can change dynamically.
+%
+These relationships are currently difficult to track and model with a single \ac{DT}, hence several approaches are proposing to consider a more collective dimension in which each asset is modeled with its own \ac{DT}, and the overall system is modeled as an \emph{ecosystem} of interconnected \acp{DT}~\cite{web-of-dt-ricci-2022}.
+%
+\emph{\ac{DTE}}, which are the core concept explored in this thesis, are hence emerging as a key abstraction to address the challenge of effectively model complex \acp{CPS} through a set of interconnected \acp{DT}.
+%
+The call to \emph{``make more \aclp{DT}''}~\cite{nature_make_moredt} is hence opening a perspective in which \acp{DT} are pervasively used to model strategic \acp{PA} and their interaction becomes crucial to effectively leverage their potential in complex scenarios.
 
-% As discussed in the previous section, \acp{DT} serve as a strategic engineering abstraction for the design and development of \acp{CPS}.
-% %
-% Complex \acp{CPS} typically consist of interrelated assets whose connections can change dynamically.
-% However, many existing \ac{DT} definitions and supporting technologies encapsulate the entire domain complexity within a single \ac{DT}, structured as a vertical, closed, and asset-specific silos~\cite{piroumian2021interoperability}.
-% Although this approach has proven to be coherent and effective in various applications \cite{bulter2018geminiprinciples}, it may restrict the full potential of the \ac{DT} vision. 
-% The \ac{DT} metamodel could be enhanced to better capture the interconnected nature of the corresponding real-world entities.
+The idea of \ac{DTE} can be traced back to the concept of \emph{Digital Twin Aggregate} introduced by Grieves~\cite{Grieves_2023} which understood the potential of aggregating multiple \acp{DT} instances.
+%
+In that vision, though, the aggregate was composed of multiple \acp{DT} of the same type of asset, to observe the behavior of different instances of the same product and capture collective trends.
+
+The more modern interpretation of \ac{DTE} can be derived, instead, from the United Kingdom's \textit{National Digital Twin} program~\cite{bulter2018geminiprinciples}.
+%
+As described in \cite{kendall2021ndt} the National Digital Twin is \emph{``an ecosystem
+of digital twins and the protocols by which
+they can be integrated securely and
+resiliently''}.
+%
+Finalized at the tracking of the national built environment, the initiative fostered the development of a \ac{DT} integration framework to share and exchange data across different stakeholders.
+%
+Although the program was focused on a specific domain, the underlying idea of composing an ecosystem of interconnected \acp{DT} rather than a monolithic put forth by the \emph{Gemini principles}~\cite{bulter2018geminiprinciples} can be generalized to other applications.
+%
+Today, \ac{DTE} are hence envisioned as systems where multiple \emph{different} \acp{DT} are interconnected to model complex scenarios spanning different domains and organizations.
+
 
 % Building on this idea, recent research proposals advocate modeling such complex scenarios as \textit{\dteco{}}~\cite{web_of_dt}, which consist of a dynamic set of \acp{DT}, each individually mirroring a specific \ac{PA}.
 % %
 % Hence, \acp{DT} become building blocks to model portions of the real world, including every facet, ranging from people to objects and processes.
 
-% The application of \dteco{s} to real-world use cases has been a fundamental tenet in the UK nationwide initiative called the \textit{National Digital Twin Programme}~\cite{kendall2021ndt} that enriches the research panorama around \dteco{s} with design principles~\cite{bulter2018geminiprinciples} and frameworks.
 
 
-% Leveraging recent advancements in cloud and edge computing, \acp{DT} can be dynamically created and executed in distributed computing environments.
-% The \ac{DT}-as-a-Service idea emerges as a crucial enabler for developing a service-oriented layer that supports applications running on top.
+
 % %s
 % The \textit{\acf{WoDT}}~\cite{web_of_dt} idea, built on this rationale, envisions ecosystems of connected \acp{DT} where each strategic \ac{PA} is modeled with at least one corresponding \ac{DT} which reflects, augments, and exposes its state, services, and \textit{relationships}.
 % %

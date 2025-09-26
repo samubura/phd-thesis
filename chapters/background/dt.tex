@@ -225,8 +225,8 @@ Finally, the properties also highlight the ability of \acp{DT} to provide value 
 \toprule
 \midrule
 \textbf{Property} & \textbf{Description} \\
-\hline 
-\hline
+\midrule
+\toprule
 {Contextualization} & A \ac{DT} models the \ac{PA} in a way that is representative with regard to the target context. \\
 \hline
 {Reflection} & A \ac{DT} reflects changes in the \ac{PA} in real-time. \\
@@ -250,7 +250,7 @@ Finally, the properties also highlight the ability of \acp{DT} to provide value 
 {Servitization} & A \ac{DT} provides services to its users.\\
 \hline
 {Predictability} & A \ac{DT} can anticipate future states and behaviors of the \ac{PA}.\\
-\hline
+\midrule
 \bottomrule
 \end{tabular}%
 \label{tab:minerva-properties}
@@ -358,25 +358,242 @@ They introduce four levels of \ac{DT} intelligence:
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{figures/AI_DT_pentagon.pdf}
+    \includegraphics[width=0.9\textwidth]{figures/AI_DT_pentagon.pdf}
     \caption{Artificial intelligence with respect to \ac{DT} capabilities, from \cite{Minerva_Crespi_Farahbakhsh_Awan_2023}.}
     \label{fig:ai-dt-pentagon}
 \end{figure}
 
+Passive \acp{DT} can be supported by statistical data analytics techniques to create models of the \ac{PA}. 
+%
+Predictive \acp{DT} can leverage different techniques such as regression, time series analysis, deep learning but also fuzzy logic to implement the prediction capabilities. 
+%
+This of course requires the availability of historical data to train such models. 
+%
+Reactive \acp{DT} can instead use classification techniques, decision-trees and rule-based systems to implement decision-making. 
+%
+Finally, Autonomic \acp{DT} can combine different reasoning techniques with planning to implement self-adaptation and autonomous beavior.
+%
+This level of intelligence is often associated with the vision of \emph{Cognitive Digital Twins}~\cite{Zheng_Lu_Kiritsis_2022,Intizar_Ali_Patel_G_Breslin_Harik_Sheth_2021} in which the \ac{DT} has a strong degree of autonomy with respect to its \ac{PA} and can influence its behavior to achieve specific goals.
+%
+The technologies tied to this vision include knowledge representation, ontologies and reasoning, hence including the more symbolic side of \ac{AI} techniques, rather than only relying on data-driven techniques.
 
 
 
 %=======================================================
-\section{Digital Twin Interoperability and Standards}
+\section{Digital Twin Interoperability}
 %=======================================================
 
-\note{Interoperability challenges}
+The rapid development of \ac{DT} technologies and the adoption of \acp{DT} in various domains has led to a fragmentation of the field. 
+%
+Moving on from the technological silos of the early \ac{DT} implementations towards a more service-oriented view of \acp{DT},
+it is not surprising that interoperability is emerging as a key challenge for \acp{DT}~\cite{Rebelo_Moreira_2024}. 
 
-\note{AAS, OPC-UA, ISO, ETSI and other standards??}
+
+Interoperability is seen as a necessary condition for \ac{DT} maturity.
+In \cite{Klar_Arvidsson_Angelakis_2024} the authors propose a general maturity assessment framework for \acp{DT}. 
+\Cref{tab:dt-maturity} summarizes the proposed levels of maturity.
+
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|p{2.8cm}|p{5cm}|p{4cm}}
+\toprule
+\midrule
+\textbf{Level} & \textbf{State} & \textbf{Requirement} & \textbf{Enabled potential} \\
+\midrule
+\toprule
+1 & Replication of assets & 
+Digitization of physical assets and their state at moment of capture (e.g. 2D maps or 3D models) & 
+Awareness of assets, rudimentary decision support \\
+\hline
+2 & Connection & 
+Connect processes and models to static data and metadata of level 1 & 
+Realistic simulations and asset planning \\
+\hline
+3 & Synchronization & 
+Enrich with timely data (sensors and other IoT technologies) & 
+Real-time situational awareness and immersive environments \\
+\hline
+4 & Interaction & 
+Two-way data communication and interaction & 
+Remote control of physical assets and processes \\
+\hline
+5 & Automation & 
+Transparent explainable systems with broad control potential & 
+Autonomous operations optimization and self-maintenance \\
+\hline
+6 & Interoperability & 
+Highly linkable systems characterized by a high level of standardization, ontology definition, and semantic modelling & 
+Joint decision-making among various systems, enhanced system of systems performance \\
+\midrule
+\bottomrule
+\end{tabular}
+\caption{Levels of \acl{DT} maturity from \cite{Klar_Arvidsson_Angelakis_2024}.}
+\label{tab:dt-maturity}
+\end{table}
+
+Authors correlate level one and two to the Digital Model, level three to the Digital Shadow and level four and five to the Digital Twin concepts~\cite{kritzinger2018dtmanufacturing}.
+%
+Level six, which they identify as the highest level of maturity is tied to interoperability and envisions \emph{Connected Digital Twins} that can interact with each other to provide joint decision-making capabilities. 
+
+In this context, interoperability is hence seen as a key enabler for the realization of \ac{DT}-based systems and integrate the \ac{DT} concept as a \ac{CPS} engineering paradigm. 
+%
+Accordingly, in \cite{Acharya_Khan_Päivärinta_2024}, the authors survey \ac{DT} literature to characterize interoperability in \ac{CPS} and \ac{DT} systems.
+%
+\Cref{fig:dt-interoperability-levels} visually summarizes the identified levels of interoperability in six levels: 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/interoperability-levels.jpg}
+    \caption{Interoperability Levels in \acl{DT}, from \cite{Acharya_Khan_Päivärinta_2024}.}
+    \label{fig:dt-interoperability-levels}
+\end{figure}
+
+
+\begin{enumerate}
+    \item \textbf{Technical Interoperability} is the lowest level and refers to the ability of different systems to communicate and exchange data using common protocols and formats;
+    \item \textbf{Syntactic Interoperability} refers to the ability of different systems to understand the structure and format of the exchanged data, enabling them to parse and interpret it correctly;
+    \item \textbf{Semantic Interoperability} refers to the ability of different systems to understand the meaning of the exchanged data, enabling them to interpret it consistently;
+    \item \textbf{Pragmatic Interoperability} refers to the ability of systems to understand context of the exchanged data and use it to 
+    \item \textbf{Dynamic Interoperability} refers to the ability of different systems to adapt and evolve over time, enabling them to maintain interoperability in the face of changing requirements and technologies
+    \item \textbf{Organizational Interoperability} refers to the ability of different organizations to work together effectively, through the adherence to standards and the integration of operations. 
+\end{enumerate}
+%
+
+These studies highlight the importance of interoperability for the future of \acp{DT}, emphasizing the need for standardization and common frameworks to enable seamless integration of \acp{DT} in larger systems. 
+%
+The envisioned ultimate goal, tends towards \acp{DT} as building-blocks of more complex systems, interacting with each other to provide additional value. 
+
+Of course, there are significant challenges to achieve this vision.
+%
+In \cite{Klar_Arvidsson_Angelakis_2024}, the authors identify the lack of trust as a key barrier to interoperability, especially for an organizational level as the exchange of data is often perceived as a loss of competitive advantage.
+%
+Initiatives such as the European data space~\cite{Braud_Fromentoux_Radier_Le_Grand_2021} are trying to address this issue by proposing a federated data infrastructure where data can be shared in a secure and controlled manner.
+
+Other than societal challenges, technical issues such as data silos, proprietary formats, and lack of common standards further complicate interoperability efforts.
+%
+Standardization initiatives such as the one from \ac{ETSI}~\cite{etsi_TR_103844_v1.1.1_2023} aim to address these challenges by providing guidelines and frameworks for interoperable \acp{DT}.
+%
+Different challenges arise at different levels of interoperability~\cite{Klar_Arvidsson_Angelakis_2024}.
+
+At the technical level, a plethora of standards originally developed within the industrial \ac{IoT} domain are being proposed to address the communication and data exchange needs of \acp{DT}~\cite{Barnard_2024}.
+%
+Examples are the \ac{AAS}~\cite{platform_i40_aas_part1_v2}, the \ac{OPC-UA}~\cite{mahnke2009opc}, and \ac{AML}~\cite{DBLP:conf/etfa/DrathLPH08}.
+%
+These standards, given their different origins and motivations, cover different aspects of a \ac{DT}~\cite{Barnard_2024} and are generally tailored to a specific problem, namely \ac{AAS} focuses on creating a representation of an asset through its static and dynamic properties, operations and services;
+\ac{OPC-UA} primarily serves as a secure and efficient \ac{M2M} communication protocol and data model; and \ac{AML} captures the geometry, topology, and behavior of machines in automation processes.
+
+%
+At the semantic level, authors recognize the role of shared semantic models to provide common understanding of the exchanged data.
+%
+In this setting, ontologies and \acp{KG} are seen as essential tools to implement \acp{DT}~\cite{Karabulut_Pileggi_Groth_Degeler_2024}. They can provide a common vocabulary and shared understanding of an application domain, fostering interoperability, explainability and reasoning capabilities.
+%
+The survey finds that most \ac{DT} implementations use ontologies to represent the physical layer as it is the one more tied to the application domain. Few leverage ontologies to exchange data and build \acp{KG} to share the \ac{DT} knowledge, limiting their interoperability potential~\cite{Karabulut_Pileggi_Groth_Degeler_2024}.
+
+%
+% A different approach to \ac{IoT} interoperability is the aforementioned W3C \ac{WoT} which provides a general purpose model to integrate multiple \ac{IoT} devices, using Web principles to support the discovery of capabilities described through \acp{TD}.
+% %
+% Differently from the other approaches, the \ac{WoT} focuses on modeling interactions with devices, allowing to translate \acp{API} from machine-specific to Web-based protocols.
+
+% Given the different nature of these standards, they can be viewed as complementary rather than competing against each other.
+% %
+% There have been integration efforts in order to leverage their different strengths. For instance, \ac{OPC-UA} has been integrated with web technologies~\cite{DBLP:journals/csi/CavalieriSS19} to support direct integration with web clients, operations in \ac{AAS}~\cite{platform_i40_aas_part1_v2} and affordances in \ac{WoT}\footnote{\url{https://profiles.opcfoundation.org/workinggroup/97}} can have an \ac{OPC-UA} protocol bindings, and \ac{AML} specifications can be linked to \ac{AAS} to have a coherent view of the involved assets~\cite{DBLP:conf/etfa/DrathRH19,DBLP:conf/indin/WengerZ018}.
+% %
+% In this view, the Semantic Web technologies adopted in the \ac{HWoDT} approach can be integrated on top of existing standards and complement their features.
+
+% The Semantic Web excels at general-purpose knowledge representation, and integration of such heterogeneous knowledge under a uniform interface.
+% %
+% Additionally, it enable reasoning through ontological inference and expressive queries across concepts, supporting use cases that have limited support when using the aforementioned standards alone (see \cref{tab:interop_comparison}, Querying and Data access).
+% %
+% It is then not surprising that alignment between Semantic Web technologies and industrial standards are being investigated, highlighting similarities between e.g., \ac{OPC-UA}~\cite{DBLP:conf/etfa/MajumderWD19,DBLP:conf/etfa/PerzyloP0K19} and \ac{AAS}~\cite{DBLP:conf/icphys/BedenCB21, platform_i40_aas_part1_v2} data models, to benefit from these features.
 
 %=======================================================
 \section{Towards \aclp{DTE}}
 %=======================================================
+
+
+
+
+% As discussed in the previous section, \acp{DT} serve as a strategic engineering abstraction for the design and development of \acp{CPS}.
+% %
+% Complex \acp{CPS} typically consist of interrelated assets whose connections can change dynamically.
+% However, many existing \ac{DT} definitions and supporting technologies encapsulate the entire domain complexity within a single \ac{DT}, structured as a vertical, closed, and asset-specific silos~\cite{piroumian2021interoperability}.
+% Although this approach has proven to be coherent and effective in various applications \cite{bulter2018geminiprinciples}, it may restrict the full potential of the \ac{DT} vision. 
+% The \ac{DT} metamodel could be enhanced to better capture the interconnected nature of the corresponding real-world entities.
+
+% Building on this idea, recent research proposals advocate modeling such complex scenarios as \textit{\dteco{}}~\cite{web_of_dt}, which consist of a dynamic set of \acp{DT}, each individually mirroring a specific \ac{PA}.
+% %
+% Hence, \acp{DT} become building blocks to model portions of the real world, including every facet, ranging from people to objects and processes.
+
+% The application of \dteco{s} to real-world use cases has been a fundamental tenet in the UK nationwide initiative called the \textit{National Digital Twin Programme}~\cite{kendall2021ndt} that enriches the research panorama around \dteco{s} with design principles~\cite{bulter2018geminiprinciples} and frameworks.
+
+
+% Leveraging recent advancements in cloud and edge computing, \acp{DT} can be dynamically created and executed in distributed computing environments.
+% The \ac{DT}-as-a-Service idea emerges as a crucial enabler for developing a service-oriented layer that supports applications running on top.
+% %s
+% The \textit{\acf{WoDT}}~\cite{web_of_dt} idea, built on this rationale, envisions ecosystems of connected \acp{DT} where each strategic \ac{PA} is modeled with at least one corresponding \ac{DT} which reflects, augments, and exposes its state, services, and \textit{relationships}.
+% %
+% The resulting \dteco{s} capture the interconnected nature of the physical world, creating an open, distributed, and dynamic service-oriented layer that models entire portions of the real world (\Cref{fig:wodt}).
+% %
+% Applications, especially smart applications and multiagent systems, can leverage this \ac{DT} layer to access, navigate, reason, and act upon the physical world~\cite{web_of_dt}.
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.9\linewidth]{figures/wodt.pdf}
+%   \caption{A \dteco{} in the \ac{WoDT} vision. It depicts the typical \ac{WoDT} layered structure. The \textit{Physical Asset Layer} is mirrored with a \dteco{} in the \textit{Digital Twin Layer}, whose services are leveraged by the \textit{Application Layer}.}
+%   \label{fig:wodt}
+% \end{figure}
+% The resulting holistic conceptualization enables services that extend beyond the boundaries of a single \ac{DT} to encompass the ecosystem as a whole, improving the design of large-scale systems.
+% %
+% Modeling cross-domain and cross-organization scenarios with an open-system perspective, a general-purpose metamodel is required.
+% Hence, a \ac{DT} in the \ac{WoDT} is defined through the following metamodel composed of:
+% \begin{inlinelist}
+%     \item \textit{Properties} that represent the observable attributes of the \ac{PA},
+%     \item \textit{Relationships}: that reflect, at the \ac{DT} level, the connections between the \acp{PA} as links to other \acp{DT},
+%     \item \textit{Actions}: that can be invoked to modify the state or behavior of the \ac{PA}, and
+%     \item \textit{Events}: exposing notifications about the \ac{PA}.
+% \end{inlinelist}
+
+% Reflections in the context of a single \ac{DT} must be extended and enriched, considering the distributed nature of \dteco{s}~\cite{web_of_dt}.
+% %
+% Heterogeneity is crucial when considering a pervasive softwarization of the physical world across different domains and organizations \cite{tao2019makemoredt, bulter2018geminiprinciples}.
+% Recently, approaches to design \dteco{s} in heterogeneous settings have been proposed~\cite{giulianelli2024models}.
+% %
+% However, to support the entire journey that leads developers to the deployment of \dteco{s}, a wider spectrum of challenges must be considered.
+% %
+% The overall picture encompasses the potential to have distributed \dteco{s} where \acp{DT} are developed with heterogeneous technologies deployed across different network layers, ranging from the edge to the cloud, to achieve the desired application goals.
+% %
+% This fragmentation hinders infrastructure management and \ac{DT} consumption, slowing down the application layer.
+% %
+% For \acp{DT} and \dteco{s} to be successfully exploited as an effective cyber-physical abstraction layer, the deployment complexities must be adequately supported, allowing application designers to focus on core functionalities.
+
+
+
+% While the value of individual \acp{DT} is recognized as strategic for improving decision-making, \ac{CPS} often involve interconnected assets whose interactions may emerge only from a holistic view~\cite{JIA2022101706,JIA2023101915}.
+% %
+% The cardinal role of the \emph{service} dimension naturally leads to leveraging multiple \acp{DT} to model complex scenarios. 
+% This aligns with the \emph{DT-as-a-service} view~\cite{aheleroff2021aei,talasila2025simulation} which fosters the composition of \acp{DT} and services in complex software ecosystems~\cite{human2023dtsoa}.
+
+% Recent proposals target the development of \dteco{s}, where multiple \acp{DT}
+% -- each representing individual \acp{PA} --
+% support together applications and services that would simply not be achievable considering only isolated DTs~\cite{council2022geminipaperswhat,council2022geminipaperswhy}.
+% %
+% Among those, we highlight the efforts of the Digital Twin Consortium\footnote{\url{https://www.digitaltwinconsortium.org/}}
+% and the United Kingdom's \ac{NDT} programme~\cite{kendall2021ndt}
+% who were among the first dedicated activities advocating for the development of standards for \dteco{s} to achieve \ac{DT} interoperability.
+% %
+% Regardless of these and other ongoing efforts (e.g. \cite{iso2023concepts}, \cite{etsi2023tr103844}), interoperability is still considered one of the main challenges for achieving mature \dteco{s}~\cite{Klar_Arvidsson_Angelakis_2024,Acharya_Khan_Päivärinta_2024}
+
+% Addressing this challenge, the \emph{\acf{WoDT}}~\cite{ricci2022wodt} puts forth a conceptual proposal for an open, distributed, and dynamic ecosystem of connected \acp{DT} adhering to a general-purpose metamodel composed by: 
+% \begin{inlinelist}
+%     \item \emph{properties} which are observable attributes of the \ac{PA};
+%     \item \emph{relationship} representing connections between \acp{PA} as links to other \acp{DT};
+%     \item \emph{actions} representing operations which can be invoked to modify the state or behaviour of the \ac{PA};
+%     \item \emph{events} to capture notifications about the \ac{PA}
+% \end{inlinelist}
+% Still, the practical challenge of composing heterogeneous \emph{existing} \acp{DT} based on this meta-model is not addressed.
+% Our proposal fills this gap by leveraging hypermedia-based interoperability to apply the \ac{WoDT} conceptual model to heterogeneous \dteco{s}.
+
 
 \note{From platforms to ecosystems}
 
@@ -385,7 +602,17 @@ They introduce four levels of \ac{DT} intelligence:
 \note{Web of Digital Twins}
 
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/wodt.pdf}
+    \caption{Conceptual model of the \acl{WoDT}.}
+    \label{fig:dt-wodt-model}
+\end{figure}
+
+
 %=======================================================
 \section{Final Remarks}
 %=======================================================
 
+This chapter provides an overview of the research landscape around \acp{DT}.
+ 

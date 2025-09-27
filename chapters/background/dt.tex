@@ -525,7 +525,7 @@ These relationships are currently difficult to track and model with a single \ac
 %
 The call to \emph{``make more \aclp{DT}''}~\cite{nature_make_moredt} is hence opening a perspective in which \acp{DT} are pervasively used to model strategic \acp{PA} and their interaction becomes crucial to effectively leverage their potential in complex scenarios.
 
-The idea of \ac{DTE} can be traced back to the concept of \emph{Digital Twin Aggregate} introduced by Grieves~\cite{Grieves_2023} which understood the potential of aggregating multiple \acp{DT} instances.
+The idea of \ac{DTE} can be traced back to the concept of \emph{Digital Twin Aggregate} introduced by Grieves~\cite{Grieves_2023} which understood the potential of aggregating multiple \acp{DT} instances to derive aggregate insights.
 %
 In that vision, though, the aggregate was composed of multiple \acp{DT} of the same type of asset, to observe the behavior of different instances of the same product and capture collective trends.
 
@@ -542,85 +542,14 @@ Although the program was focused on a specific domain, the underlying idea of co
 %
 Today, \ac{DTE} are hence envisioned as systems where multiple \emph{different} \acp{DT} are interconnected to model complex scenarios spanning different domains and organizations.
 
+Building on this vision, Ricci et al. proposed the idea of a \emph{\ac{WoDT}}~\cite{web-of-dt-ricci-2022} as a conceptual framework to model \ac{DTE} in an open, distributed and dynamic manner.
+The core principle states that:
 
-% Building on this idea, recent research proposals advocate modeling such complex scenarios as \textit{\dteco{}}~\cite{web_of_dt}, which consist of a dynamic set of \acp{DT}, each individually mirroring a specific \ac{PA}.
-% %
-% Hence, \acp{DT} become building blocks to model portions of the real world, including every facet, ranging from people to objects and processes.
+\begin{quote}
+Every strategic \acl{PA} of an organisation must have a corresponding \acl{DT}, mirroring and augmenting its functionalities and services at the digital level, resulting in an ecosystem of connected \aclp{DT}~\cite{web-of-dt-ricci-2022}.
+\end{quote}
 
-
-
-
-% %s
-% The \textit{\acf{WoDT}}~\cite{web_of_dt} idea, built on this rationale, envisions ecosystems of connected \acp{DT} where each strategic \ac{PA} is modeled with at least one corresponding \ac{DT} which reflects, augments, and exposes its state, services, and \textit{relationships}.
-% %
-% The resulting \dteco{s} capture the interconnected nature of the physical world, creating an open, distributed, and dynamic service-oriented layer that models entire portions of the real world (\Cref{fig:wodt}).
-% %
-% Applications, especially smart applications and multiagent systems, can leverage this \ac{DT} layer to access, navigate, reason, and act upon the physical world~\cite{web_of_dt}.
-% \begin{figure}[ht]
-%   \centering
-%   \includegraphics[width=0.9\linewidth]{figures/wodt.pdf}
-%   \caption{A \dteco{} in the \ac{WoDT} vision. It depicts the typical \ac{WoDT} layered structure. The \textit{Physical Asset Layer} is mirrored with a \dteco{} in the \textit{Digital Twin Layer}, whose services are leveraged by the \textit{Application Layer}.}
-%   \label{fig:wodt}
-% \end{figure}
-% The resulting holistic conceptualization enables services that extend beyond the boundaries of a single \ac{DT} to encompass the ecosystem as a whole, improving the design of large-scale systems.
-% %
-% Modeling cross-domain and cross-organization scenarios with an open-system perspective, a general-purpose metamodel is required.
-% Hence, a \ac{DT} in the \ac{WoDT} is defined through the following metamodel composed of:
-% \begin{inlinelist}
-%     \item \textit{Properties} that represent the observable attributes of the \ac{PA},
-%     \item \textit{Relationships}: that reflect, at the \ac{DT} level, the connections between the \acp{PA} as links to other \acp{DT},
-%     \item \textit{Actions}: that can be invoked to modify the state or behavior of the \ac{PA}, and
-%     \item \textit{Events}: exposing notifications about the \ac{PA}.
-% \end{inlinelist}
-
-% Reflections in the context of a single \ac{DT} must be extended and enriched, considering the distributed nature of \dteco{s}~\cite{web_of_dt}.
-% %
-% Heterogeneity is crucial when considering a pervasive softwarization of the physical world across different domains and organizations \cite{tao2019makemoredt, bulter2018geminiprinciples}.
-% Recently, approaches to design \dteco{s} in heterogeneous settings have been proposed~\cite{giulianelli2024models}.
-% %
-% However, to support the entire journey that leads developers to the deployment of \dteco{s}, a wider spectrum of challenges must be considered.
-% %
-% The overall picture encompasses the potential to have distributed \dteco{s} where \acp{DT} are developed with heterogeneous technologies deployed across different network layers, ranging from the edge to the cloud, to achieve the desired application goals.
-% %
-% This fragmentation hinders infrastructure management and \ac{DT} consumption, slowing down the application layer.
-% %
-% For \acp{DT} and \dteco{s} to be successfully exploited as an effective cyber-physical abstraction layer, the deployment complexities must be adequately supported, allowing application designers to focus on core functionalities.
-
-
-
-% While the value of individual \acp{DT} is recognized as strategic for improving decision-making, \ac{CPS} often involve interconnected assets whose interactions may emerge only from a holistic view~\cite{JIA2022101706,JIA2023101915}.
-% %
-% The cardinal role of the \emph{service} dimension naturally leads to leveraging multiple \acp{DT} to model complex scenarios. 
-% This aligns with the \emph{DT-as-a-service} view~\cite{aheleroff2021aei,talasila2025simulation} which fosters the composition of \acp{DT} and services in complex software ecosystems~\cite{human2023dtsoa}.
-
-% Recent proposals target the development of \dteco{s}, where multiple \acp{DT}
-% -- each representing individual \acp{PA} --
-% support together applications and services that would simply not be achievable considering only isolated DTs~\cite{council2022geminipaperswhat,council2022geminipaperswhy}.
-% %
-% Among those, we highlight the efforts of the Digital Twin Consortium\footnote{\url{https://www.digitaltwinconsortium.org/}}
-% and the United Kingdom's \ac{NDT} programme~\cite{kendall2021ndt}
-% who were among the first dedicated activities advocating for the development of standards for \dteco{s} to achieve \ac{DT} interoperability.
-% %
-% Regardless of these and other ongoing efforts (e.g. \cite{iso2023concepts}, \cite{etsi2023tr103844}), interoperability is still considered one of the main challenges for achieving mature \dteco{s}~\cite{Klar_Arvidsson_Angelakis_2024,Acharya_Khan_Päivärinta_2024}
-
-% Addressing this challenge, the \emph{\acf{WoDT}}~\cite{ricci2022wodt} puts forth a conceptual proposal for an open, distributed, and dynamic ecosystem of connected \acp{DT} adhering to a general-purpose metamodel composed by: 
-% \begin{inlinelist}
-%     \item \emph{properties} which are observable attributes of the \ac{PA};
-%     \item \emph{relationship} representing connections between \acp{PA} as links to other \acp{DT};
-%     \item \emph{actions} representing operations which can be invoked to modify the state or behaviour of the \ac{PA};
-%     \item \emph{events} to capture notifications about the \ac{PA}
-% \end{inlinelist}
-% Still, the practical challenge of composing heterogeneous \emph{existing} \acp{DT} based on this meta-model is not addressed.
-% Our proposal fills this gap by leveraging hypermedia-based interoperability to apply the \ac{WoDT} conceptual model to heterogeneous \dteco{s}.
-
-
-\note{From platforms to ecosystems}
-
-\note{National Digital Twin}
-
-\note{Web of Digital Twins}
-
-
+\todo{Refine the figure to have the layers on the same side}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/wodt.pdf}
@@ -628,10 +557,55 @@ Today, \ac{DTE} are hence envisioned as systems where multiple \emph{different} 
     \label{fig:dt-wodt-model}
 \end{figure}
 
+The \ac{WoDT} hence strongly emphasizes the service dimension of \acp{DT}, envisioning a pervasive digitalization of the physical world.
+%
+With this pervasive approach, it becomes essential to manage the relationships between \acp{PA} at the \ac{DT} level through links that connect the corresponding \acp{DT}.
+%
+From a knowledge representation perspective, the \ac{WoDT} envisions \ac{DT} as entities that expose \emph{domain-level} knowledge.
+%
+The proposal is to encode such knowledge through semantic models, making it possible to see the \ac{WoDT} as a distributed \ac{KG}.
+%
+Finally, from an application-oriented perspective, the \ac{WoDT} aims at supporting the discovery, navigation, and exploitation of \acp{DT} and their services to support complex applications that span multiple \acp{DT}.
+
+\Cref{fig:dt-wodt-model} summarizes the conceptual model of the \ac{WoDT}.
+%
+We can distinguish three main layers:
+\begin{itemize}
+    \item The \emph{Physical Layer} which includes the \acp{PA} which can be connected by dynamic relationships in the physical world;
+    \item The \emph{\acl{DT} Layer} which includes the \acp{DT} that model the \acp{PA}, linked by relationships that reflect the ones in the physical layer;
+    \item The \emph{Application Layer} which includes applications, users and possibly autonomous software agents that can interact with the \ac{DT} layer to access \ac{DT} data and services.
+\end{itemize}
+
+The resulting holistic conceptualization enables services that extend beyond the boundaries of a single \ac{DT} to encompass the ecosystem as a whole, improving the design of large-scale systems.
+%
+The application layer implements high-level \acp{API} to expose functionalities to users and applications.
+%
+These include the possibility to \emph{observe} the evolving state of (subgraphs of) \acp{DT}, as well as to \emph{query} the \ac{KG} to selectively retrieve data from the \ac{WoDT}. 
+
+The \ac{WoDT} proposes a general-purpose metamodel to support a common understanding of \acp{DT} in the ecosystem, fostering interoperability and integration across different application domains.
+Hence, each \ac{DT} in the ecosystem is modeled through a set of:
+\begin{itemize}
+    \item \textit{Properties} that represent the observable attributes of the \ac{PA}, as labelled data that can evolve over time based on the state of the \ac{PA};
+    \item \textit{Relationships}: that reflect, at the \ac{DT} level, the connections between the \acp{PA} as links to other \acp{DT};
+    \item \textit{Actions}: that represent operations which can be invoked to modify the state or behavior of the \ac{PA};
+    \item \textit{Events}: exposing notifications representing domain events of the \ac{PA}.
+\end{itemize}
+
+The \ac{WoDT} serves as this thesis conceptual foundation to explore the challenges and opportunities of practically implementing \ac{DTE}. 
+
 
 %=======================================================
 \section{Final Remarks}
 %=======================================================
 
-This chapter provides an overview of the research landscape around \acp{DT}.
- 
+This chapter provides an overview of the research landscape around \acp{DT}, from the historical definition of the concept to the more recent trends leading towards the idea of \ac{DTE}. 
+%
+This serves the purpose of identifying what is the interpretation of \ac{DT} adopted in this thesis in the broader scope of \ac{DT} research.
+%
+A \ac{DT} is considered as the software system that implements the \emph{twinning process} to create and maintain a virtual representation of a generic \ac{PA}, providing services to external users and applications.
+
+ In this scope, the chapter highlights the essential properties a \ac{DT} should have, as well as the complexity of the technological panorama required to implement \acp{DT}, with a special focus on the relationship between \ac{DT} and \ac{AI}.
+ %
+ The service-oriented perspective and the complexity of the many technologies involved, call for a strong emphasis on interoperability, which will be a crucial theme in this thesis to enable \acp{DT} to be integrated in larger systems.
+
+ Finally, the chapter introduces the idea of \ac{DTE} as a key abstraction to model complex \acp{CPS} through a set of interconnected \acp{DT}, highlighting the \ac{WoDT} as the conceptual framework adopted in this thesis to explore this vision.

@@ -14,9 +14,9 @@ Some see this transformation as a way to address the challenges of an aging popu
 
 This Ph.D. thesis is the outcome of a collaboration with \auslLong{}, the local public healthcare authority in the southern region of Emilia-Romagna, Italy, aimed at exploring the potential of digital technologies to enhance the internal processes of the local healthcare system. 
 
-In this exploration, we follow the rising trend of digitalizing the core assets of an application domain with \emph{\acp{DT}}: representations of \acp{PA}, connected and synchronized through data streams from sensors and other digital sources~\missingref{}.
+In this exploration, we follow the rising trend of digitalizing the core assets of an application domain with \emph{\acp{DT}}: representations of \acp{PA}, connected and synchronized through data streams from sensors and other digital sources~\cite{Grieves_2023}.
 %
-This concept has emerged as a paradigm shift in the way we model and interact with the physical world when designing \acp{CPS}, focusing on capturing the essential features of each relevant entity, creating personalized models and combining real-time data with modeling techniques, \ac{AI} and simulation~\missingref{}.
+This concept has emerged as a paradigm shift in the way we model and interact with the physical world when designing \acp{CPS}, focusing on capturing the essential features of each relevant entity, creating personalized models and combining real-time data with modeling techniques, \ac{AI} and simulation~\cite{Semeraro_Lezoche_Panetto_Dassisti_2021}.
 %
 The focus of \acp{DT} towards individualized modeling is well-paired to the digitalization needs of the healthcare domain supporting a patient-centric approach~\missingref{}.
 %
@@ -27,8 +27,6 @@ and provide a holistic view of the system is beneficial for the development of \
 %=======================================================
 \section*{Overview and Contribution}
 %=======================================================
-
-\todo{Cite Semantic Web Technologies, so that it makes sense that we introduce them in the background}
 
 Adopting a \ac{DT}-based approach for healthcare digitalization is not without challenges.
 %
@@ -46,6 +44,10 @@ Given the safety critical setting of healthcare, automated decisions must be tra
 These challenges call for an integrated approach towards the development of both \acp{DT} and applications.
 %
 In this thesis, we propose a framework for the development of \emph{\acp{DTE}} that can incorporate heterogeneous \acp{DT} and expose a holistic, synchronized view of the mirrored physical environment to applications under a unified interoperable interface.
+%
+To implement \emph{heterogeneous} \acp{DTE} we explore architectural patterns and best practices taking inspiration from the (semantic) Web, as an example of large-scale decentralized system that successfully integrates heterogeneous resources and supports their interaction through standardized protocols and data formats~\missingref{}.
+%
+Namely, we ground our approach on \emph{hypermedia} representations that can semantically describe the assets and their relationships, and support navigation and interaction through hyperlinks~\missingref{}.
 %
 To support the development of intelligent applications, we look at \ac{MAS}, which model distributed applications in dynamic environments through sets of autonomous entities~\missingref{}.
 We specifically focus on cognitive approaches such as the \ac{BDI} model~\missingref{}, as they merge adaptability and responsiveness with a declarative encoding of domain knowledge and business rules.
@@ -105,7 +107,7 @@ We identify the following key contributions to the area of \ac{DT} engineering:
   \item Definition of architectural patterns and best practices for the implementation of \acp{DT} to accurately capture synchronization requirements and augmented features~\missingref{}.
   \item Implementation of a prototype framework for the development of \acp{DT} that demonstrates the proposed architectural concepts and patterns~\missingref{}.
   \item Definition of the concept of \acp{DTE} and its role in the context of \ac{DT}-based systems~\missingref{}.
-  \item Proposal for a framework to implement \acp{DTE} that can integrate heterogeneous \acp{DT} and expose a unified interface for external applications~\missingref{}.
+  \item Proposal for a framework to implement \acp{DTE} that can integrate heterogeneous \acp{DT} and expose a unified interface for external applications using semantic hypermedia representations~\missingref{}.
   \item Implementation of a prototype platform and toolkit to integrate \acp{DT} into a \ac{DTE}~\missingref{}.
   \item Proposal of an abstraction layer to handle the operational management of \ac{DTE} and their deployment on a cyber-physical computing infrastructure~\missingref{}.
   \item Alignment of the \ac{DT} and \ac{MAS} concepts to establish a synergetic approach for the development of intelligent applications~\missingref{}.
@@ -124,10 +126,11 @@ Additionally, as this thesis leverages cognitive \ac{MAS} to support the develop
 \section*{Thesis Structure}
 %=======================================================
 
-\todo{REFINE AT THE END}
-
 This thesis is organized as follows. 
-In \Cref{part:background} we provide the necessary context and background on the key concepts that underpin this research, including an overview of the challenges of healthcare digitalization and the reality of \ausl{} in \Cref{chap:back:health4.0}, moving on to introducing the concept of \ac{DT} its technological characterization  in \Cref{chap:back:DT}, and finally giving an overview of the concepts related to \ac{MAS} engineering that are relevant for this thesis in \Cref{chap:back:MAS}.
+In \Cref{part:background} we provide the necessary context and background on the key concepts that underpin this research, including an overview of the challenges of healthcare digitalization and the reality of \ausl{} in \Cref{chap:back:health4.0},
+moving on to introducing the concept of \ac{DT} its technological characterization  in \Cref{chap:back:DT},
+discussing the architectural principles of the (semantic) Web and how they can build interoperability, presenting the case study of the \ac{WoT} in \Cref{chap:back:Web},
+and finally giving an overview of the concepts related to \ac{MAS} engineering that are relevant for this thesis in \Cref{chap:back:MAS}.
 
 In \Cref{part:dte} we delve into the contributions towards the definition of the concept of \ac{DTE}. Namely, in \Cref{chap:dte:egineering-dt} we present architectural proposals and patterns for the development of \ac{DT} that can be integrated into a \ac{DTE}, then in \Cref{chap:dte:dte} we introduce the concept of \ac{DTE}, and explore its operational management and prototype implementation through the integration of heterogeneous \acp{DT} in \Cref{chap:dte:dtc} and \Cref{chap:dte:hwodt} respectively.
 

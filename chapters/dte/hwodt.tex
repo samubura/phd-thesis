@@ -26,7 +26,7 @@ We suggest that an analysis of such heterogeneity along the identified dimension
 
 
  \note{table}
-% \begin{table*}[ht]
+% \begin{table*}[t]
 %     \centering
 %     \renewcommand{\arraystretch}{1.1}
 %     \begin{tabular}{p{2.5cm}|p{\dimexpr\textwidth-3.5cm\relax}}
@@ -89,7 +89,7 @@ As illustrated in \Cref{fig:hwodt}, the resulting architecture is composed of \a
     \item and that are aggregated into \acp{DTE} by being registered to one or multiple WoDT Platforms.
 \end{inlinelist}    
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/hwodt/hwodt.pdf}
   \caption{The Hypermedia WoDT scheme, in the real world PAs (squares) belonging to different organizations and domains are connected by relationships. In the digital world, cross-domain ecosystems of DTs (circles) mirror different portions of reality, supported by the WoDT Platform.}
@@ -164,7 +164,7 @@ We link instead the \ac{URL} of the \ac{DTD} in an HTTP Link Header with a custo
 %
 In this way, consumers can follow links between resources and access both \ac{DT} representations with standard Web interactions  (\Cref{fig:sequence-dtddtkg}).
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
      \includegraphics[width=0.7\columnwidth]{figures/hwodt/dtddtkg.pdf}
         \caption{Interaction pattern to access the \ac{DTD} and \ac{DTKG}}
@@ -172,7 +172,7 @@ In this way, consumers can follow links between resources and access both \ac{DT
 \end{figure}
   
 
-% \begin{figure}[ht]
+% \begin{figure}[t]
 %     \centering
 %     \subfigure[]{
 %         \includegraphics[width=0.45\columnwidth]{images/dtddtkg.pdf}
@@ -193,7 +193,7 @@ Finally, the \ac{API} may expose \ac{DT} actions invokable by external consumers
 The \ac{DTKG} shows which actions are currently valid, while the \ac{DTD} describes how to request their execution to the \ac{DT}.
 Consumers rely on both to interact (\Cref{fig:sequence-action}) and invalid actions should fail (e.g., with HTTP 403), ensuring consistency with the \ac{DT} model.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.7\columnwidth]{figures/hwodt/dtdactioncrop.pdf}
     \caption{Interaction patterns to invoke available actions on a \ac{DT} through the uniform interface.}
@@ -260,7 +260,7 @@ We chose these representative technologies as they differ in terms of functional
 This section presents the overall architecture and its implementation.
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/hwodt/abstract_arch.pdf}
   \caption{Overall abstract architecture of the \ac{HWoDT} framework, showing the main functional modules. On the bottom we have the existing \ac{DT} which, through the adapter, can implement the \ac{HWoDT} uniform interface and be integrated with a \ac{WoDT} platform.}
@@ -294,7 +294,7 @@ which defines concepts to implement the \ac{DTD} and the \ac{DTKG}, as well as H
 
 The alignment with the \ac{WoT} is strategic for the \ac{DT} community~\cite{etsi2024tr103845,laurinaho2020datalink} as reusing the existing standard ensures compatibility with tools and favors the development of application mashups.
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/hwodt/wot-dt-mashups.pdf}
   \caption{Keeping Digital Twin representations aligned with the \ac{WoT} Thing Description enables the creation of mixed mashups and interoperability with existing \ac{WoT} consumers.}
@@ -357,7 +357,7 @@ Despite Ditto being open-source and allowing the development of custom extension
 The middleware leverages Eclipse Ditto’s native WebSocket interface to retrieve data and performs two key transformations: converting the \ac{WoT} \ac{TD} exposed by Ditto into a \ac{DTD}, and serializing \ac{DT} data into a \ac{DTKG}.
 This process relies on a configurable mapping between Ditto features and their corresponding \ac{RDF} representations.
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \includegraphics[width=0.8\columnwidth]{figures/hwodt/ditto-adapter-c&c.pdf}
   \caption{The Eclipse Ditto adapter, implemented as a standalone component that maps a specific instance of a \ac{DT} hosted on the Ditto platform.}
@@ -373,7 +373,7 @@ Specifically, we leverage the concept of \emph{Digital Adapter}, used in the \ac
 The framework internal metamodel is already aligned with the \ac{HWoDT}, so no additional effort was required to map concepts.
 The adapter is provided as a reusable Java library, which \ac{WLDT} developers can easily import into their projects and use to configure the mapping towards the \ac{HWoDT} uniform interface leveraging the implementation of the necessary \ac{API} to manage the \ac{DTD} and \ac{DTKG}.
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/hwodt/wldt-adapter-c&c.pdf}
   \caption{The architectural diagram of the \ac{WLDT} adapter, illustrating its integration with the other components of the framework.}
@@ -381,7 +381,7 @@ The adapter is provided as a reusable Java library, which \ac{WLDT} developers c
 \end{figure}
 
 \note{subfigure}
-% \begin{figure}[ht]
+% \begin{figure}[t]
 %     \centering
 %     \subfigure[]{
 %         \includegraphics[width=0.48\textwidth]{figures/hwodt/observation-delay.pdf}
@@ -436,7 +436,7 @@ In our prototype, we opted for simplicity pushing to all observers the whole \ac
 %
 We comment on the practical implications of choosing among these different interactions in the following section. 
 
-% \begin{figure}[ht]
+% \begin{figure}[t]
 %   \centering
 %   \includegraphics[width=\columnwidth]{images/platform-c&c.pdf}
 %   \caption{\ac{WoDT} Platform modules and interfaces, represented using components and connectors.}
@@ -710,7 +710,7 @@ We believe this simple model to be a good start towards the definition of a core
 %
 Also, we present this as a core model, since we expect the development of extensions for specific kinds of DTs. Still, having a core root that can already address most requirements can drive interoperability to build DT ecosystems.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{figures/edtconf-semantic-rep/ontology.pdf}
     \caption{A schema of the entities for a draft core ontology for DT representations. Relationships are not necessarily 1:1 (i.e., a DT can have multiple Models).}

@@ -30,7 +30,7 @@ structured with three main components, as depicted in Figure \ref{fig:dt_applica
 % \end{itemize}
 
 %%%
-% \begin{figure}[ht]
+% \begin{figure}[t]
 %     \setlength{\belowcaptionskip}{-13pt}
 %     \centering
 %     \includegraphics[width=0.6\columnwidth]{images/dt-model.pdf}
@@ -335,7 +335,7 @@ a key challenge is identifying whether all the capabilities of the \ac{PT} relev
 We further elaborate on how to tackle this challenge with our contribution in Section~\ref{sec:physical_interoperability}.
 
 %%%
-\begin{figure}[ht]
+\begin{figure}[t]
     \setlength{\belowcaptionskip}{-13pt}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/dt-interoperability/dt-lifecycle.pdf}
@@ -689,7 +689,7 @@ Each DA has an internal life cycle to support its coordination by the WLDT core 
 
 The proposed \ac{DT} architectural approach is showcased using the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} Indexed-Line Station, controlled by a Siemens PLC that publishes real-time data via OPC-UA, integrated with Arduino RP2040 boards\footnote{Arduino RP2040: \url{https://docs.arduino.cc/hardware/nano-rp2040-connect/}} for accelerometer data collection and processing and communicating over MQTT\footnote{MQTT Protocol: \url{https://mqtt.org/}}.
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \setlength{\belowcaptionskip}{-5pt}
   \centering
   \begin{subfigure}[t]{0.32\linewidth}
@@ -804,7 +804,7 @@ In contrast, monolithic systems struggle with managing interoperability and syst
 
 An industrial scenario has been considered to apply the proposed approach for DT's lifecycle modeling and characterization. Specifically, scaled industrial stations manufactured by Fischertechnik\footnote{Fischertechnik: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} has been adopted as reference industrial prototyping environment with multiple stations and involved machines. The first station, referred to as the \textit{Multiprocess Station with Oven}, features an oven, a robotic arm for handling operations, and a rotary table equipped with multiple processing stages. The second station, named the \textit{Indexed Line}, comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \setlength{\belowcaptionskip}{-13pt}
     \centering
     \includegraphics[width=0.9\columnwidth]{figures/dt-lifecycle/multiprocess-station-shcematic-overview.pdf}
@@ -840,7 +840,7 @@ When the DT lifecycle reaches the Synchronized state, it accurately mirrors the 
 
 To accurately define the phases of the physical machinery, it was essential to specify the transition conditions between these phases by leveraging the raw data and telemetry received from sensors and actuators via OPC-UA from the PLC. The DT processes this data to compute and maintain the synchronized lifecycle, ensuring a precise and real-time reflection of the physical object's operational state. This approach enables the DT to seamlessly transition between phases based on the actual conditions and performance of the machinery, providing an accurate digital representation.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \setlength{\belowcaptionskip}{-13pt}
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-lifecycle/mps_dt_structure_2.pdf}

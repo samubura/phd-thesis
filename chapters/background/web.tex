@@ -49,7 +49,7 @@ The \emph{Semantic Web}~\cite{berners2023semantic} represents a vision for a Web
 %
 The Semantic Web builds on the existing Web infrastructure and introduces new standards and technologies to represent, share, and reason about data in a machine-readable way. 
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/semantic.jpg}
     \caption{A slide showing the concept of the Semantic Web, with documents linked to real-world concepts through semantics, from \cite{bernerslee1994www94plenary}.}
@@ -122,7 +122,7 @@ The Semantic Web vision~\cite{berners2023semantic} exploits the hypermedia-based
 The Semantic Web is not ``a separate Web, but an extension of the current one''~\cite{berners2023semantic}, as such, it shares the same fundamental building blocks (e.g. \ac{URI}, \ac{HTTP}, \ac{REST}) and extends them with a set of dedicated standards and technologies to represent data in order to be processed and understood by machines.
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/semantic-web-stack.png}
     \caption{The Semantic Web ``cake'' showing the layers of the technological stack, from \cite{bratt2007semanticweb}.}
@@ -223,29 +223,88 @@ The \ac{WoT} original proposal consisted in a \ac{REST} architecture for \emph{T
 %
 The \ac{HTTP} protocol was used to interact with physical resources using standard methods (e.g., GET, PUT) to retrieve or update their state (e.g., read a temperature sensor, turn on a led).
 %
-Finally, integrating things into the Web, allowed to use Web techniques to discover resources and compose them into applications, for example by using links between resources representing physical devices~\cite{guinard}
+Finally, integrating things into the Web, allowed using Web techniques to discover resources and compose them into applications, for example by using links between resources representing physical devices~\cite{dguinard:phdthesis:2011}.
+%
+The resulting layered architecture is illustrated in \Cref{fig:wot-layers}, showing how different technologies from the Web and \ac{IoT} domains can be combined to support the creation of applications based on \emph{mashups} of physical \emph{Things}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/wot-layers.png}
+    \caption{The main layers of the \ac{W3C} \ac{WoT} architecture, from \cite{Guinard_Trifa_2016_book}.}
+    \label{fig:wot-layers}
+\end{figure}
 
 From its initial proposal, the \ac{WoT} went under a standardization process within the \ac{W3C} resulting in a set of specifications that define the architecture and data model to represent and interact with \emph{Things} on the Web~\cite{wot-arch,wot-td}.
 
-A key component of the \ac{WoT} architecture is the \emph{\ac{TD}}~\cite{wot-td}, a machine-readable document that describes the metadata, interfaces, and interaction patterns of a \emph{Thing}.
 
+The key component of the \ac{W3C} \ac{WoT} is the \emph{\ac{TD}}~\cite{wot-td}, a machine-readable document that describes the metadata, interfaces, and interaction patterns of a \emph{Thing}.
+%
+A \ac{TD} describes the capabilities a \emph{Thing} exposes in terms of \emph{interaction affordances}, borrowing from the concept of affordance in design theory which represents what interactions can be perceived from an environment~\cite{Gibson_2014,Norman_2013}.
+%
+\ac{TD} interaction affordances are of three types: 
+\begin{itemize}
+    \item \textbf{Properties}, which represent the state of a \emph{Thing} that can be read or written (e.g., the current temperature of a sensor);
+    \item \textbf{Actions}, which represent operations that can be invoked on a \emph{Thing} (e.g., turn on a light);
+    \item \textbf{Events}, which represent asynchronous notifications that a \emph{Thing} can emit (e.g., a door sensor reporting that the door has been opened);
+\end{itemize}
+%
+Through this simple, yet expressive, metamodel, \ac{TD} can describe a wide range of physical devices with sensors and actuators, supporting both request-response and publish-subscribe interaction patterns.
+%
+This supports a variety of scenarios for seamless interaction between \ac{TD}-enabled components as showcased in \Cref{fig:wot-arch}. 
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/wotarch.pdf}
+    \caption{An overview of the \ac{W3C} \ac{WoT} architecture, from \cite{wot-arch}.}
+    \label{fig:wot-arch}
+\end{figure}
 
+In the \ac{WoT} architecture, an \emph{exposed} thing represent the logical abstraction of the system component which is capable of responding to interactions as described in its \ac{TD}, hence implementing the behavior behind the exposed affordances. 
+%
+A \emph{consumer} can discover \acp{TD} through classic Web discovery mechanisms (e.g., search engines, directories), consume them and interact with the corresponding device. 
+%
+To do this, interaction affordances in a \ac{TD} are associated with \emph{forms}, which specify the data formats for inputs and outputs of a given affordance as well as the \emph{protocol binding} which describes how to actually communicate with the device through one of the supported protocols.
 
-\note{Thing Description}
+Decoupling the interaction description from the actual protocol binding allows \acp{TD} to possibly support multiple communication protocols and data formats. Examples of supported protocols include \ac{HTTP}, \ac{CoAP}, \ac{MQTT}, and WebSocket, while data formats include JSON, XML, but also binary formats like CBOR~\cite{wot-td}
+%
+This design ensures that the \ac{TD} can be used in a variety of contexts, and that clients can seamlessly interact with different devices without needing to know the specifics of their communication protocols beforehand. 
+%
+Additionally, a \ac{TD} interaction affordances can stay the same even if the underlying physical device is replaced or upgraded, greatly improving maintainability and evolvability of systems built using \ac{WoT} principles.
 
+Since the \ac{WoT} is inspired by \ac{REST} principles, \acp{TD} are hypermedia documents. 
+%
+They hence can include \emph{links} to other resources (e.g. other \acp{TD} of related devices), as well as the aforementioned \emph{forms} that present to consumers the available interactions offered by the \emph{Thing}. 
 
-% Similarly, the \emph{\acf{WoT}}~\cite{DBLP:conf/iot/GuinardTW10} followed the inspiration of Web-based interoperability to address the fragmentation in \ac{IoT} systems through machine-readable, standardized \acp{TD}~\cite{wotthing}.
-% % Standardized by IETF and W3C~\cite{wotarch}, the \ac{WoT} introduces the idea of describing \emph{Things} with 
-% %
-% A \ac{TD} document is identified by a \ac{URI}, using standard media types (e.g., \texttt{application/td+json}) that can \emph{link} to other resources and expose device capabilities in terms of properties, actions, and events as \emph{forms} specifying how they can be exploited through Web or \ac{IoT}-related protocols.
-% %
-% This design was inspired by the \ac{REST} uniform interface constraint and has proved successful for heterogeneous device integration~\cite{wotarch}.
+Finally, \acp{TD} can include security metadata to describe the security mechanisms supported by a \emph{Thing}, such as authentication to secure interaction between consumers and exposed things~\cite{wot-td}. 
 
+The \ac{TD} structure is standardized, and it is usually serialized in JSON-LD, meaning that it is also a valid \ac{RDF} document and is described through a dedicated ontology~\cite{wot-td-ontology,Charpenay_Kabisch_Kosch_2016}.
+%
+This makes \ac{TD} semantic representations of \ac{IoT} devices, which can be easily integrated with other \ac{RDF} data and ontologies to provide rich descriptions of devices and their capabilities~\cite{Jara_Olivieri_Bocchi_Jung_Kastner_Skarmeta_2014}.
 
-% %
-% Building on these ideas, this paper proposes an approach for engineering \ac{DTE} that integrate information and control across networks of connected \acp{PA}.
+The \ac{WoT} is a successful example of how the transposition of Web principles to a different domain can enable interoperability in heterogeneous systems and support automation in open ecosystems.
+%
+\ac{WoT} is currently being applied in various domains, including smart homes, manufacturing, smart agriculture, smart cities, and healthcare~\cite{Sciullo_Gigli_Montori_Trotta_Felice_2022}.
+
+Notably, \acp{DT} have been included as an application scenario in the \ac{W3C} \ac{WoT} architecture~\cite{wot-arch}, and there has been work on integrating \ac{DT} and \ac{WoT} technologies~\cite{Jacoby_Usländer_2020,SciulloWoTwins2022} given the close relationship between the two concepts.
+%
+In this thesis we will explore the intersection between \ac{WoT} and \ac{DT} technologies, investigating how the \ac{WoT} can be used to build interoperable \acp{DT} and \ac{DTE}.
 
 %=======================================================
 \section{Final Remarks}
 %=======================================================
+
+This chapter introduces fundamental architectural principles and technologies from the Web domain that can be leveraged to build interoperability in open distributed systems.
+%
+It further presents the \ac{WoT} as an example of how these principles have been applied to the \ac{IoT} domain to enable integration of \ac{IoT} devices under a uniform interface, supported by semantic descriptions of device capabilities.
+
+The principles of the \ac{REST} architectural style, in particular the uniform interface and \ac{HATEOAS} constraints will be explored in this thesis with the twofold goal of:
+\begin{itemize}
+    \item investigate the application of hypermedia-driven interactions in \ac{DTE} to support dynamic discovery and interaction with \acp{DT};
+    \item explore how autonomous agents can leverage such hypermedia-driven interactions to operate in open and dynamic Web environments. 
+\end{itemize}
+%
+The Semantic Web technologies and Linked Data principles will be used to advocate for a shared and machine-readable representation of \acp{DT} and their capabilities, supporting structured knowledge representation and reasoning in \ac{DTE}. 
+%
+Finally, the \ac{WoT} architecture and \ac{TD} specification will be used as a basis to design and implement interoperable \acp{DT} and \ac{DTE}, exploring how the \ac{WoT} can be integrated with other \ac{DT} technologies to build open ecosystems of interconnected \acp{DT}.
+
+Web technologies and standards hence serves as the \emph{glue} to connect \ac{DTE} with intelligent applications based on autonomous software agents. 

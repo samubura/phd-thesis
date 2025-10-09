@@ -264,11 +264,11 @@ Custom \ac{BDI} agent programming languages, support developers in implementing 
 %
 This has the benefit of allowing developers to focus on the agent's behavior, rather than low-level implementation details. 
 
-\note{reference other languages}
+% \todo{reference other languages}
 
-\note{explain why we consider agentspeak and jason here}
+% \todo{explain why we consider agentspeak and jason here}
 
-\note{description of agentspeak}
+\todo{description of agentspeak?}
 
 \todo{code examples??}
 
@@ -276,7 +276,36 @@ This has the benefit of allowing developers to focus on the agent's behavior, ra
 \section{Web-based and Hypermedia \acs{MAS}}
 %=======================================================
 
-\note{Yggdrasil}
+When introducing the Semantic Web (see \Cref{chap:back:Web}), Berners-Lee et al.\ envisioned a future where software agents would roam the Web, accessing and processing information on behalf of users~\cite{berners2023semantic,Hendler_2001}.
+
+The relationship between \acp{MAS} and the Web has been widely explored especially in the context of service-oriented computing~\cite{Singh2004}.
+%
+Agents were seen as a natural fit to automate the composition of Web services due to their autonomy, social ability and goal-driven behavior.
+%
+The Web, in turn, provides an open ever-evolving environment rich of resources and services that agents may need to discover and (learn to) use. 
+
+Despite these early visions, the adoption of \ac{MAS} in Web-based systems has been limited.
+%
+The famous question ``Where are all the intelligent agents?''~\cite{Hendler_2007} provocatively highlighted the gap between the early expectations and the actual adoption of \ac{MAS} in the Web context.
+%
+As pointed out by the answer of McBurney and Luck~\cite{McBurney_Luck_2007}, agent-based technologies have actually been adopted ``behind the scenes'' in various application domains, including the Web, not necessarily as killer applications themselves, but as the enabling technology for the engineering of complex distributed systems.
+
+Nevertheless, early integration of \ac{MAS} and Web services in the early 2000s were still far from the original vision of the Semantic Web.
+%
+They mostly focused on the composition of services through the standards available at the time (e.g., SOAP, WSDL) which relied on the Web for transport~\cite{Newcomer_2002}.
+%
+Similarly, on the \ac{MAS} side, the focus was primarily on the development of agent communication protocols and frameworks that could operate over the Web, with the prominent example being the \ac{FIPA} specification for communication between agents over \ac{HTTP}~\cite{fipa2002http}.
+
+Motivated by more recent trends in Web development such as the pervasive adoption of \ac{REST}~\cite{fielding2000architectural}, and the \ac{WoT}~\cite{Guinard_Trifa_2016_book} enabling Web-based interactions with physical environments, the research area of \emph{Web-based \acp{MAS}} has regained interest in the last decade.
+%
+This has led to a community effort to revisit the integration between \acp{MAS} and the Web~\cite{Boissier_Ciortea_Harth_Ricci_2021,Boissier_Ciortea_Harth_Ricci_Vachtsevanou_2023} and the creation of the \emph{Autonomous Agents on the Web} \ac{W3C} Community Group\footnote{\url{https://www.w3.org/community/webagents/}} to tackle the challenges of engineering Web-based \acp{MAS}. 
+
+\note{explain hypermedia MAS}
+\note{talk about A\&A }
+
+\note{present yggdrasil}
+
+
 
 %=======================================================
 \section{\aclp{MAS} and \aclp{DT}}

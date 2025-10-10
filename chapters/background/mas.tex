@@ -300,128 +300,89 @@ Motivated by more recent trends in Web development such as the pervasive adoptio
 %
 This has led to a community effort to revisit the integration between \acp{MAS} and the Web~\cite{Boissier_Ciortea_Harth_Ricci_2021,Boissier_Ciortea_Harth_Ricci_Vachtsevanou_2023} and the creation of the \emph{Autonomous Agents on the Web} \ac{W3C} Community Group\footnote{\url{https://www.w3.org/community/webagents/}} to tackle the challenges of engineering Web-based \acp{MAS}. 
 
-\note{explain hypermedia MAS}
-\note{talk about A\&A }
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/hmas-schema.pdf}
+    \caption{Schematic representation of the concept of \acl{hMAS} showing how elements of a \ac{MAS} can be integrated and represented in a hypermedia environment for agents to discover, from \cite{Ciortea_Mayer_Gandon_Boissier_Ricci_Zimmermann_2019}.}
+    \label{fig:hmas-overview}
+\end{figure}
 
-\note{present yggdrasil}
+In this context, the proposal by Ciortea et al.\ envisioning \emph{\ac{hMAS}}~\cite{Ciortea_Mayer_Gandon_Boissier_Ricci_Zimmermann_2019} as a new class of Web-based \acp{MAS} is particularly relevant (\Cref{fig:hmas-overview}).
+%
+The proposal leverages the principles of \ac{REST}---and especially \ac{HATEOAS}---to design \acp{MAS} that are fully integrated with the Web.
+%
+They key, following the A\&A metamodel~\cite{Omicini_Ricci_Viroli_2008}, is to consider the Web as a shared environment where agents can operate.
+%
+The proposal of \ac{hMAS} is grounded on a set of principles~\cite{Ciortea_Boissier_Ricci_2019}:
+\begin{itemize}
+    \item \textbf{Uniform Resource Space}: every entity in the \ac{hMAS} (e.g., agents, artifacts, organizations) should be represented as resources in the hypermedia environment. 
+    \item \textbf{Single Entrypoint}: given a single entrypoint to the \ac{hMAS} (e.g. a \ac{URI}), agents should be able to discover the knowledge required to participate in the \ac{MAS} by navigating the hypermedia environment. This is typically referred to the challenge of \emph{arrive and operate}.
+    \item \textbf{Observability}: Resources in the \ac{hMAS} should be observable by agents, allowing them to perceive changes and react accordingly. 
+\end{itemize}
+%
+The proposal of \ac{hMAS} has been supported by the development of the Yggdrasil framework~\cite{Ciortea_Boissier_Ricci_2019}, which provides a set of tools to develop hypermedia environments based on the A\&A metamodel, extending \cartago{} with \ac{REST}ful interfaces and hypermedia representation of artifacts. 
 
+Developments in the area of \ac{hMAS} have shown the potential of using \ac{MAS} in dynamic Web environments, with a focus on the \ac{WoT}~\cite{Ciortea_Mayer_Michahelles_2018}.
+%
+In this context, the \ac{WoT} model based on \emph{affordances}~\cite{Norman_2013} is particularly interesting as it provides a natural way to model the discovery of interaction possibilities for agents in the hypermedia environment.
+%
+This concept has been explored proposing the addition of \emph{signifiers}~\cite{Norman_2008} as a first-class abstraction for the design of \ac{hMAS}~\cite{Vachtsevanou_Ciortea_Mayer_Lemée_2023}, hence introducing a way to guide agents in the discovery of relevant resources and interaction possibilities in order to more efficiently perceive and navigate the hypermedia environment, similarly to how humans do when browsing the Web. 
 
+The principles and research efforts in the area of \ac{hMAS} are significant for this thesis, as they serve as a bridge between intelligent applications designed with \ac{MAS} and services and resources available on the Web, including \ac{DT}-based systems. 
 
 %=======================================================
 \section{\aclp{MAS} and \aclp{DT}}
 %=======================================================
 
-\todo{integrate this}
-
-\note{Add direct reference to Mariani et al}
-
-
-AAs and DTs are not only used separately 
-to deliver intelligent functionalities 
-in a mutually exclusive way, 
-or as alternative solutions to overlapping requirements.
-Their synergistic usage is already seen in the available literature, 
-especially in industrial deployments. Here, we briefly report recent surveys that highlight the rich intersection of these research areas.
-
-The contamination of AAs in DTs is mostly related to the need to adopt a variety of artificial intelligence techniques in IoT applications, both to enhance the modelling capabilities of complex assets and to implement automatic controls.
-Minerva et al.\ present a classification of DTs in relation to the level of intelligent behaviour the DT exhibits~\cite{Minerva2023}.
-They identify the ultimate level of intelligent DT as a proactive (or autonomic) DT, capable of enacting autonomous behaviour based on the physical counterpart's current or future context.
-This has a clear link with AAs, that are primarily used to model and encapsulate autonomous and intelligent behaviour in software systems.
-
-Authors of \cite{Pretel2024} deliver a systematic literature review considering both MAS to create DTs and MAS to exploit DTs. 
-Table 2 therein highlights how manufacturing is the main use case for synergistic AAs and DTs usage. 
-This suggests that Industry 4.0 enabled by IoT technologies is a driving force for AAs and DTs applications. 
-Furthermore, Table 3 therein emphasises that 73\% of the surveyed papers do not disclose the AAs and DTs development framework 
-and that almost 8\% propose their own 
-    (second largest percentage behind a ``team'' of 4 agent-oriented development frameworks). 
-This suggests a great fragmentation of uncoordinated proposals, 
-generating ``reinvention of the wheel'', especially with respect to the integration of AAs and DTs.
-
-The survey in \cite{10.1115/1.4050244}, instead, has its main focus on DTs considering whether and how AAs (especially MAS) are used to complement the functionalities of DTs. 
-Of particular relevance for the present article is Figure 5 therein, 
-which reports the vision of an ``Intelligent Product'' (IP) from the literature. 
-Such IP fosters the synergistic usage of DTs and AAs. 
-DTs help create an ``intelligent being'', 
-whereas AAs augment it with an ``intelligent agent'' to make it an IP. 
-The ARTI reference architecture is inspired by these concepts, 
-and it has been among the first architectures proposed to consider 
-the combined usage of AAs and DTs (and the most widely adopted). 
-Finally, it is relevant that also here manufacturing and IoT emerge as the main application domains for the integrated usage of AAs and DTs.
-
-The last survey we mention is \cite{Kalyani2025}, 
-where the focus is on a one-way integration of AAs and DTs: 
-AAs supporting DTs implementation. 
-A practical example of such an integration is given in \cite{Latsou2021811}, 
-where AAs are used to create a complex DT endowed with ``intelligent'' functionalities (e.g.\ prediction). 
-An interesting takeaway that the authors of \cite{Kalyani2025} get from the surveyed literature 
-is that a main driving force behind this specific integration is exactly endowment of DTs with AA properties. 
-In Section~\ref{sec:abstractions-and-principles} we will see how this need is captured by our principles and proposed micro-architectures for AAs and DTs integration.
-
-Providing the complete overview 
-of all the available AAs and DTs-based architectures for IoT scenarios 
-is out of the scope of this paper---the interested reader is referred to these surveys. 
-However, it may be beneficial for the reader
-to report some selected examples.
-In \cite{Nie2022}, for instance, 
-    an AA is used to aggregate information from different DTs in a manufacturing scenario, 
-    to predict faults in machinery and (re-)optimise production scheduling.
-Another example in manufacturing is in \cite{Xu2024}. 
-    There DTs are used mainly as an abstraction layer over the whole manufacturing system, 
-    providing a uniform access layer to AAs. 
-    AAs are used mainly to support automatic feedback control (digital to physical) 
-    and communication and coordination between robot AAs, task AAs, and workstation AAs.
-In \cite{DBLP:conf/pads/ClemenALOOSG21}, instead, 
-    AAs are used to build the complex DT of a whole city.
-
-It is also worth noting that there may be literature, such as reference \cite{DBLP:journals/jiii/BiZWL22}, 
-where the term ``autonomous agent'' does not appear, 
-but whose proposal is well aligned with the literature about AAs. 
-For instance, in the mentioned paper, 
-a Digital Triad is proposed as an advancement beyond DTs, 
-where design knowledge and application-specific intelligence is encapsulated 
-in a very similar way to AAs. 
-Surveying all of this ``submerged'' literature is a complex task given that terminology likely do not match. 
-However, we hope that our contribution can promote cross-fertilisation with these related research efforts, 
-in a joint effort to avoid reinventing the wheel---our main motivation for sticking to AAs instead of introducing brand new concepts into DTs.
-    
-%======================================================
-\subsection{Intelligent functionalities for AAs and DTs}
-\label{ssec:functions}
-%======================================================
-
-The literature on distributing intelligence in IoT discussed in previous sections reports on several intelligent functionalities for which AA and DTs are being actively used by system designers. 
+The relationship between \acp{MAS} and \ac{AI} tends toward the development of \acp{DT} that are more and more autonomous and capable of adapting to changing conditions in the \ac{PA} they mirror, to optimize their performance and achieve specific goals (see \Cref{sec:back:dt:ai}).
 %
-We summarise and categorise them here regardless of the specific task they accomplish (e.g.\ time series forecasting vs.\ fault prediction) and of the specific technique adopted (e.g.\ regression, SVM, etc.), but focussing on the \textit{kind} of intelligent function they deliver.
+So-called \emph{Autonomic} or \emph{Cognitive} \acp{DT}~\cite{Minerva_Crespi_Farahbakhsh_Awan_2023} are being studied to endow \acp{DT} with self-* properties (e.g., self-optimization, self-healing, self-protection)~\cite{Kephart_Chess_2003}.
 %
-This categorisation is useful first of all in defining what we can consider, for the scope of this paper, ``intelligence'' in a practical, bottom-up way, stemming from related works in the area without getting trapped in philosophical arguments. 
+In this context, \acp{DT} are seen as components to engineer complex autonomous \ac{CPS} through the exchange of simulation models to understand the behavior of other elements of the systems and achieve better overall coordination towards global goals~\cite{Esterle_Gomes_Frasheri_Ejersbo_Tomforde_Larsen_2021}.
 %
-Then, it is also useful to establish the \emph{coverage} of such functionalities by AAs and DTs, as shown in Figure~\ref{fig:radar-aa-dt}, which already suggests that they can be used synergistically to deliver the full spectrum of such intelligence. 
+It is hence not surprising that there is a significant overlap between the research areas of autonomous agents and \acp{MAS} and \acp{DT} and that integration between the two abstractions are being investigated~\cite{Hribernik_Cabri_Mandreoli_Mentzas_2021}.
+
+Surveys highlight how the convergence of \ac{MAS} and \acp{DT} is growing predominantly within the manufacturing domain, with smart agriculture, smart cities and energy domains following~\cite{Pretel_Moya_Navarro_López-Jaquero_González_2024,Kalyani_Collier_2024}.
 %
-\begin{itemize}
-    \item \emph{Prediction}, there including time series forecasting, recommendations, namely any form of reasoning meant to ``guess'' new information based on past and current knowledge. 
-    In the IoT, common prediction targets are machinery failures, stock levels, resource use, and system states. 
-    \item \emph{Simulation}, encompassing any form of reasoning by hypothesising different states, in the past, present, or future. 
-    ``What-if''-like analysis falls into this category. 
-    In the IoT, it is common to simulate the future states of individual things, for example, to improve the design of a product or a production pipeline. 
-    However, complete systems can also be simulated with an added degree of complexity.%usually integrate multiple AAs and DTs in hierarchical architectures. 
-    \item \emph{Planning}, that includes any form of synthesis, and \emph{practical reasoning}~\cite{Bratman1988}, which is meant to figure out how to achieve some practical effect (on the target system) by properly sequencing available actions. 
-    Planning to achieve a given system configuration is common in the IoT, as well as planning to reconfigure after some disruptions. 
-    \item \emph{Inference}, within which we include both \emph{epistemic reasoning}~\cite{Meyer1995}, that is, synthesising novel information from known data, or data-driven inference such as pattern recognition and classification.
-    This is perhaps the most common form of intelligence used in IoT, as even simple monitoring and control applications usually infer situations by aggregating different data coming from distributed sources of information. 
-    In addition, fault detection and diagnosis can be gathered in this category. 
-    %    \item \emph{Diagnosis} \ste{Tutti}{a pensarci bene è una forma di inference imho, che dite?} \samu{Ste}{La definizione di inference è veramente larga quindi ci cade dentro quasi tutto sì.. io ci ho fatto ricadere anche detection poi nella 4}
-    \item \emph{Adaptation} instead gathers all the intelligent functionalities aimed at enabling the system to adapt to unforeseen situations that had not been explicitly managed at design time. 
-    As in the previous category, this one is quite broad and includes several heterogeneous approaches, ranging from engineered adaptation (e.g.\ the MAPE-K loop~\cite{Oh2022}) to learning-based methods (e.g.\ evolutionary approaches~\cite{Eiben2005}). 
-    \item Finally, we highlight the role of \emph{Learning}, which despite not usually being the primary goal for a functionality, is a valuable tool to implement some of the ones highlighted above and still poses important requirements on the architecture of a system that wishes to support any form of learning process in one of its components.
-    That includes statistical machine learning, reinforcement learning, and causal structure learning~\cite{Bordini2020-AI,Erduran2023,Mariani2023a,Mariani2023}. 
-    In this category, we group the functionalities that aim to make the system, or one of its components, learn to do something. 
-    In IoT, the most common form of learning employs statistical machine learning to create prediction models, for example. 
-\end{itemize}
+Healthcare is also considered as a relevant domain for \ac{MAS} and \acp{DT} combined.
+Croatti et al.~\cite{Croatti_Gabellini_Montagna_Ricci_2020} discuss how \acp{DT} of relevant assets of a
+healthcare organization could be used by agents to support decision-making and coordination of activities in a hospital setting.
+
+Most work do not disclose the specific frameworks and tools used to implement \acp{MAS} and \acp{DT}, and some propose new ones, suggesting a fragmentation of uncoordinated proposals despite the substantial number of tools established within both areas~\cite{Pretel_Moya_Navarro_López-Jaquero_González_2024}.
 %
-The next Section refers to these categories of intelligent functionalities to illustrate why and how to use the design principles proposed therein.
+This calls for more efforts in the integration of existing tools and frameworks, following established paradigms and standards, to facilitate the adoption of \acp{MAS} in \ac{DT}-based systems.
+
+Whereas most surveyed works focus on a one-directional view of the combination of \acp{MAS} and \acp{DT}--- with agents supporting the implementation of \acp{DT}~\cite{Kalyani_Collier_2024} --- other combinations are possible. 
+%
+Mariani et al.\ discuss how \acp{DT} and \acp{MAS} have different characteristics and can complement each other in a synergistic way~\cite{Mariani_Picone_Ricci_2022}.
+%
+The integration between \ac{MAS} and \acp{DT} is envisioned through the environment dimension.
+%
+In this perspective, \acp{DT} can be seen as artifacts, digitally representing physical entities in the \ac{MAS} environment.
+
+This opens up new possibilities for the design of autonomous \ac{DT} behavior.
+%
+On an \emph{individual} perspective each \ac{DT} can be paired with an agent keeping separation of concerns between the \ac{DT} physical asset representation and the agent's autonomous behavior and decision-making. 
+%
+Additionally, this opens up a \emph{system} perspective, in which agents can instead reason on top of an environment composed of multiple \acp{DT}, coordinating their behavior to achieve system-level goals, a vision also shared by the idea of \ac{WoDT}~\cite{web-of-dt-ricci-2022} (\Cref{sec:back:dt:dte}).
+
+Both perspective are relevant for this thesis, as we explore how to engineer intelligent applications that rely on \acp{DTE} to interact with the physical world. 
+%
+Understanding the role of \ac{MAS} in the \ac{DTE} context and proposing structured means to integrate them is one of the open challenges that this thesis contributes to address.
+
 
 
 
 %=======================================================
 \section{Final Remarks}
 %=======================================================
+
+This chapter provides context on \ac{MAS} and \ac{BDI} agents, which are the main abstractions used in this thesis to model and implement intelligent applications.
+%
+In particular, the chapter highlights how historically \ac{MAS} have been studied both as a design abstraction for the engineering of intelligent systems.
+%
+The thesis follows the angle of \emph{programming} \ac{MAS}, specifically through the \ac{MAOP} paradigm that integrates the different programming dimensions of a \ac{MAS} in a unified framework that considers agents, environment, interaction and organizations.
+
+As the thesis explores the integration of \ac{MAS} with \acp{DTE} envisioning the possibility of using Semantic Web technologies to achieve it, the chapter also discusses the relationship between \ac{MAS} and the Web, highlighting recent efforts in the area of \ac{hMAS} that leverage \ac{REST} and hypermedia principles to design \ac{MAS} that are fully integrated with the Web.
+%
+Finally, the chapter presents how the proposals targeting the embedding of intelligent functionalities and autonomy in \acp{DT} are overlapping with research on autonomous agents and \ac{MAS}, motivating the need for structured approaches to integrate the two abstractions which will be further explored in the contributions of this thesis. 

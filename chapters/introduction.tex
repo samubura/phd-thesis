@@ -4,11 +4,11 @@
 \section*{Context and Motivations}
 %=======================================================
 
-In the last decade, we have assisted to a significant transformation driven by the integration of advanced digital technologies such as the \ac{IoT}, \ac{AI} and \ac{ML} to improve the efficiency and automation of processes across manufacturing and service industries~\missingref{}.
-This digital transformation, often referred to as the \emph{Fourth Industrial Revolution} or \emph{Industry 4.0}~\missingref{}, has 
-is now becoming a pervasive trend impacting even less technology-driven sectors such as agriculture and healthcare~\missingref{}.
+In the last decade, we have assisted to a significant transformation driven by the integration of advanced digital technologies such as the \ac{IoT}, \ac{AI} and \ac{ML} to improve the efficiency and automation of processes across manufacturing and service industries.
+This digital transformation, often referred to as the \emph{Fourth Industrial Revolution} or \emph{Industry 4.0}~\cite{Lasi_Fettke_Kemper_Feld_Hoffmann_2014,kagermann2013industrie}, 
+is now becoming a pervasive trend impacting even less technology-driven sectors such as agriculture~\cite{Liu_Ma_Shu_Hancke_Abu-Mahfouz_2021} and healthcare~\cite{Tortorella_Fogliatto_Mac_Cawley_Vergara_Vassolo_Sawhney_2020}.
 
-In the healthcare sector, the integration of digital technologies is reshaping the way care is delivered, with a focus on improving patient outcomes, enhancing operational efficiency, and enabling personalized medicine~\missingref{}.
+In the healthcare sector, the integration of digital technologies is reshaping the way care is delivered, with a focus on improving patient outcomes, enhancing operational efficiency, and enabling personalized medicine~\cite{Kraus_Schiavone_Pluzhnikova_Invernizzi_2021}.
 %
 Some see this transformation as a way to address the challenges of an aging population, rising healthcare costs, and the need for more efficient and effective care delivery towards accomplishing the United Nations' \ac{SDG} 3 aiming to ensure healthy lives and promote well-being for all at all ages~\cite{un_sdg_report_2025}.
 
@@ -18,7 +18,7 @@ In this exploration, we follow the rising trend of digitalizing the core assets 
 %
 This concept has emerged as a paradigm shift in the way we model and interact with the physical world when designing \acp{CPS}, focusing on capturing the essential features of each relevant entity, creating personalized models and combining real-time data with modeling techniques, \ac{AI} and simulation~\cite{Semeraro_Lezoche_Panetto_Dassisti_2021}.
 %
-The focus of \acp{DT} towards individualized modeling is well-paired to the digitalization needs of the healthcare domain supporting a patient-centric approach~\missingref{}.
+The focus of \acp{DT} towards individualized modeling is well-paired to the digitalization needs of the healthcare domain supporting a patient-centric approach~\cite{Alazab_Khan_Koppu_Ramu_M_Boobalan_Baker_Maddikunta_Gadekallu_Aljuhani_2023}.
 %
 Furthermore, the ability of \acp{DT} to integrate data from various sources
 -- spanning from legacy systems to \ac{IoT} devices --
@@ -45,12 +45,12 @@ These challenges call for an integrated approach towards the development of both
 %
 In this thesis, we propose a framework for the development of \emph{\acp{DTE}} that can incorporate heterogeneous \acp{DT} and expose a holistic, synchronized view of the mirrored physical environment to applications under a unified interoperable interface.
 %
-To implement \emph{heterogeneous} \acp{DTE} we explore architectural patterns and best practices taking inspiration from the (semantic) Web, as an example of large-scale decentralized system that successfully integrates heterogeneous resources and supports their interaction through standardized protocols and data formats~\missingref{}.
+To implement \emph{heterogeneous} \acp{DTE} we explore architectural patterns and best practices taking inspiration from the (semantic) Web, as an example of large-scale decentralized system that successfully integrates heterogeneous resources and supports their interaction through standardized protocols and data formats~\cite{Shadbolt_Berners-Lee_Hall_2006}.
 %
-Namely, we ground our approach on \emph{hypermedia} representations that can semantically describe the assets and their relationships, and support navigation and interaction through hyperlinks~\missingref{}.
+Namely, we ground our approach on \emph{hypermedia} representations that can semantically describe the assets and their relationships, and support navigation and interaction through hyperlinks~\cite{fielding2000architectural}.
 %
-To support the development of intelligent applications, we look at \ac{MAS}, which model distributed applications in dynamic environments through sets of autonomous entities~\missingref{}.
-We specifically focus on cognitive approaches such as the \ac{BDI} model~\missingref{}, as they merge adaptability and responsiveness with a declarative encoding of domain knowledge and business rules.
+To support the development of intelligent applications, we look at \ac{MAS}, which model distributed applications in dynamic environments through sets of autonomous entities~\cite{2009wooldridge}.
+We specifically focus on cognitive approaches such as the \ac{BDI} model~\cite{Bratman1987-BRAIPA,rao1991modeling}, as they merge adaptability and responsiveness with a declarative encoding of domain knowledge and business rules.
 
 %--------------------------------------------------------
 \subsection*{Problem Statement}
@@ -97,7 +97,7 @@ Towards this goal, we are interested in answering these research questions:
 
 Despite being motivated by the digitalization of healthcare processes through \acp{DTE}, this thesis contributions can be interpreted in the broader scope of engineering \acp{CPS} with \acp{DT}.
 %
-The area of \ac{DT} engineering is a rapidly evolving field, with ongoing research aimed at improving the design, implementation, and management of \acp{DT} in various application domains where \acp{DT} are being employed~\missingref{}.
+The area of \ac{DT} engineering is a rapidly evolving field, with ongoing research aimed at improving the design, implementation, and management of \acp{DT} in various application domains where \acp{DT} are being employed~\cite{Mihai_survey_enabling_2022}.
 %
 In this context, this thesis contributions can be applied to different application scenarios sharing similar challenges in terms of integration of heterogeneous data sources, heterogeneous assets connected by dynamic relationships.
 We identify the following key contributions to the area of \ac{DT} engineering:
@@ -134,7 +134,7 @@ and finally giving an overview of the concepts related to \ac{MAS} engineering t
 
 In \Cref{part:dte} we delve into the contributions towards the definition of the concept of \ac{DTE}. Namely, in \Cref{chap:dte:egineering-dt} we present architectural proposals and patterns for the development of \ac{DT} that can be integrated into a \ac{DTE}, then in \Cref{chap:dte:dte} we introduce the concept of \ac{DTE}, and explore its operational management and prototype implementation through the integration of heterogeneous \acp{DT} in \Cref{chap:dte:dtc} and \Cref{chap:dte:hwodt} respectively.
 
-In \Cref{part:mas} we focus on the role of multi-agent systems in the development of intelligent applications, analyzing how they align with the requirements of healthcare applications in \Cref{chap:mas:requirements} before discussing their alignment for a synergetic exploitation with \acp{DTE} in \Cref{chap:mas:mas-dt} and the contributions to the engineering of \ac{BDI} agents towards the goal of making them more accessible for developers and users in \Cref{chap:mas:engineering}.
+In \Cref{part:mas} we focus on the role of multi-agent systems in the development of intelligent applications discussing their alignment for a synergetic exploitation with \acp{DTE} in \Cref{chap:mas:mas-dt} and the contributions to the engineering of \ac{BDI} agents towards the goal of making them more accessible for developers and users in \Cref{chap:mas:engineering}.
 
 Finally, in \Cref{part:validation} we present the application scenarios and validation of the proposed approaches demonstrating their effectiveness in tackling healthcare challenges proposed by our partner \ausl{}
 -- namely, pharmaceutical supply chain (\Cref{chap:val:irst}), trauma management (\Cref{chap:val:trauma}), and operating room management (\Cref{chap:val:orm}) --

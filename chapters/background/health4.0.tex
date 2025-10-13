@@ -10,8 +10,111 @@ the main medical standards, and, finally, the context of \ausl{} and its digital
 \section{Healthcare 4.0}
 %=======================================================
 
+As any industrial sector, healthcare is constantly innovated by the introduction of new technologies.
+%
+The adoption of \ac{ICT} technologies has been driving a digital transformation in healthcare~\cite{Kraus_Schiavone_Pluzhnikova_Invernizzi_2021} which has led healthcare institutions to require new digital capabilities to support their operations and manage the amount of clinical data they produce in order to improve quality of care and reduce costs. 
+
+Compared to other application domains, healthcare is particularly critical for a variety of societal factors, 
+including the sensitivity of the personal medical data being handled, the need for high reliability and availability of services, and the complexity of the domain itself, which involves a wide range of stakeholders and professionals. 
+%
+This makes healthcare generally more conservative in adopting new technologies, making the process of digital transformation generally slower than in other sectors~\cite{Hermes_Riasanow_Clemons_Böhm_Krcmar_2020}.
+%
+It is then not surprising that despite the \emph{Industry 4.0} paradigm introduced in the early 2010s~\cite{Lasi_Fettke_Kemper_Feld_Hoffmann_2014} and progressively adopted in many sectors is still far from being realized in healthcare today~\cite{Kotzias_Bukhsh_Arachchige_Daneva_Abhishta_2022}.
+
+Healthcare 4.0~\cite{Tortorella_Fogliatto_Mac_Cawley_Vergara_Vassolo_Sawhney_2020} is a term that has been used to refer to the application of Industry 4.0 technological drivers in healthcare.
+%
+These include \ac{IoT}, Big Data and \ac{AI} technologies, which ease the collection and analysis of large amounts of data, support the continuous care and remote monitoring of patients and the support of clinical decisions through data-driven approaches.
+%
+The general consensus is that Healthcare 4.0 represents a frontier for innovation in healthcare towards the virtualization and distribution of real-time healthcare services~\cite{Kotzias_Bukhsh_Arachchige_Daneva_Abhishta_2022}.
 
 
+\begin{table}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.3\textwidth}|>{\raggedright\arraybackslash}X}
+        \toprule
+        \textbf{Area} & \textbf{Description} \\
+        \midrule
+        Patient-centered & Focus on improving patient experience, engagement, and outcomes through digital technologies. \\
+        \hline
+        Operational efficiency & Enhancing processes, resource management, and service delivery using ICT solutions. \\
+        \hline
+        Organizational factors & Examining how digital transformation affects organizational structures, culture, and management practices. \\
+        \hline
+        Impact on workforce practices & Assessing changes in healthcare professionals' roles, skills, and workflows due to digital innovation and the co-design of solutions. \\
+        \hline
+        Socio-economic aspects & Considering the macro implications of digital transformation in healthcare from an economic and social perspective. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Main areas of research in healthcare digital transformation, adapted from~\cite{Kraus_Schiavone_Pluzhnikova_Invernizzi_2021}.}
+    \label{tab:h40-clusters}
+\end{table}
+
+
+The survey by Kraus et al.~\cite{Kraus_Schiavone_Pluzhnikova_Invernizzi_2021} identifies five main areas of research in the context of healthcare digital transformation summarized in \Cref{tab:h40-clusters}.
+%
+The survey highlights that healthcare digitalization is a complex phenomenon that is studied across multiple axes.
+%
+The role of participatory approaches to the design of digital solution is also highlighted as a key factor for the success of digital transformation initiatives, as they can help break the barriers to adoption and acceptance of new technologies by both patients and healthcare professionals.
+
+The first two areas of research in \Cref{tab:h40-clusters} focus on the direct impact of digital technologies on patients and efficiency of healthcare processes.
+%
+This is confirmed in other surveys as well~\cite{Al-Jaroodi_Mohamed_Abukhousa_2020,Tortorella_Fogliatto_Mac_Cawley_Vergara_Vassolo_Sawhney_2020} which identifies the improvement of \emph{quality of care} and \emph{operational efficiency} as the main goals of Healthcare 4.0. 
+
+Namely, improving the quality of care is proposed to be achieved through improved access to patient's past health records together with general lifestyle data to design personalized treatment plans, real-time (remote and on-site) monitoring, and improved utilization of resources and scheduling of appointments.
+%
+Efficiency is instead targeted through proactive maintenance of equipment, automation of repetitive tasks, and support decision-making thanks to the analysis of data shared across different systems and sources to detect patterns and trends in advance.
+%
+The analysis maps out several applications of Healthcare 4.0 targeting patients, healthcare professionals, medical equipment and resource management across the whole healthcare organization~\cite{Al-Jaroodi_Mohamed_Abukhousa_2020}, confirming the wide scope of digital transformation in healthcare.
+
+
+\begin{table}[t]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.27\textwidth}|>{\raggedright\arraybackslash}X}
+        \toprule
+        \textbf{Challenge} & \textbf{Description} \\
+        \midrule
+        Data privacy and security & Medical data is sensitive and must be protected from unauthorized access complying with rules and regulations. \\
+        \hline
+        Data fragmentation & Medical data is often heterogeneous, complex and uncertain, often unstructured and hence difficult to integrate in a coherent picture. \\
+        \hline
+        Legal framework & The legal framework surrounding healthcare data is often fragmented and varies by jurisdiction. Ethical considerations must also be taken into account. \\
+        \hline
+        Closer Collaboration & There is very limited data sharing between organizations, and often it is shared by manual processes and limited by legal constraints.\\
+        \hline
+        Knowledge and skills gap & Healthcare professionals often lack the necessary digital skills and knowledge to effectively understand the impact of new technologies and data-driven approaches. At the same time medical data requires a high level of expertise to interpret and utilize effectively. \\
+        \hline
+        Users' acceptance and adaptability & The successful implementation of solutions depends on the acceptance, trust and adaptation to new technologies by both healthcare professionals and patients. \\
+        \hline
+        \ac{IoT} known issues & The integration of \ac{IoT} devices in healthcare raises concerns regarding data security, interoperability, and the management of resources linked to \ac{IoT} systems. \\
+        \hline
+        Implementation costs & Healthcare 4.0 solutions often requires significant upfront investment in new technologies, infrastructure, and training, with no guarantee of return. This puts a lot of pressure on organizations that already operate at thin margins. \\
+        \hline
+        Standardization & The lack of standardized protocols and frameworks for data exchange and interoperability hinders the seamless integration of diverse systems and technologies. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Challenges in Healthcare 4.0, adapted from~\cite{Kotzias_Bukhsh_Arachchige_Daneva_Abhishta_2022}.}
+    \label{tab:h40-challenges}
+\end{table}
+
+The pervasive scope of Healthcare 4.0 leads to several challenges that span from technical to organizational and socio-economic aspects. 
+%
+\Cref{tab:h40-challenges} summarizes the main challenges identified in the survey by Kotzias et al.~\cite{Kotzias_Bukhsh_Arachchige_Daneva_Abhishta_2022}. 
+%
+Among them, we highlight that the main technical challenges are related to data privacy and security but also on data fragmentation and lack of standardization which is a direct consequence of the heterogeneity of systems and the lack of incentives to share data across organizations. 
+%
+Addressing these challenges require an integrated approach. 
+%
+On the technical side, the push towards interoperability and data management and integration is crucial to support all other applications relying on it.
+%
+Al-Jaroodi et al.~\cite{Al-Jaroodi_Mohamed_Abukhousa_2020} propose to tackle the technical challenges through a service-oriented middleware approach. 
+%
+Recognizing that building healthcare services from the ground up is not feasible due to practical and economic constraints, they argue that leveraging existing systems and services through a middleware layer can facilitate interoperability across heterogeneous systems and enable the integration of new technologies and services.
+%
+Among the main functionalities that such a middleware could provide, they highlight data brokering and translation to handle data heterogeneity. 
+
+In this thesis, we will look at the emerging paradigm of \acp{DT} \cite{Semeraro_Lezoche_Panetto_Dassisti_2021} as a potential solution to address the technical challenges of Healthcare 4.0, focusing on the role of \acp{DT} as enablers of interoperability and integration of heterogeneous systems and data sources in healthcare~\cite{Alazab_Khan_Koppu_Ramu_M_Boobalan_Baker_Maddikunta_Gadekallu_Aljuhani_2023}.
 
 
 %=======================================================

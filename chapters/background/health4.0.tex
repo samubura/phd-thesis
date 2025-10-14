@@ -121,13 +121,140 @@ In this thesis, we will look at the emerging paradigm of \acp{DT} \cite{Semeraro
 \section{\aclp{HIS}}
 %=======================================================
 
+\acfp{HIS} are the most prominent example of \ac{ICT} systems in healthcare, supporting the management of clinical and administrative data concerning hospital operations. 
+%
+This has been historically one of the first applications of \ac{ICT} in healthcare, given the relevance of hospital management in the overall operation of healthcare institutions.
+%
+Hospitals are, in fact, complex organizations that involve a wide range of activities, and the major source of costs. 
+
+More recently the term \ac{HIS} have been evolving to consider \emph{Healthcare Information Systems} to represent a broader scope that includes not only hospital management, but also the overall management of healthcare services across different settings~\cite{Kuhn_Giuse_2001}.
+%
+Nevertheless, hospital information systems continue to play a crucial role as the prominent example of healthcare \ac{ICT} systems and hence why in this section we will refer to \ac{HIS} as hospital information systems.
+
+Haux in \cite{Haux_2006} reflects on the evolution of \acp{HIS} over the years.
+%
+He identifies the main drivers from the digitalization of healthcare data (compared to paper reporting) and the shift from local systems to interconnected systems within and across organizations. 
+%
+The initial use of \ac{ICT} to support specific tasks (e.g., radiology, laboratory, administration) weights on the overall design of a \ac{HIS}, which still often results---due to practical and economic constraints---an integration of several specialized systems rather than a coherent system designed from the ground up.
+
+Other development trends of \ac{HIS} include the progressive inclusion of patients as users of the system, rather than just passive subjects of care, and the aggregation of data from multiple sources to support medical research and public health monitoring rather than just clinical care.
+%
+These additional use cases further increase the complexity of \acp{HIS} which needs to be designed to support a wide range of users with very different needs. 
+%
+On the technological side, the evolution of \ac{HIS} is further driven by the adoption of new technologies for continuous health monitoring and the availability of new data sources (e.g., genomics, lifestyle data) which can be integrated to support personalized medicine.
+
+Finally, Haux finds that the digital transformation significantly permeated the organizational management of processes. Strategic management of \ac{HIS} becomes crucial to ensure that operations run smoothly and that the system can evolve to meet new requirements. 
+%
+Given this historical perspective on the evolution of \acp{HIS}, Haux suggests that the future evolution of \ac{HIS} would require interoperability across different systems and organizations with the consequent development of new scalable architectures and new professionals working at the intersection of healthcare and \ac{ICT}~\cite{Haux_2006}.
+
+Similar efforts to analyze the evolution of \acp{HIS} have been carried out more recently~\cite{Balaraman_Kosalram_2013,Degoulet_2014}, confirming the overall trends and pushing for the role of standards to address the challenges in \ac{HIS}.
+%
+\Cref{fig:his-functional} shows the main functional subsystems of a \ac{HIS}. 
+The decomposition identifies three main categories of processes associated with corresponding \ac{HIS} sub-systems: clinical information, logistics and decision systems~\cite{Degoulet_2014}.
+%
+The interrelation of these three areas is crucial as every process in a hospital spans across them, further complicating the design of a \ac{HIS}.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/placeholder.png} 
+    \caption{Functional subsystems in a Hospital Information System, adapted from~\cite{Degoulet_2014}.}
+    \label{fig:his-functional}
+\end{figure}
+
+The design of a \ac{HIS} is generally component-based~\cite{Van_De_Velde_Degoulet_2003, Winter_Ammenwerth_Haux_Marschollek_Steiner_Jahn_2023}.
+%
+The components of a \ac{HIS} follow a functional decomposition~\cite{Winter_Ammenwerth_Haux_Marschollek_Steiner_Jahn_2023} separating the core functionalities across different processes. 
+%
+Classical components of a \ac{HIS} include~\cite{Winter_Ammenwerth_Haux_Marschollek_Steiner_Jahn_2023}:
+\begin{itemize}
+    \item Patient Administration Systems including \textbf{Patient Identification}, \textbf{Appointment Scheduling (AS)}, \textbf{Admission, Discharge and Transfer (ADT)} and \textbf{Billing and Accounting};
+    \item Medical Documentation Systems such as the \textbf{\acp{EHR}} to manage patient medical records, including clinical notes, diagnoses, medications, and allergies, now often integrated to provide a full view of patient data through \textbf{Clinical Data Repositories (CDR)};
+    \item \textbf{Operation Management Systems} to support logistics such as planning, bed management and staff schedules for surgeries.
+    \item \textbf{Computerized Physician Order Entry (CPOE)} to manage orders for medications, lab tests, imaging, and other procedures;
+    \item \textbf{Clinical Decision Support Systems (CDSS)} to provide clinicians with evidence-based recommendations and alerts to support clinical decisions;
+    \item ancillary departmental systems such as \textbf{Laboratory Information Systems (LIS)} to manage laboratory tests and results, \textbf{Radiology Information Systems (RIS)} and \textbf{Picture Archiving and Communication Systems (PACS)} to manage imaging studies and results, and \textbf{Pharmacy Information Systems (PIS)} to manage medication orders and dispensing;
+    \item \textbf{Document Archiving Systems} to store and manage medical documents for archival and legal purposes. 
+\end{itemize}
+
+These core modules are often building the backbone of a \ac{HIS} which can then be correlated with a variety of specific additional systems to support specific needs of the organization. 
+%
+These include telemedicine systems, patient portals, mobile health applications, and systems for managing specific clinical areas such as oncology or cardiology~\cite{Winter_Ammenwerth_Haux_Marschollek_Steiner_Jahn_2023}.
+
+The level of digitalization and integration of these functional components can significantly impact operations in a healthcare organization. 
+%
+Maturity assessments of \ac{HIS} are hence crucial to identify gaps and areas of improvement.
+%
+Several maturity models have been proposed~\cite{Gomes_Romão_2018}, assessing the maturity of \ac{HIS} across various dimensions such as technology, processes, and organizational culture.
+
+A notable example is the \emph{Electronic Medical Record Adoption Model (EMRAM)} by HIMSS~\cite{HIMSS_EMRAM_Criteria}, which assesses the adoption and utilization of electronic medical records in healthcare organizations across eight stages, from 0 (no electronic records) to 7 (fully electronic and integrated systems).
+%
+The different levels offer a roadmap for healthcare organization to plan their digital transformation journey. 
+%
+Interestingly, the first levels (following also an historical perspective) focus on the digitalization of ancillary systems first, and follow with the integration of \ac{EHR} in clinical data repositories, highlighting the importance of data integration as a key step in the digital transformation of healthcare organizations.
+
+Other models such as the one proposed in \cite{Carvalho_Rocha_van_de_Wetering_Abreu_2019} also identify different levels, characterizing the maturity of \ac{HIS} in terms of interoperability, data analysis, strategic planning, involved people, availability of electronic medical records, security and technological infrastructure. 
+%
+The goal of the last levels is to achieve a fully national integrated \ac{HIS} that utilizes real-time data, supports personalized medicine, flexible planning and clinical decision-making, in line with the goals of Healthcare 4.0.
 
 %=======================================================
 \section{Medical Standards for Interoperability}
 %=======================================================
 
-\note{HL7 FHIR, SNOMED-CT, LOINC, OPEN-EHR}
+The complexity of \acp{HIS} and the need for integration across different systems make interoperability a key requirement. 
+%
+This motivates the need for standards to ensure that different systems can communicate and exchange data effectively. 
+%
+The complexity of medical data and the variability in medical processes makes the encoding of medical knowledge in such standards a challenging task. 
 
+Over the years, several independent organizations have developed standards to address different aspects of healthcare interoperability~\cite{benson2016principles}.
+%
+Medical interoperability standards can be broadly categorized into different types based on their purpose and scope: 
+\begin{itemize}
+    \item \textbf{Terminologies and Coding Systems} provide a common vocabulary for representing medical concepts, diagnoses, procedures and medications. Examples include \ac{ICD} (established by the World Health Organization) for disease classification, \ac{SNOMED-CT} for clinical terminology, and \ac{LOINC} for laboratory and clinical observations.
+    \item \textbf{Data Exchange and Transport} standards define how data is exchanged between systems. One of the main example is \ac{HL7} Clinical data Architecture and its new version \ac{FHIR}, which defines a structured information model for exchange of medical data across systems.
+    \item \textbf{Specialized Document Formats} are used to represent specific types of medical documents. An example is the \ac{DICOM} standard for medical imaging.
+\end{itemize}
+
+These standards are often used in combination to achieve technical and semantic interoperability. 
+%
+In particular, \ac{FHIR} is the most modern proposal for data exchange in healthcare systems, adopting a modular approach based on the definition of \emph{resources} that can be combined to represent complex clinical concepts, which can be associated with other standard terminologies~\cite{Braunstein_2018}
+%
+\ac{FHIR} adopts a \ac{REST}~\cite{fielding2000architectural} approach to its \ac{API}, making it easier to integrate with modern Web technologies, breaking out of the traditional silos of healthcare systems. 
+%
+Despite this choice, \ac{FHIR} is not limited to work in a request-response fashion, but can be integrated as a transport protocol for other communication paradigms such as publish-subscribe or event-based architectures, or even simply to serialize documents for archival purposes~\cite{benson2016principles}.
+%
+\ac{FHIR} resources can link to other resources, enabling the representation of relationships between entities (e.g., patients, practitioners, medications, observations). 
+%
+This approach favors the integration of data from multiple sources in a \ac{HIS}, and the pervasive use of \ac{FHIR} as a the format to represent and exchange data in a structured format~\cite{benson2016principles}.
+
+\ac{FHIR} resources have a hierarchical structure, with each resource having a defined set of attributes and relationships to other resources.
+%
+The semantic interpretation of \ac{FHIR} resources is supported by a fixed set of data types, and the support for referencing external terminologies and coding systems, providing unambiguous meaning to the data being exchanged.
+%
+Furthermore, \ac{FHIR} provides a mechanism for defining profiles and extensions, allowing customization of resources to meet specific use cases while maintaining interoperability with the core standard. 
+
+Due to its versatility and modern design, \ac{FHIR} is increasingly being adopted in healthcare systems~\cite{Ayaz_Pasha_Alzahrani_Budiarto_Stiawan_2021} and also in healthcare research~\cite{Vorisek_Lehne_Klopfenstein_Mayer_Bartschke_Haese_Thun_2022}, making it a key standard for healthcare interoperability today.
+
+A different approach to \ac{EHR} interoperability is taken by the openEHR standards~\cite{openEHR_architecture_overview}, which focus on the multi-level definition of stable \emph{reference models} and domain-specific \emph{archetypes} to represent clinical concepts in a structured and reusable way.
+%
+The main focus of openEHR is on the modeling of clinical data, rather than on the exchange of data between systems.
+%
+This makes openEHR more suitable for the design of clinical data repositories and \ac{EHR} systems~\cite{Delussu_Frexia_Mascia_Sulis_Meloni_Del_Rio_Lianas_2024}.
+%
+The standard further provides guidelines on management of \ac{EHR} including versioning, auditing and access control which are crucial for the management of sensitive medical data. 
+%
+OpenEHR can hence be considered complementary to other standards, focusing on the management and storage of \ac{EHR} data~\cite{Bosca_Moner_Maldonado_Robles_2015,Pedrera-Jiménez_García-Barrio_Frid_Moner_Boscá-Tomás_Lozano-Rubí_Kalra_Beale_Muñoz-Carrero_Serrano-Balazote_2023}. 
+
+This section provides a brief overview of the main standards for healthcare interoperability. 
+%
+The abundance of standards clearly reflects the complexity of the healthcare domain both in terms of the intrinsic complexity of medical data and processes and the variety of stakeholders and organizations involved.
+%
+Adopting and combining effectively these standards is a key requirement for the design of modern \acp{HIS} towards the implementation of Healthcare 4.0 objectives.
+%
+Semantic interoperability is still an open challenge as the standards partially overlap and are not supported by formal ontological models which could remove ambiguities and improve deductive reasoning~\cite{de_Mello_Rigo_da_Costa_da_Rosa_Righi_Donida_Bez_Schunke_2022}.
+%
+In this sense, alignment with Semantic Web technologies~\cite{berners2023semantic} and ontologies could provide a pathway towards achieving greater semantic interoperability in healthcare~\cite{Schulz_Martínez-Costa_2013}.
 
 %=======================================================
 \section{Intelligent Applications in Healthcare}

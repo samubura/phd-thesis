@@ -68,7 +68,7 @@ Efficiency is instead targeted through proactive maintenance of equipment, autom
 The analysis maps out several applications of Healthcare 4.0 targeting patients, healthcare professionals, medical equipment and resource management across the whole healthcare organization~\cite{Al-Jaroodi_Mohamed_Abukhousa_2020}, confirming the wide scope of digital transformation in healthcare.
 
 
-\begin{table}[t]
+\begin{table}[ht]
     \centering
     \renewcommand{\arraystretch}{1.2}
     \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.27\textwidth}|>{\raggedright\arraybackslash}X}
@@ -157,7 +157,7 @@ The interrelation of these three areas is crucial as every process in a hospital
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/placeholder.png} 
+    \includegraphics[width=0.9\textwidth]{figures/HIS Schema.pdf} 
     \caption{Functional subsystems in a Hospital Information System, adapted from~\cite{Degoulet_2014}.}
     \label{fig:his-functional}
 \end{figure}
@@ -260,16 +260,93 @@ In this sense, alignment with Semantic Web technologies~\cite{berners2023semanti
 \section{Intelligent Applications in Healthcare}
 %=======================================================
 
-\note{explainability}
+Among the drivers of Healthcare 4.0, \ac{AI} is playing an increasingly important role in healthcare.
+%
+Due to its inherent complexity, healthcare has always been a target domain for \ac{AI} applications, as the possibility to ease the burden of healthcare professionals and improve the quality of care is a strong motivation for innovation. 
+%
+While originally most \ac{AI} applications in healthcare focused on rule-based symbolic reasoning and expert decision-support systems to support clinical decisions, the recent advantages in \ac{ML} and \ac{DL} and the availability of large amounts of data have made data-driven approaches more feasible~\cite{Yu_Beam_Kohane_2018}.
+%
+Recent surveys confirm that the rate of scientific publications on \ac{AI} in healthcare is growing at a very fast pace covering a wide range of applications~\cite{Secinaro_Calandra_Secinaro_Muthurangu_Biancone_2021,Yousefi_Dehnavieh_Laberge_Gagnon_Ghaemi_Nadali_Azizi_2025}.
 
-\note{robustness}
+Applications of \ac{AI} techniques in healthcare span across a wide range of areas.
+%
+One of the most significant is image-based diagnosis, where \acp{CNN} for image classification have shown performances comparable or even superior to human experts in recognizing pathologies from medical images.
+%
+Other relevant applications include genome interpretation, biomarker discovery, risk estimation and prediction of clinical outcomes, and continuous monitoring through \ac{IoT} stream analysis~\cite{Yu_Beam_Kohane_2018}.
 
-\note{challenges etc... }
+More recently, the advent of \acp{LLM} and \ac{GenAI} technologies is opening new possibilities for \ac{AI} applications in healthcare~\cite{Sai_Gaur_Sai_Chamola_Guizani_Rodrigues_2024}.
+%
+\ac{GenAI} techniques can be used for data augmentation, to generate synthetic medical data and support training of \ac{ML} models when real data is scarce. 
+%
+\acp{LLM} can be used to analyze and produce medical documents and their adoption is growing at a fast pace especially for the automatic draft of clinical documentation from conversations with the overall objective of increasing efficiency by automating repetitive tasks~\cite{Poon_Lemak_Rojas_Guptill_Classen_2025}.
+%
+Additionally, \ac{LLM} can be used to interact with patients through chatbots, providing information and support for common medical questions and concerns.
+%
+Fine-tuned medical \acp{LLM} can also be used to support clinical decision-making and summarization of medical literature~\cite{Sai_Gaur_Sai_Chamola_Guizani_Rodrigues_2024}.
+
+Secinaro et al.~\cite{Secinaro_Calandra_Secinaro_Muthurangu_Biancone_2021} identify three main clusters of application of \ac{AI} in healthcare:
+\begin{itemize}
+    \item predictive models for diagnosis and monitoring of patients
+    \item decision support systems to support decision-making
+    \item big data analytics to optimize healthcare operations and management
+\end{itemize}
+
+This multi-faceted approach highlights the wide scope of \ac{AI} applications in healthcare which can target both clinical and administrative processes.
+
+Given the critical nature of healthcare, the adoption of \ac{AI} requires careful consideration of ethical implications~\cite{Morley_Machado_Burr_Cowls_Joshi_Taddeo_Floridi_2020}.
+%
+In general \ac{AI} systems are seen as tools to improve human decision-making, making it possibly more objective and data driven.
+%
+Of course this requires carefully designed systems and data collection processes to avoid introducing new sources of errors and biases which may undermine the benefits~\cite{Norori_Hu_Aellen_Faraci_Tzovara_2021}.
+
+The reliance on \ac{AI} systems for clinical decisions can also raise concerns of misdiagnosis due to the possibility of overestimating the confidence of automated systems~\cite{Morley_Machado_Burr_Cowls_Joshi_Taddeo_Floridi_2020}.
+%
+New trends are hence focusing on explainability and interpretability of \ac{AI} systems which becomes a crucial property for the deployment of \ac{AI} systems in healthcare~\cite{Bharati_Mondal_Podder_2024}.
+%
+\ac{XAI} techniques are being increasingly required in healthcare~\cite{Freyer_Groß_Lipprandt_2024} settings due to the need for transparency in the decision-making process which is crucial for building trust: a necessary condition for the successful acceptance of \ac{AI} by both patients and healthcare professionals~\cite{Alonso_Astobiza_Ortega_Lozano_2025}.
+
+Finally, regulations play a crucial role in the effort to ensure that \ac{AI} systems in healthcare are safe and ethical~\cite{Freyer_Groß_Lipprandt_2024}.
+%
+These need to be accompanied by guidelines and best practices that promote careful design and implementation of \ac{AI} models, from data collection, selection and preprocessing, to model training and validation~\cite{de_Hond_Leeuwenberg_Hooft_Kant_Nijman_van_Os_Aardoom_Debray_Schuit_van_Smeden_et_al._2022}.
+
 
 %=======================================================
 \section{The \ausl{} Context}
 %=======================================================
 
+\auslLong{} is the local public healthcare administration for the Emilia-Romagna region in Italy, covering a population of more than 1.1 million people across a territory of roughly 5100 km$^2$ which covers the provinces of Ravenna, Forlì-Cesena and Rimini and is divided into 8 health districts (\Cref{fig:ausl-map}).
+%
+The organization manages 7 main hospitals hubs comprising a total of 13 hospital facilities and several other care centers managed by a network of more than 16 thousands employees. 
+%
+Born from the merger of three different local healthcare administrations in 2013, \ausl{} is among the largest healthcare providers in Italy.
+%
+The high complexity of the organization and the large territory it covers make \ausl{} a relevant case study for the challenges of digital transformation in healthcare as, due to its historical evolution it deals with integration of heterogeneous systems and processes across different settings and can represent a microcosm of the challenges faced by the healthcare sector in general.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/mappa_ausl.png} 
+    \caption{
+        Map of the \ausl{} territory, credits:
+        \url{https://commons.wikimedia.org/wiki/File:Mappa_dell\%27AUSL_Romagna.svg}
+    }
+    \label{fig:ausl-map}
+\end{figure}
+
+\ausl{}, aligned with the objectives of the national healthcare plans, is pursuing a digital transformation process aimed at improving the efficiency and effectiveness of its services.
+
+
+
 %=======================================================
 \section{Final Remarks}
 %=======================================================
+
+This chapter provides an overview of the context of Healthcare 4.0 which motivates and frames the work presented in this thesis. 
+%
+The digital transformation of healthcare is a complex process that involve multiple dimensions, from technological to organizational and socio-economic factors.
+
+The chapter highlights the multi-faceted nature of the healthcare domain, and the efforts that are being pursued towards improving digitalization, with a focus on \ac{HIS} as the exemplary case of \ac{ICT} systems in healthcare which motivates the need for interoperability and data integration.
+
+The chapter further reflects on the role of \ac{AI} in healthcare, showing how it can address both clinical and organizational challenges, emphasizing the critical requirements the domain imposes on the design of intelligent applications that are trustworthy, reliable and fair.
+
+Finally, the chapter describes the context of \ausl{} as the partner organization for this thesis work, highlighting the relevance of the challenges faced by the organization in its digital transformation journey which motivate this thesis work. 

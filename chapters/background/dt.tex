@@ -382,6 +382,50 @@ The technologies tied to this vision include knowledge representation, ontologie
 \section{Digital Twins in Healthcare}
 %=======================================================
 
+\acp{DT} have been used to tackle the tracking, prediction and simulation of physical assets in several domains, and in healthcare it is considered a true revolution~\cite{Erol_Mendi_Doğan_2020}.
+%
+\acp{DT} are seen as a key technology to implement the vision of \emph{Healthcare 4.0}~\cite{Alazab_Khan_Koppu_Ramu_M_Boobalan_Baker_Maddikunta_Gadekallu_Aljuhani_2023} (see ~\ref{chap:back:health4.0}), as they align with the core principles of this new paradigm, promoting digitalization, data integration and proactive and personalized care~\cite{Björnsson_Borrebaeck_Elander_Gasslander_Gawel_Gustafsson_Jörnsten_Lee_Li_Lilja_et_al._2019}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/dt4h_overview.pdf}
+    \caption{An overview of \ac{DT} for healthcare, showing enablers and target goals, from \cite{Katsoulakis_Wang_Wu_Shahriyari_Fletcher_Liu_Achenie_Liu_Jackson_Xiao_et_al._2024}.}
+    \label{fig:dt-healthcare-overview}
+\end{figure}
+
+\acp{DT} can hence be used in various specific healthcare applications, with the common goal of improving the quality and efficiency of healthcare services.
+%
+\Cref{fig:dt-healthcare-overview} shows a conceptualization of \ac{DT} for healthcare, highlighting how the \ac{DT} can have a role in various healthcare applications.
+This is supported by an ever rising trend of scientific publications on the integration of \acp{DT} in healthcare~\cite{Katsoulakis_Wang_Wu_Shahriyari_Fletcher_Liu_Achenie_Liu_Jackson_Xiao_et_al._2024}.
+
+Among the main applications of \acp{DT} in healthcare, the ability to create a \emph{Human \acp{DT}} is one of the most sought after~\cite{Shengli_2021}.
+%
+The vision is that each person could have a \ac{DT} that holds all its relevant healthcare-related data, including biological, genetic and lifestyle information to provide a comprehensive view of a patient's health status over its entire life. 
+%
+The vision supports the idea of personalized medicine, where treatments and interventions are evaluated first on the \emph{virtual patient} to assess their effectiveness and possible side effects before being applied to the real patient~\cite{Kamel_Boulos_Zhang_2021,Björnsson_Borrebaeck_Elander_Gasslander_Gawel_Gustafsson_Jörnsten_Lee_Li_Lilja_et_al._2019}.
+%
+This has been also extended towards processes of drug discovery and development, simulating biochemical reactions and drugs interactions~\cite{Katsoulakis_Wang_Wu_Shahriyari_Fletcher_Liu_Achenie_Liu_Jackson_Xiao_et_al._2024}.
+
+Other applications focus instead of building \acp{DT} of specific organs to better model their behavior and diagnose diseases or detect anomalies~\cite{Erol_Mendi_Doğan_2020}. A primary example of this application is cardiology, as creating a \ac{DT} of the human heart is a complex task with great potential to improve the care of heart pathologies, requiring the combination of mechanical and data-driven models~\cite{Corral-Acero_Margara_Marciniak_Rodero_Loncaric_Feng_Gilbert_Fernandes_Bukhari_Wajdan_et_al._2020}.
+%
+Such \acp{DT} can be used to understand the medical data collected by continuous monitoring devices for \ac{IoT}-based remote healthcare~\cite{Elayan_Aloqaily_Guizani_2021}.
+
+Moving on from the more ambitious clinical applications of \acp{DT} in healthcare, there is also potential for their use in operational contexts, such as optimizing hospital workflows and resource management.
+%
+\acp{DT} of hospitals~\cite{Peng_Zhang_Yu_Xu_Gao_2020} can model patient flows, support allocation of resources and staff as well as support classic building management tasks such as energy optimization and maintenance of critical systems. 
+%
+Similarly, \ac{DT} of medical devices can be used to monitor their status and predict maintenance needs, ensuring availability~\cite{Peng_Zhang_Yu_Xu_Gao_2020}.
+
+Finally, \acp{DT} can be also used to model healthcare processes, such as patient care pathways and clinical workflows~\cite{Ricci_Croatti_Montagna_2022}.
+%
+This can help to track the ongoing processes, automatically produce medical documentation and identify bottlenecks and inefficiencies to improve the overall quality of care and optimize future planning of activities and investments~\cite{Ricci_Croatti_Montagna_2022}.
+
+Overall, the integration of \acp{DT} in healthcare holds great promise, despite the field being still in its infancy and heavily focused on the creation of simulation models rather than fully connected \acp{DT}. 
+%
+Significant challenges remain to be addressed, starting from the typical challenges of healthcare systems such as data quality, integration, privacy and security, but also the need of validation of \ac{DT} models to ensure their reliability and accuracy for clinical applications~\cite{Katsoulakis_Wang_Wu_Shahriyari_Fletcher_Liu_Achenie_Liu_Jackson_Xiao_et_al._2024}.
+
+In this thesis, we will focus on the use of \ac{DT} to model healthcare processes and workflows, as a more pragmatic approach to leverage the potential of \ac{DT} in healthcare, while addressing the needs of Healthcare 4.0 healthcare systems.
+
 
 %=======================================================
 \section{Digital Twin Interoperability}
@@ -609,8 +653,10 @@ This serves the purpose of identifying what is the interpretation of \ac{DT} ado
 %
 A \ac{DT} is considered as the software system that implements the \emph{twinning process} to create and maintain a virtual representation of a generic \ac{PA}, providing services to external users and applications.
 
- In this scope, the chapter highlights the essential properties a \ac{DT} should have, as well as the complexity of the technological panorama required to implement \acp{DT}, with a special focus on the relationship between \ac{DT} and \ac{AI}.
- %
- The service-oriented perspective and the complexity of the many technologies involved, call for a strong emphasis on interoperability, which will be a crucial theme in this thesis to enable \acp{DT} to be integrated in larger systems.
+In this scope, the chapter highlights the essential properties a \ac{DT} should have, as well as the complexity of the technological panorama required to implement \acp{DT}, with a special focus on the relationship between \ac{DT} and \ac{AI}.
+%
+The service-oriented perspective and the complexity of the many technologies involved, call for a strong emphasis on interoperability, which will be a crucial theme in this thesis to enable \acp{DT} to be integrated in larger systems.
 
- Finally, the chapter introduces the idea of \ac{DTE} as a key abstraction to model complex \acp{CPS} through a set of interconnected \acp{DT}, highlighting the \ac{WoDT} as the conceptual framework adopted in this thesis to explore this vision.
+Among the various applications of \acp{DT}, the chapters also provides a deep-dive into the role of \acp{DT} in healthcare, being the target domain explored in this thesis.
+
+Finally, the chapter introduces the idea of \ac{DTE} as a key abstraction to model complex \acp{CPS} through a set of interconnected \acp{DT}, highlighting the \ac{WoDT} as the conceptual framework adopted in this thesis to explore this vision.

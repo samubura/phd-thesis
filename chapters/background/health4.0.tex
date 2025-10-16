@@ -68,7 +68,7 @@ Efficiency is instead targeted through proactive maintenance of equipment, autom
 The analysis maps out several applications of Healthcare 4.0 targeting patients, healthcare professionals, medical equipment and resource management across the whole healthcare organization~\cite{Al-Jaroodi_Mohamed_Abukhousa_2020}, confirming the wide scope of digital transformation in healthcare.
 
 
-\begin{table}[ht]
+\begin{table}
     \centering
     \renewcommand{\arraystretch}{1.2}
     \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.27\textwidth}|>{\raggedright\arraybackslash}X}
@@ -228,6 +228,8 @@ Despite this choice, \ac{FHIR} is not limited to work in a request-response fash
 %
 This approach favors the integration of data from multiple sources in a \ac{HIS}, and the pervasive use of \ac{FHIR} as a the format to represent and exchange data in a structured format~\cite{benson2016principles}.
 
+\todo{an image for FHIR?}
+
 \ac{FHIR} resources have a hierarchical structure, with each resource having a defined set of attributes and relationships to other resources.
 %
 The semantic interpretation of \ac{FHIR} resources is supported by a fixed set of data types, and the support for referencing external terminologies and coding systems, providing unambiguous meaning to the data being exchanged.
@@ -259,6 +261,8 @@ In this sense, alignment with Semantic Web technologies~\cite{berners2023semanti
 %=======================================================
 \section{Intelligent Applications in Healthcare}
 %=======================================================
+
+\todo{maybe find an image for AI applications..}
 
 Among the drivers of Healthcare 4.0, \ac{AI} is playing an increasingly important role in healthcare.
 %
@@ -325,7 +329,7 @@ The high complexity of the organization and the large territory it covers make \
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/mappa_ausl.png} 
+    \includegraphics[width=0.55\textwidth]{figures/mappa_ausl.png} 
     \caption{
         Map of the \ausl{} territory, credits:
         \url{https://commons.wikimedia.org/wiki/File:Mappa_dell\%27AUSL_Romagna.svg}
@@ -333,9 +337,33 @@ The high complexity of the organization and the large territory it covers make \
     \label{fig:ausl-map}
 \end{figure}
 
+
 \ausl{}, aligned with the objectives of the national healthcare plans, is pursuing a digital transformation process aimed at improving the efficiency and effectiveness of its services.
+%
+A first essential step in this direction has been the adoption of a personal \ac{EHR} system directly accessible by patients (\emph{Fascicolo Sanitario Elettronico (FSE)}).
+This system allows patients to access their health records, book appointments, and communicate with healthcare providers more easily. 
+%
+Emilia-Romagna has been the Italian region with the highest success rate in the implementation of FSE~\cite{fse_ausl_prima} with over 65\% of the population having accessed their FSE at least once and more than 90\% of the population agreeing to its consultation by healthcare professionals.
 
+The digitalization program has been accelerated by the COVID-19 pandemic, which has highlighted the need for more agile and resilient healthcare systems worldwide.
+%
+The NextGenerationEU programme of the European Union funds several initiatives in its member states as a response to the COVID-19 pandemic. 
+%
+In Italy, this has been translated into the \emph{Piano Nazionale di Ripresa e Resilienza (PNRR)} which includes several \emph{missions}.
+Mission 1 includes as a key objective the which digitalization of public administrations, including healthcare organizations. 
+Mission 6 is instead entirely dedicated to the innovation of healthcare services, targeting the technological improvement of hospitals, decentralization of healthcare services, telemedicine and remote care~\cite{italy_pnrr_2021}.
+%
+This PhD work is also funded under PNRR, under Mission 4 promoting the collaboration of industrial partners and research institutions.
 
+\ausl{} is continuing its digital transformation journey within this framework.
+%
+A strategic plan for its digitalization (``Progetto Sanità Digitale'') has been defined in 2021 to guide the process as a collaboration between \ausl{}, the Computer Science and Engineering Department of the University of Bologna and the oncologic care and research center {Istituto Romagnolo per lo Studio dei Tumori ``Dino Amadori''(IRST)}, members of a local lavoratory for healthcare innovation (Laboratiorio Sanità Digitale~\footnote{\url{https://laboratorio-sanita-digitale.github.io/}})~\cite{progetto_sanità_digitale}.
+%
+Key objectives of the digitalization plan include the decentralization and distribution of care with local care centers and remote monitoring, the integration of data from multiple sources to support personalized medicine and the improvement of operational efficiency. 
+%
+A strategic technology envisioned in this context is the adoption of \emph{\acp{DT}~\cite{Grieves_2023}}, which can offer an aggregation point for data and functionalities from multiple systems tailored to the representation of critical assets in the healthcare organization~\cite{progetto_sanità_digitale}.
+
+This thesis work is framed within this context, exploring the role of \acp{DT} as enablers of Healthcare 4.0 objectives and focusing on the challenges of interoperability and data integration in a complex and distributed healthcare organization such as \ausl{}.
 
 %=======================================================
 \section{Final Remarks}

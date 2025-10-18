@@ -56,6 +56,26 @@ Data acquisition pipelines, supported protocols and data formats are often defin
 
 In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI} and \ac{DI} are responsible for capturing events from their respective domains (physical and digital) and forwarding them to the \ac{M} for processing. This allows \acp{DT} to operate as independent software entities, communicating with the external world through finely configurable interfaces.
 
+Following the proposed architecture, a \ac{DT} can be formally represented as:
+
+\begin{equation} 
+\label{eq:dt_basic_model}
+        DT = \langle PI, M, DI \rangle\\
+\end{equation}
+
+Where the \ac{PI} captures data from the \acf{PA}, represented as a stream of time ordered \emph{physical} events $e_{PA}$, and controls physical actuation on the object through time ordered actions $a_{PA}$, 
+%
+the model \ac{M} encapsulates the \ac{PA} behavior, processes physical events $e_{PA}$, and generates time ordered \emph{digital} events $e_{DT}$,
+%
+and, finally, the \ac{DI} consumes digital events $e_{DT}$, exposes them to external consumers, and supports the invocation of \emph{digital} actions $a_{DT}$ to modify the behavior of the \ac{PA} through the \ac{DT}.
+
+To better align with multimodel perspectives of \acp{DT}, the model \ac{M} can be actually interpreted as a set of models:
+
+\begin{equation}\label{eq:multi_model}
+        M = \{ m_{1}, m_{2}, \dots, m_{n} \} \\
+\end{equation}
+
+
 \begin{table}
 \renewcommand{\arraystretch}{1.2}
 \centering
@@ -70,7 +90,7 @@ In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI
 
 \multirow{2}{*}{\textbf{Shadowing}} 
 & \textbf{Traditional:} The shadowing is not correctly encapsulated within a DT and is dispersed across different components. The constraint to rely on a fixed set of communication protocols and platform-specific data formats creates a strong vendor lock-in, limiting re-usability. \\
-& \textbf{Event-Driven:} DT directly encapsulates the functionalities and responsibilities to communicate with the PT through the adoption of any required protocols and data formats and decouples the responsibilities of interacting with the PT through re-usable and interoperable modules. \\ \hline
+& \textbf{Event-Driven:} DT directly encapsulates the functionalities and responsibilities to communicate with the PA through the adoption of any required protocols and data formats and decouples the responsibilities of interacting with the PA through re-usable and interoperable modules. \\ \hline
 
 \multirow{2}{*}{\textbf{Replication}} 
 & \textbf{Traditional:} Adoption of centralized and monolithic solutions (e.g., Cloud-only) represents a critical limitation to cross-domain interactions, scalability, and fault tolerance since DTs are designed as passive singleton instances operating in isolated tenants. \\
@@ -91,47 +111,59 @@ In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI
 
 In the proposed approach, the core functionality of the \ac{DT} is the shadowing process, which handles the transformation of data received from the \ac{PI}, feeding the models that characterize the \ac{DT}.
 %
-The result of the shadowing process is to compute the state of the \ac{DT}, which---following the \ac{WoDT} metamodel~\cite{web-of-dt-ricci-2022}---can be represented as a set of: 
+The result of the shadowing process is to compute the state of the \ac{DT} $S_{DT}$, which---following the \ac{WoDT} metamodel~\cite{web-of-dt-ricci-2022}---can be represented through sets of: 
 \begin{itemize}
-\item \textbf{Properties}: labeled data that change with the evolution of the \ac{PA} state;
-\item \textbf{Events}: non-persistent signals captured by the information gathered from the associated \ac{PA};
-\item \textbf{Relationships}: capturing the existing and dynamic connections among \acp{PA} within the system, mirroring them between the corresponding \acp{DT}; 
-\item \textbf{Actions}: the set of possible operations that the \ac{DT} allows to be invoked on behalf of the \ac{PA}, to either send feedback to the physical entity or exploit a service exposed by the \ac{DT}.
+\item \textbf{Properties} ($P$): labeled data that change with the evolution of the \ac{PA} state;
+\item \textbf{Relationships} ($R$): capturing the existing and dynamic connections among \acp{PA} within the system, mirroring them between the corresponding \acp{DT}; 
+\item \textbf{Events} ($E$): non-persistent signals captured by the information gathered from the associated \ac{PA};
+\item \textbf{Actions} ($A$): the possible operations that the \ac{DT} allows to be invoked on behalf of the \ac{PA}, to either send feedback to the physical entity or exploit a service exposed by the \ac{DT}.
 \end{itemize}
+
+At any given time $t$, the state of the \ac{DT} can hence be represented as: 
+
+\begin{equation}
+    S_{DT} = \langle P, R, E, A, t \rangle \\
+\end{equation}
+
+Computed states can be stored to maintain a history $H$ of the \ac{DT}, which can be modeled as a time ordered sequence of states:
+
+\begin{equation}\label{eq:dt_history}
+        H = \langle S_{DT_1}, S_{DT_2}, ... , S_{DT_n}\rangle\\
+\end{equation}
+
+Additionally, to fulfil the \emph{shadowing} process, 
+state updates can then be communicated to applications through the \ac{DI}, fulfilling the objective of the \ac{DT} in providing an up-to-date representation of the \ac{PA}.
 %
-State updates can then be communicated to applications through the \ac{DI}, fulfilling the objective of the \ac{DT} in providing an up-to-date representation of the \ac{PA}.
-%
+We can represent the shadowing as a function $Shad$ that given an event from the \ac{PI} $e_{PA}$, the set of models $M$, and the history of previous states $H$, computes the new state of the \ac{DT} and generates an event $e_{DT}$ to be sent through the \ac{DI}:
+
+\begin{equation}
+        e_{DT}(S_{DT}) = Shad_{PA \rightarrow DT}(M, e_{PA}, H) \\
+\end{equation}
+
 The shadowing is bidirectional:
-when actions are invoked, the \ac{DT} receives an action request on its \ac{DI}, validates it through the model, and then it may propagate the request through its \ac{PI} to have an effect on the \ac{PA}.
+when actions are invoked, the \ac{DT} receives an action request $a_{DT}$ on its \ac{DI}, validates it through the models $M$ possibly evaluating the history $H$, and then it may propagate the request through its \ac{PI} sending a command $a_{PA}$ to have an effect on the \ac{PA}.
+
+\begin{equation}
+    a_{PA} = Shad_{DT \rightarrow PA}(M, a_{DT}, H)
+\end{equation}
+
 It is crucial to note that a digital action request does not directly change the state of the \ac{DT}.
 Any changes of the state occur only as a result of the propagation of physical changes from the \ac{PA} to the \ac{DT}.
 This abstract architectural model addresses the main functional requirements of a \ac{DT}.
 It provides a clear separation of concerns between different components focusing on the \emph{shadowing} process as the core responsibility of the \ac{DT} encapsulating the complexity of physical and digital interactions through the \ac{PI} and \ac{DI}. 
-%
+
+
+Finally, considering these additional specifications, the resulting \ac{DT} model enhances (\ref{eq:dt_basic_model}) to include also the shadowing $Shad$ and the history of states $H$ in the \ac{DT} definition:
+
+\begin{equation}\label{eq:5D_dt_model}
+    DT = \langle PI, M, Shad, H, DI \rangle
+\end{equation}
+
 In the following sections the abstract architecture will be refined to highlight how it can concretely be implemented to address challenges in \ac{DT} engineering.
-
-\todo{recover these figures}
-% \begin{figure}[t]
-%     \setlength{\belowcaptionskip}{-13pt}
-%     \centering
-%     \includegraphics[width=\columnwidth]{figures/engineering-wldt/wldt_architecture.pdf}
-%     \caption{WLDT Framework's Software Architecture.}
-%     \label{fig:wldt_architecture}
-% \end{figure}
-
-
-% \begin{figure}[t]
-%     \setlength{\belowcaptionskip}{-13pt}
-%     \centering
-%     \includegraphics[width=\columnwidth]{figures/engineering-wldt/wldt_lifecycle_simple.pdf}
-%     \caption{DT Life Cycle in WLDT with its phases and transitions.}
-%     \label{fig:wldt_life_cycle}
-% \end{figure}
-
 
 
 %=======================================================
-\section{Modular Design of \acl{DT} Interfaces}
+\section{Modular Design of Digital Twin Interfaces}
 %=======================================================
 
 As introduced in \Cref{sec:back:dt:interoperability}, interoperability is a key requirement for \ac{DT} development~\cite{Acharya_Khan_Päivärinta_2024,Klar_Arvidsson_Angelakis_2024}.
@@ -213,15 +245,13 @@ it is far more common to build a \ac{DT} aggregating different sources of inform
 %
 Arguably, the modularity of the \ac{PI}, which encapsulates these responsibilities, is a crucial factor in the design and implementation of interoperable \acp{DT}.
 %
-Accordingly, this work proposes designing the \ac{PI} as a composition of multiple \emph{\acp{PhA}}: specialized modules capable of interacting with the \ac{PA} using diverse protocols and data formats.
+Accordingly, the proposal is to design the \ac{PI} as a composition of multiple \emph{\acp{PhA}}: specialized modules capable of interacting with the \ac{PA} using diverse protocols and data formats.
 %
-As shown in Figure \ref{fig:physical_interoperability}, each \ac{PhA} is responsible for mediating the bi-directional interaction through a single communication channel, simplifying the design and reusability of the component, and making it configurable to adapt to different application contexts.
+As shown in Figure \ref{fig:physical_interoperability}, each \ac{PhA} is responsible for mediating the bidirectional interaction through a single communication channel, simplifying the design and reusability of the component, and making it configurable to adapt to different application contexts.
 %
 The responsibility of the \ac{PI} becomes then to manage the different \acp{PhA} and make sure the \ac{DT} model can accurately interpret, process, and leverage the data generated by the physical world to create the digital replica and implement its behaviors.
 %
 Note that although terminology of \ac{PhA} is borrowed from \cite{web-of-dt-ricci-2022}, where it is originally introduced, the \emph{Physical Asset Adapter} proposed in \cite{web-of-dt-ricci-2022} is in fact a conceptual monolithic component, whereas in this concrete proposal a \ac{PhA} is considered as a single-responsibility module of a potentially more complex \ac{PI}.
-
-%%% START BACK HERE %%%
 
 \paragraph{Generating \aclp{PAD}}
 To facilitate managing different \acp{PhA}, the concept \emph{\ac{PAD}} is introduced: a representation of the capabilities provided by a communication channel in terms of \emph{properties}, \emph{actions}, \emph{events}, and \emph{relationships} that characterize the associated \ac{PA}.
@@ -239,7 +269,7 @@ Confining this complexity within the \ac{PI} allows the \ac{DT} model to be agno
 
 The \ac{PAD} allows the \ac{PI} to discover, extract, and manage asset information and present it to the model that can choose which ones are relevant for the implementation of the \ac{DT} behavior.
 %
-For example, to create the \ac{DT} of a temperature sensors streaming binary data on MQTT, the \ac{PI} could be composed of a generic MQTT adapter, configured to correctly parse the payload as a decimal number, and generate a \ac{PAD} which advertise the available temperature property to the \ac{DT} model as a Celsius value. 
+For example, to create the \ac{DT} of a temperature sensor streaming binary data on MQTT, the \ac{PI} could be composed of a generic MQTT adapter, configured to correctly parse the payload as a decimal number, and generate a \ac{PAD} which advertise the available temperature property to the \ac{DT} model as a Celsius value. 
 
 
 \subsection{Digital Interoperability}
@@ -275,7 +305,7 @@ Using several \ac{DiA}, a \ac{DT} could, for instance, support both request-resp
 %
 This would make the development of the application simpler because adding an application-specific \ac{DiA} won't require intervention in the underlying physical system. 
 %
-Additionally, the developed application would be more robust and stable since it would depend only on the \ac{DT}, and changes to the physical configuration of the \ac{PA} (e.g., software updates, sensor replacement, network reconfigurations) would have no impact on the application software.
+Additionally, the developed application would be more robust and stable since it would depend only on the \ac{DT}, and changes to the physical configuration of the \ac{PA} (e.g., software updates, sensor replacement, network reconfiguration) would have no impact on the application software.
 %
 Even if the \ac{PA} were to change, (e.g., a software update on a robot changes the telemetry format) the \ac{DI} of the \ac{DT} could stay the same, as the changes would occur within the boundaries of the \ac{PI} and \ac{DT} model.
 %
@@ -307,7 +337,7 @@ To this end, using Semantic Web technologies (see \Cref{sec:back:web:semantic-we
 %     \label{fig:mf_dt_ecosystem}
 % \end{figure*}
 
-\subsection{\acl{WoT}: enabling \ac{DT} Interoperability}
+\subsection{\acl{WoT}: enabling DT Interoperability}
 \label{sec:wot-dt-interop}
 
 \ac{WoT}~\cite{wot-arch} standards (\Cref{chap:back:web:WoT}) share the goal of adopting uniform API and data format descriptions to hide low-level complexities and promote interoperability with the proposal of self-descriptive \ac{PhA} and \ac{DiA}.
@@ -340,7 +370,7 @@ Despite its flexibility,
 and broad applicability, 
 using of \ac{TD} for \acp{DT} presents several limitations in capturing the specific characteristics of \acp{DT} that distinguish them from \emph{Things}.
 %
-A path to address these limitations could be extending \acp{TD} or supporting additional descriptions specifically for \acp{DT} in \acp{DTE} as we explore in \Cref{chap:dte:hwodt}.
+A path to address these limitations could be extending \acp{TD} or supporting additional descriptions specifically for \acp{DT} in \acp{DTE} as explored in \Cref{chap:dte:hwodt}.
 
 
 
@@ -348,228 +378,418 @@ A path to address these limitations could be extending \acp{TD} or supporting ad
 \section{Managing the Digital Twin Lifecycle}
 %=======================================================
 
-% \subsubsection{\aclp{PAD} in the \ac{DT} Lifecycle}
 
-% The modular design of the \ac{PI} has an impact on the \ac{DT} lifecycle presented in Figure \ref{fig:lifecycle}.
-% %
-% Specifically, it tackles the open challenge of transitioning from the \texttt{Unbound} to the \texttt{Bound} state.
-% %
-% When a \ac{PhA} successfully connects to the \ac{PA}'s channel and starts receiving data from it, it can send the generated \ac{PAD} to the \ac{DT} model.
-% The generation of the \ac{PAD} can be used as a synchronization step to signify that the \ac{PhA} is successfully connected to the \ac{PA}.
-% %
-% The \ac{DT} model is then responsible for collecting the different \acp{PAD}, assessing whether all the relevant information to start computing the \ac{DT} state is available and, hence, moving on to the \texttt{Bound} phase.
-% %
-% This mechanism enables managing the \ac{DT} behavior consistently, even with the additional complexity of the modular \ac{PI} design.
-
-
-Recently, there has been an increasing recognition of the importance of the lifecycle of \acp{DT}, particularly in distinguishing the properties that define the relationship between the \ac{DT} and \ac{PA}. Key concepts such as \emph{reflection} and \emph{entanglement} are critical for accurately representing the \ac{PA}~\cite{dt-IoT-context-Minerva-2020, web_of_dt}. These properties underscore the necessity for a structured lifecycle for the \ac{DT}, ensuring that its state remains consistently aligned with the \ac{PA} throughout various stages. As highlighted in a recent survey~\cite{ferko2022architecting, 9640612, HRIBERNIK2021103508}, while the body of literature on \ac{DT} software architectures is growing, most papers are domain-specific and focus on reference models~\cite{1999daglib}. However, these models often lack concrete guidance on how to implement the internal components of a \ac{DT}. Many of the existing models envision multiple parallel components or models working together, but fail to address how they communicate and interact to maintain consistency in the \ac{DT} state. This gap leads to potential inconsistencies between the \ac{DT} and \ac{PA}, as the interaction between models and the management of state changes is not adequately captured~\cite{alam2017access,Malakuti2019fourlayer,Lpez2021}.
-
-In \cite{Redelinghuys2019}, a six-layer architecture for \acp{DT} is proposed, where the first two layers are dedicated to the \ac{PA} (sensors and controllers), and the third to the fifth layers manage data storage, communication, and cloud integration. However, the architecture lacks a clear process for how these layers communicate with each other or how changes in the \ac{DT} state are captured and updated across the layers. Similarly, in the Generic \ac{DT} Architecture (GDTA)~\cite{app10248903}, a layered approach is used, where the \ac{DT} state is computed at the \emph{information layer} through data processing pipelines. However, this architecture does not incorporate an explicit mechanism for the integration of the different components of the \ac{DT}, leaving gaps in how the evolving state of the \ac{DT} is managed. Other models explicitly reference multiple components that contribute to the definition of the \ac{DT} state. For example, in \cite{alam2017access} and similarly in \cite{Malakuti2019fourlayer}, the authors propose multi-layer \ac{DT} architecture for cyber-physical systems (CPS), where \ac{DT} state changes are driven by multiple functional units. However, in these models, the outputs of each unit are not mediated by a shadowing process, which would ensure consistency and synchronization of the \ac{DT} state and lifecycle management. Our approach addresses these issues by proposing a more structured lifecycle for \acp{DT}, where the communication and interaction between the different components are clearly defined. By introducing a shadowing process that orchestrates the different models, we ensure that the \ac{DT} state remains consistent and accurately reflects the evolving state of the \ac{PA}.
+Recently, there has been an increasing recognition of the importance of the lifecycle of \acp{DT},
+particularly in distinguishing the properties that define the relationship between the \ac{DT} and \ac{PA}. 
+%
+Key concepts such as \emph{reflection} and \emph{entanglement} are critical for accurately representing the \ac{PA}~\cite{dt-IoT-context-Minerva-2020,web-of-dt-ricci-2022}.
+%
+These properties underscore the necessity for a structured lifecycle for the \ac{DT}, ensuring that its state remains consistently aligned with the \ac{PA} throughout various stages.
+%
+As highlighted in recent surveys~\cite{ferko2022architecting, 9640612,Hribernik_Cabri_Mandreoli_Mentzas_2021}, while the body of literature on \ac{DT} software architectures is growing, most papers are domain-specific and focus on reference models.
+%
+However, these models often lack concrete guidance on how to implement the internal components of a \ac{DT}. Many of the existing models envision multiple parallel components or models working together, but fail to address how they communicate and interact to maintain consistency in the \ac{DT} state.
+This gap leads to potential inconsistencies between the \ac{DT} and \ac{PA}, as the interaction between models and the management of state changes is not adequately captured~\cite{alam2017access,Malakuti2019fourlayer,Lpez2021}.
 
 
-\subsection{Digital Twin Lifecycle}
+% In \cite{Redelinghuys2019}, a six-layer architecture for \acp{DT} is proposed, where the first two layers are dedicated to the \ac{PA} (sensors and controllers), and the third to the fifth layers manage data storage, communication, and cloud integration. However, the architecture lacks a clear process for how these layers communicate with each other or how changes in the \ac{DT} state are captured and updated across the layers. Similarly, in the Generic \ac{DT} Architecture (GDTA)~\cite{app10248903}, a layered approach is used, where the \ac{DT} state is computed at the \emph{information layer} through data processing pipelines. However, this architecture does not incorporate an explicit mechanism for the integration of the different components of the \ac{DT}, leaving gaps in how the evolving state of the \ac{DT} is managed. Other models explicitly reference multiple components that contribute to the definition of the \ac{DT} state. For example, in \cite{alam2017access} and similarly in \cite{Malakuti2019fourlayer}, the authors propose multi-layer \ac{DT} architecture for cyber-physical systems (CPS), where \ac{DT} state changes are driven by multiple functional units. However, in these models, the outputs of each unit are not mediated by a shadowing process, which would ensure consistency and synchronization of the \ac{DT} state and lifecycle management. Our approach addresses these issues by proposing a more structured lifecycle for \acp{DT}, where the communication and interaction between the different components are clearly defined. By introducing a shadowing process that orchestrates the different models, we ensure that the \ac{DT} state remains consistent and accurately reflects the evolving state of the \ac{PA}.
 
-A \ac{DT} is a ``living'' software entity:
-The concept of \ac{DT} lifecycle, as introduced in~\cite{web-of-dt-ricci-2022}, covers the various phases a \ac{DT} undergoes from creation to deactivation, focusing on its synchronization with the \ac{PA}.
-The phases are illustrated in Figure \ref{fig:lifecycle}.
-% The lifecycle includes the phases:
-% \texttt{Started},
-% \texttt{Unbound},
-% \texttt{Bound},
-% \texttt{Synchronized},
-% \texttt{Out of Sync},
-% \texttt{Done},
-% and \texttt{Stopped},
-% detailing the \ac{DT}'s interaction with the \ac{PA} and its software behavior.
-The \ac{DT} transitions from the \texttt{Unbound} phase, where internal modules are prepared, to the \texttt{Bound} phase once it successfully binds with the \ac{PA}.
-In the \texttt{Synchronized} phase, the \ac{DT} maintains an up-to-date digital replica of the \ac{PA}.
-If synchronization fails, the \ac{DT} enters the \texttt{Out of Sync} phase until issues are resolved.
-When the \ac{DT} is no longer required, it transitions to the \texttt{Done} phase, then to \texttt{Stopped}.
-Errors or reboots may lead back to the \texttt{Unbound} phase.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/wldt_lifecycle_simple.pdf}
+    \caption{DT Life Cycle with its phases and transitions.}
+    \label{fig:dt_life_cycle}
+\end{figure}
+
+
+%START FROM HERE
+
+%-------------------------------------------------------
+\subsection{A Digital Twin Synchronization Lifecycle}
+%-------------------------------------------------------
+
+The concept of a \ac{DT} lifecycle has recently been introduced and examined, focusing on its core components and the integration of both the software nature of the \ac{DT} and its ability to synchronize with the \ac{PA} over time~\cite{web-of-dt-ricci-2022}.
+%
+This lifecycle encompasses the various phases that a \ac{DT} undergoes, as shown in Figure~\ref{fig:dt_life_cycle}, from its creation to deactivation.
+%
+Since a \ac{DT} is fundamentally a software entity, it is vital to track the evolution of such phases considering the different stages of synchronization with its \ac{PA}.
+Proper observation and modeling of this lifecycle are essential to ensure that the \ac{DT} representation can be trusted to reflect the physical counterpart's state consistently when the \ac{DT} is \texttt{Synchronized} and can instead be considered to be outdated in the other phases.
+
+The execution lifecycle of a \ac{DT} can be modeled as follows.
+Upon creation (from the \texttt{Started} phase),
+the \ac{DT} enters the \texttt{Unbound} phase, where all internal modules are initialized and prepared for the binding process with the \ac{PA}.
+%
+Once the \ac{DT} successfully binds to its \ac{PA},
+meaning the \ac{PA} meets the necessary requirements (expected functionalities and properties)
+and the \ac{DT} can communicate with it,
+the \ac{DT} enters the \texttt{Bound} phase.
+%
+During this phase, the \ac{DT} is connected to the \ac{PA} and is ready to begin the shadowing process.
+
+The next phase is the \texttt{Synchronized} phase, 
+this is different from simply having established a connection with the \ac{PA}, 
+but rather indicates that the \ac{DT} is complying with application-specific requirements
+and is receiving the necessary and correct amount of information to be fully aligned with its \ac{PA}.
+%
+During the synchronization phase the \ac{DT} can compute the \ac{DT} state ($S_{DT}$), ensuring that it is able to accurately reflects the status of its physical counterpart.
+
+If any issues arise, such as network failures, and the \ac{DT} synchronization performance falls under the expected requirements, the \ac{DT} enters the \texttt{Out of Sync} phase.
+In this state, the \ac{DT}---while still operational---is unable to update its state reliably. 
+%
+Eventually, the \ac{DT} may return to the \texttt{Synchronized} phase.
+
+Finally, when the \ac{DT} is no longer required or has completed its function, it transitions to the \texttt{Done} phase.
+In this phase, the \ac{DT} remains accessible to external consumers and retains its memory, but it is no longer bound to the \ac{PA} or in sync with it. At the end of the lifecycle, the \ac{DT} can be dismissed and moved to the \texttt{Stopped} phase.
+Throughout its lifecycle, the \ac{DT} may also return to the \texttt{Unbound} phase if errors are detected during the binding process or if it is rebooted or restarted.
+
+
+%-------------------------------------------------------
+\subsection{Binding the DT with the PA}
+%-------------------------------------------------------
 
 The transition from the Unbound to Bound phase in the \ac{DT} lifecycle remains an open research area:
 a key challenge is identifying whether all the capabilities of the \ac{PA} relevant to support the \ac{DT}'s behavior are available so that the shadowing process can start.
-We further elaborate on how to tackle this challenge with our contribution in Section~\ref{sec:physical_interoperability}.
 
-%%%
-\begin{figure}[t]
-    \setlength{\belowcaptionskip}{-13pt}
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/dt-interoperability/dt-lifecycle.pdf}
-    \caption{\acl{DT} lifecycle phases and transactions.}
-    \label{fig:lifecycle}
-\end{figure}
+The modular design of the \ac{PI} presented in the previous section (\Cref{ssec:dte:dt-engineering:physical_interoperability}) can have support this transition.
+%
+Namely, once a \ac{PhA} successfully connects to the \ac{PA}'s channel and starts receiving data from it, it can send the generated \ac{PAD} to the \ac{DT} model.
+The generation of the \ac{PAD} can be used as a synchronization step to signify that the \ac{PhA} is successfully connected to the \ac{PA}.
+%
+The \ac{DT} model is then responsible for collecting the different \acp{PAD}, assessing whether all the relevant information to start computing the \ac{DT} state is available and consequently moving on to the \texttt{Bound} phase.
+%
+This mechanism enables managing the \ac{DT} behavior consistently, even with the additional complexity of the modular \ac{PI} design.
 
-\begin{figure*}[t]
-    \setlength{\belowcaptionskip}{-13pt}
-    \centering
-    \includegraphics[width=\textwidth]{figures/dt-lifecycle/dt_model_lifecycle_dt_pt.pdf}
-    \caption{A schematic representation of a DT, emphasizing its lifecycle alongside that of its physical counterpart.}
-    \label{fig:dt_model_pt_dt_lifecycles}
-\end{figure*}
+Of course the challenge still stands in managing each individual \ac{PhA} connection, but this decoupling through \acp{PAD} allows \ac{DT} developers to establish functional binding requirements that are independent of technical details. 
+
+%--------------------------------------------------------
+\subsection{Managing DT and PA Synchronization}
+%--------------------------------------------------------
 
 
-\begin{figure*}[t]
-    \setlength{\belowcaptionskip}{-13pt}
+The most significant challenge in current \ac{DT} lifecycle modeling is the broad characterization of the \texttt{Synchronized} phase, which
+only generically considers synchronization requirements between the \ac{PA} and the \ac{DT}, without having explicit awareness of the \ac{PA} lifecycle and the potential changes in its operational context.
+This general and unstructured approach limits the ability to model the lifecycle in a consistent and uniform manner, failing to properly address the dynamism of the \ac{PA} behavior.
+
+The \texttt{Synchronized} phase of the \ac{DT}'s lifecycle assumes a continuous exchange of information between the \ac{DT} and its associated \ac{PA} usually measured to maintain a frequency within a given threshold, to guarantee that information on the \ac{DT} is \emph{fresh} and can hence be trusted as a valid representation of the \ac{PA} state. 
+
+However, this general assumption may not always hold true due to variations in the \ac{PA}'s internal states.
+% The issue arises because \ac{PA} can adjust telemetry frequency and have different value ranges over time, depending on the phases of their lifecycle and their operational context (e.g., from \texttt{Ready} to \texttt{Working}).
+% These variations introduce complexity in maintaining the cyber-physical alignment. 
+% Without appropriate modeling, these changes might be misinterpreted as failures while they are instead expected variations due to the \ac{PA}'s phase transition.
+%
+In some cases, \acp{PA} can enter operational states that temporarily inhibit their ability to communicate, even while maintaining an active connection to the \ac{DT}.
+These are scenarios in which the absence of messages from the \ac{PA} does not necessarily indicate a failure or misalignment but rather reflects the \ac{PA}'s operational context.
+For instance, a \ac{PA} might enter a \texttt{Rebooting} state during which it cannot send telemetry data.
+Similarly, resource constraints on the \ac{PA}, such as \textit{CPU overload} or \textit{network bandwidth exhaustion}, may result in disrupted or paused communication that may or may not be tolerable for the \ac{DT} model and application.
+%
+In other cases, the \ac{PA} may not entirely cease communication but instead alter its update frequency in response to operational changes. For example, an industrial robotic arm might increase its data transmission frequency during a high-precision assembly task to provide real-time feedback, while it could reduce the update rate to conserve energy and network bandwidth when in an idle or maintenance mode.
+
+
+\begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/dt-lifecycle/dt_lifecycle_pt_sync.pdf}
-    \caption{Schematic representation of the DT lifecycle with a structured example of the Synchronized phase.}
+    \caption{Schematic representation of the \ac{DT} lifecycle with a structured example of the Synchronized phase.}
     \label{fig:dt_lifecycle_pt_sync}
-\end{figure*}
+\end{figure}
+
+
+This adaptive behavior necessitates that the \ac{DT} \emph{dynamically adjust its expectations} and processing strategies based on the \ac{PA}'s operational state, avoiding false-positive anomalies caused by \emph{intentional} communication variability.  
+By distinguishing between inhibited communication (e.g., \texttt{Rebooting} or \texttt{Overloaded}) and adjusted communication patterns (e.g., frequency scaling in \texttt{Idle} vs. \texttt{Active} states), the \ac{DT} can better align with the \ac{PA}'s lifecycle.
+This alignment ensures the \ac{DT} remains a reliable digital counterpart, accurately reflecting the \ac{PA}'s operational context and providing a robust foundation for decision-making.  
+
+To address these situations, the \ac{DT} must incorporate mechanisms to: 
+\begin{itemize}
+    \item \emph{Detect and Classify Non-Communication States:} Recognize when the lack of communication from the \ac{PA} is due to a valid operational state (e.g., rebooting) rather than a system failure;
+    \item \emph{Model \ac{PA} State-Dependent Communication Behavior:} Explicitly account for \ac{PA} states that imply non-communication, such as \textit{idle}, \textit{rebooting}, or \textit{overloaded}, within the lifecycle framework. 
+\end{itemize}
+This requires extending the \ac{DT} lifecycle model (\Cref{fig:dt_life_cycle}) to represent such scenarios accurately.
+
+
+The proposal is to refine the \texttt{Synchronized} phase by introducing sub-phases that correspond to the \ac{PA}'s operational states (\Cref{fig:dt_lifecycle_pt_sync}).
+For example, in the industrial domain, a \ac{DT} of a machine may enter the \texttt{Synchronized} phase but should then transition through more specific sub-phases such as \texttt{Ready}, \texttt{Working}, or \texttt{Busy}.
+Each of these sub-phases would have clearly defined transition criteria, phases, and associated $S_{\ac{DT}}$, providing a more granular and accurate representation of the \ac{DT}'s behavior.
+
+To formalize this approach, the overall \ac{DT} lifecycle phase at a given time $t$ $LP_{DT}(t)$ can be defined as a composition of the \ac{PA} lifecycle phase $LP_{PA}(t)$ and the \ac{DT} software lifecycle phase $LP_{Soft.}(t)$, as shown in Eq.~\ref{eq:lpdt_definition}.
+
+\begin{equation}
+LP_{DT}(t) = \langle  LP_{PA}(t), LP_{Soft.}(t)\rangle
+\label{eq:lpdt_definition}
+\end{equation}
+
+The \ac{DT} representation of the asset $R_{DT}$ can hence be characterized at any given time instant $t_i$ by its lifecycle phase $LP_{DT}(t_i)$, its current state $S_{DT}(t_i)$, and its history $H(t_a, t_b)$ over a specific time interval $(t_a, t_b)$, as shown in Eq.~\ref{eq:dt-definition}.
+
+\begin{equation}
+R_{DT}(t_i) = \langle LP_{DT}(t_i), S_{DT}(t_i), H(t_a, t_b)\rangle \quad \text{and} \quad  t_a, t_b \leq t_i
+\label{eq:dt-definition}
+\end{equation}
+
+The values of the different components of the \ac{DT} at the time instant $t_i$ can then be mapped as a function of the different possible values of $LP_{Soft.}$, as detailed in Eq.~\ref{eq:lpdt_complete_mapping}.
+
+\begin{equation}
+\begin{split}
+R_{DT}(t_i) = {} &
+\begin{cases}
+    LP_{PA} = \emptyset, \ S_{DT} = \emptyset, \ H = \emptyset,\\
+    \quad \text{if } LP_{Soft.} \in \{\texttt{Started}, \texttt{Stopped}\}, \\[0.4em]
+    LP_{PA} = \emptyset, \ S_{DT} = \emptyset, \ H = H(t_f, t_o),\\
+    \quad \text{if } LP_{Soft.} \in \{\texttt{UnBound}, \texttt{Bound}, \texttt{OutOfSync}\}, \\[0.4em]
+    LP_{PA} = LP_{PA}(t_i), \ S_{DT} = S_{DT}(t_i), \ H = H(t_f, t_i),\\
+    \quad \text{if } LP_{Soft.} = \texttt{Synchronized},\\[0.4em]
+    LP_{PA} = \emptyset, \ S_{DT} = \emptyset, \ H = H(t_f, t_d),\\
+    \quad \text{if } LP_{Soft.} = \texttt{Done}
+\end{cases}
+\end{split}
+\label{eq:lpdt_complete_mapping}
+\end{equation}
+
+When $LP_{Soft.}$ is \texttt{Started}, it represents the initialization phase where the \ac{DT} software has been instantiated. At this stage, $LP_{PA}$ is undefined since no communication with the \ac{PA} has been established. 
+Similarly, $S_{DT}$ has not been computed, as the \ac{DT} has not acquired any state information. The history $H$ is also empty, as no synchronization or state updates have occurred yet.
+
+When $LP_{Soft.}$ is \texttt{Unbound}, it indicates that the \ac{DT} is operational but not yet synchronized.
+In this phase, $LP_{PA}$ remains undefined because the \ac{PA} lifecycle phase cannot be detected.
+$S_{\ac{DT}}$ is also undefined since the \ac{DT} can not compute the state yet.
+However, the history $H$ retains information about events recorded from the first connection data received from the \ac{PA} $t_{f}$ to the moment the \ac{DT} transitioned out of the synchronized phase, marked by $t_{o}$.
+%
+The same happens when the \ac{DT} is \texttt{Bound}, as the state has not been computed yet, 
+or if the \ac{DT} is \texttt{Out of Sync}, as the state can no longer be updated.
+
+When $LP_{Soft.}$  is \texttt{Synchronized}, the \ac{DT} is fully synchronized with the \ac{PA}.
+In this state, $LP_{PA}$ corresponds to the lifecycle phase of the PA (e.g., in the example of Fig.~\ref{fig:dt_lifecycle_pt_sync}, this could be the \texttt{Working} phase) at the time $t_i$.
+At this point, $S_{DT}$ contains the current computed state of the \ac{DT}, reflecting the alignment between the \ac{DT} and \ac{PA}.
+The history $H$ encompasses all events and states up to the current time $t_{i}$, documenting the \ac{DT}'s evolution in sync with the PA.
+If the \ac{DT} operates correctly, it can remain in the \textit{Synchronized} phase for the duration of its lifecycle, continually updating as the PA's lifecycle progresses.
+During this phase, multiple records of lifecycle evolution can be captured as $LP_{PA}$ evolves (e.g., moving from \texttt{Working} to \texttt{Busy}), and multiple computations of $S_{DT}$ may occur within the same $LP_{PA}$.
+For instance, while in the \texttt{Working} phase, the \ac{DT} could compute multiple states corresponding to variations in physical properties such as accelerometer readings or energy consumption, ensuring the \ac{DT} continuously reflects the PA's behavior in a dynamic and precise manner.
+
+When $LP_{Soft.}$ is \texttt{Done}, the \ac{DT} synchronization has been intentionally paused, and the \ac{DT} remains active for accessing stored information. In this phase, $\text{LP}_{PA}$ is empty, $S_{DT}$ is empty, and $H$ contains the history until the time the \ac{DT} is decommissioned denoted as $t_{d}$.
+
+Finally, when $LP_{Soft.}$ is \texttt{Stopped}, the \ac{DT} lifecycle is terminated. $LP_{PA}$ is empty, $S_{DT}$ is empty, and $H$ is also empty, as the \ac{DT} is offline and data is no longer accessible.
+
+By clearly defining and distinguishing between the various phases, the approach enhances the alignment between \ac{DT}s and their physical counterparts, ensuring that each transition and state change is accurately captured and reflected.
+The main benefits of this approach include: 
+\begin{itemize}
+    \item \textit{Enhanced Cyber-Physical Awareness}: a structured lifecycle model ensures that critical transitions of phases and states of the \ac{PA} are precisely tracked and understood, enhancing the overall awareness and responsiveness of the system;
+    \item \textit{Better Decision-Making}: with a clear understanding of each phase and its impact, applications and services can make more informed decisions based on accurate and timely information about the current relationship between \ac{PA} and \ac{DT};
+    \item \textit{Adaptability}: this structured approach can be adapted to various applications, making it versatile and applicable across different domains.
+\end{itemize}
+
+The approach assumes that the $L_{PA}$ is either provided by the \ac{PA} or can be identified by the \ac{DT} model (e.g., through a classification model).
+Modeling these phases can be challenging, especially for complex \acp{DT}.
+Despite improved cyber-physical awareness, phases may still be incorrectly mapped due to unforeseen external factors.
+Additionally, phase tolerance could impact anomaly detection within the DT, necessitating methodological trade-offs to set this tolerance correctly.
+
+Despite these open challenges, the proposed structured lifecycle model represents an advancement in managing \ac{DT} synchronization with their physical counterparts, providing a robust foundation for future developments.
+
+%=======================================================
+\section{Modeling Augmentation Functionalities}
+%=======================================================
+
+\acp{PA} are typically limited by the nature of their physical characteristics throughout their lifecycle. In contrast, \acp{DT} can capitalize on software-based flexibility to modify, update, and enhance functionality over time.
+These enhancements are accessible through \ac{DT} \acp{API} and can be powered by data-driven models possibly enabling adaptive and intelligent behaviors.
+This core property of \acp{DT} is known as \emph{augmentation}~\cite{dt-IoT-context-Minerva-2020}.
+
+Examples of DT-enabled augmentation include adding technical features to retrofit devices through external software, such as enhancing interoperability of \ac{IoT} devices via protocol and data format translation. Another example involves improving security and addressing unresolved bugs by mediating interactions with outdated devices that no longer receive updates. Additionally, \acp{DT} can enhance device services by introducing new high-level actions for operations, or by implementing advanced functionalities powered by machine learning and \ac{AI} algorithms, such as forecasting, anomaly detection, and pattern recognition (\Cref{sec:back:dt:ai}).
+
+Despite the acknowledgment of augmentation as a defining feature of \acp{DT},
+this property is often defined only conceptually, with implementations tailored to specific vertical cases.
+The lack of a reference model for defining \ac{DT} augmentation results in unclear design patterns and potential performance limitations.
+Indeed, without a well-defined and measurable boundary for augmentation features---including resource allocation---the \ac{DT} risks failing to achieve its design goal of accurately representing the \ac{PA} with sufficient \emph{fidelity}~\cite{Bellavista_Bicocchi_Fogli_Giannelli_Mamei_Picone_2023}.
+
+%--------------------------------------------
+\subsection{Extending the DT Model with Augmentation}
+%--------------------------------------------
+
+Recalling the \ac{DT} model structure introduced in \Cref{sec:dte:engineering-dt:abstract-architecture}. 
+We here extend it to explicitly include augmentation functionalities.
+%
+In practical terms, augmentation serves as a bridge transforming raw data into meaningful, actionable outcomes guided by the underlying model.
+\acp{DT} may expose additional services and functionalities that enhance the capabilities of the \ac{PA}.
+We can represent such functionalities as a set of \emph{augmentation functions} $F$, where $Augm_{i}$ denotes the individual augmentation functions implemented within the DT. Each augmentation function $Augm_i$ may leverage a specific model $m \in M$, to interpret and respond to changes in the DT.
+
+\begin{equation}\label{eq:augm_set}
+    F = \{Augm_{1}, Augm_{2}, \dots, Augm_{n}\}\\
+\end{equation}
+
+The model in \Cref{eq:5D_dt_model} can hence be extended to: 
+
+\begin{equation}
+DT = \langle PI, M, Shad, F, H, DI \rangle
+\tag{\ref{eq:5D_dt_model}}
+\end{equation}
+
+We distinguish augmentation functions based on two aspects:
+
+
+\paragraph{Triggering mechanism} (\( \tau \)): defines how and when the function is activated in response to events within the \ac{DT}.
+%
+\begin{equation}
+\tau \in \{ e_{DT}, e_{Aug}, e_{Time} \}  \sigma \in \{S_{aug}, \varnothing\}
+\end{equation}
+%
+\(\tau\) can be an event of three types:
+%
+\begin{itemize}
+\item \( e_{DT} \) represents the output from the shadowing process indicating a new computation of the \ac{DT} state \( S_{DT} \);
+\item \( e_{Aug} \) can be generated either as the output of another augmentation function or as a direct invocation by the shadowing process;
+\item \( e_{Time} \) refers to temporal triggers and can be used to model periodic execution or specific scheduled tasks.
+\end{itemize}
+%
+Notably, augmentation functions can not respond to triggers coming directly from the \ac{PI} as such $e_{PA}$.
+Physical events need to be processed by the shadowing process first, which may in turn select the activation of a relevant augmentation function firing a specific $e_{Aug}$.
 
 
 
-\subsection{Defining Digital Twin Lifecyle}
+\paragraph{State management} (\( \sigma \)): indicates whether the function maintains an internal state that persists over time or is \emph{stateless}.
+%
+\begin{equation}
+\sigma \in \{S_{aug}, \varnothing\}
+\end{equation}
+%
+A stateful function possesses a state \( S_{Aug} \) that evolves and persists over time in alignment with the evolution of the \ac{DT}.  
+A stateless function simply reacts to triggers without maintaining any memory of previous invocations.  
+Notably, modeling stateful functions allows for the representation of processes that may even run in parallel with the \ac{DT} main control flow, producing new events \( e_{Aug} \) asynchronously.  
+Since the function is stateful, it is triggered to start but can persist over time, as its execution is fully encapsulated within the function context. Additionally, the function may receive new triggers over time that feed into its ongoing process.
 
-The concept of a DT lifecycle has recently been introduced and examined, focusing on its core components and the integration of both the software nature of the DT and its ability to synchronize with the Physical Twin (PT) over time~\cite{web_of_dt}.
-This lifecycle encompasses the various phases that a DT undergoes, as shown in Figure~\ref{fig:dt_model_pt_dt_lifecycles}, from its creation to deactivation. It describes how the DT should interact with its associated physical counterpart and how the software components are designed to manage the DT's behavior during each phase.
-Since a DT is fundamentally a software entity, it is vital to track the evolution of such phases considering the different stages of software deployment, activation, and monitoring.
-Proper observation and modeling of this lifecycle are essential to ensure that the DT representation can be trusted to reflect the physical counterpart's state consistently when the DT is \texttt{Synchronized} and can instead be considered to be outdated in the other phases.
+The output of an augmentation function \( Augm_{i} \) is determined by its inputs and can be expressed as:
 
-The execution lifecycle of a DT can be modeled as follows.
-Upon creation (from the \texttt{Started} phase), DT enters the \texttt{Unbound} phase, where all internal modules are initialized and prepared for the binding process with the PT.
-This transition may occur automatically upon creation or may be triggered by an external component, such as the system initiating the DT instance.
-Once the DT successfully binds to its PT, meaning the PT meets the necessary requirements (expected functionalities and properties) and the DT can communicate with it, the DT enters the \texttt{Bound} phase. During this phase, the DT is connected to the PT and is ready to begin the shadowing process.
-The next phase is the \texttt{Synchronized} phase, where the DT has received the necessary and correct amount of information to be fully aligned with its PT.
-This synchronization involves applying the model and computing the associated $S_{DT}$, ensuring that it is able to accurately reflects the status of its physical counterpart.
-In this phase, the DT maintains an up-to-date digital replica of its PT, enabling continuous interaction and event handling.
-If any issues arise, such as network failures, and the DT synchronization performance falls under the expected requirements, the DT enters the \texttt{Out of Sync} condition.
-In this state, the DT is unable to update its state or maintain functionality according to its model.
-Once the issue is resolved, the DT returns to the \texttt{Synchronized} phase.
-When the DT is no longer required or has completed its function, it transitions to the \texttt{Done} phase.
-In this phase, the DT remains accessible to external consumers and retains its memory, but it is no longer bound to the PT or in sync with it. At the end of the lifecycle, the DT can be dismissed and moved to the \texttt{Stopped} phase.
-Throughout its lifecycle, the DT may also return to the \texttt{Unbound} phase if errors are detected during the binding process or if it is rebooted or restarted.
+\begin{equation}
+    Augm_{i}(\tau, m, \sigma, H) =
+    \begin{cases}
+    e_{Aug} & \text{\textbf{if} $m$ matches}\\
+    \varnothing & \text{\textbf{otherwise}}
+    \end{cases}
+\end{equation}
+
+The triggering event $\tau$ may carry important information for the function execution.
+The parameter $m \in M$ represents the model used within the augmentation function, encapsulating the rules, logic, and conditions that define how the function interprets its inputs and determines the output.
+The model is crucial for evaluating whether the function should generate an output based on the current state of the function $\sigma$ and context, which is represented by the \ac{DT} history $H$ which includes the latest state $S_{DT}$.
+
+The output \( e_{Aug} \) represents an event generated by the augmentation function, signaling that the conditions defined by the model \( m \) have been met. Conversely, if the conditions are not satisfied (i.e., if \( m \) does not align with the current state or inputs), the output will be \( \varnothing \), indicating that no new event has been produced.  
+This approach captures the idea that the execution of an augmentation function does not always result in the generation of a new event. For example, in the case of an anomaly detection model, an event is only triggered when an anomaly is detected with a certain confidence threshold, meaning that no event is generated if the conditions for an anomaly are not met.
+Since $e_{Aug} \in \tau$, augmentation functions can also be chained to model processing pipelines triggered by the outputs of previous functions.
+
+%--------------------------------------------
+\subsection{Impact on Shadowing}
+%--------------------------------------------
+
+The introduction of augmentation functions requires to adapt the shadowing process to handle augmentation events. Indeed, the shadowing process should be capable of receiving relevant augmentation events (e.g., detected anomalies) and use them to update the state of the DT, as illustrated below:
+
+\begin{equation}
+    e_{DT}(S_{DT}) = Shad_{DT \rightarrow DT}(M, e_{Aug}, H)
+\end{equation}
+
+The same principle applies when a physical event triggers an augmentation function. There is no direct link between physical world events (\( e_{PA} \)) and augmentation functions; 
+instead, the decision to trigger an augmentation function based on the receipt of a physical event is mediated by the shadowing process.
+The shadowing process analyzes the \( e_{PA} \) and determines whether it is relevant for an augmentation function in $F$ (or multiple functions simultaneously).  If the event is deemed as relevant, the shadowing process generates a trigger by producing an augmentation event (\( e_{Aug} \)), which then serves as the trigger \( \tau \) for one or more augmentation functions.
+
+\begin{equation}
+    e_{Aug} = Shad_{PA \rightarrow DT}(M, e_{PA}, H, F)
+\end{equation}
 
 
-\note{TODO FIX EQUATION}
-\begin{figure*}[t]
+Similarly, actions requests that are received by the \ac{DT} ($a_{DT}$) can also trigger augmentation functions.
+Again, there is no direct relationship between the action taken on the DT, as represented by its state, and the execution of the augmentation function. Instead, this process also goes through the shadowing process, which matches the request received on the \ac{DI} with the corresponding augmentation function trigger, thus generating an augmentation event that will serve as the trigger for the augmentation function.
+This can be used to model a request-response pattern for the execution of augmentation functions such as requesting the predicted next state of the \ac{DT}. In such cases, since the result of the augmentation does not impact the state of the \ac{DT}, the result can be directly routed to the external consumer of the \ac{DT}.
+
+\begin{equation}
+    e_{Aug} = Shad_{DT \rightarrow DT}(M, a_{DT}, H, F)
+\end{equation}
+
+
+Despite the shadowing might not be required to validate the result of an augmentation function triggered by an action request, it is still enforced to handle the incoming requests. 
+This design aims to decouple the available implementations of the augmentation functions from the actions presented on \ac{DI} and handle this transparently from the consumer perspective.
+For example, there might be several augmentation functions implementing a given functionality and it would be up to the shadowing process to determine which one is best suited to respond to a specific request depending on the current context of the \ac{DT} (e.g. the state prediction functionality could be implemented using different specialized models depending on some conditions in the state of the \ac{DT}).
+
+%----------------------------------------------
+\subsection{Engineering Augmentation Functions}
+%----------------------------------------------
+
+Engineering augmentation functions following the proposed model requires defining
+software architectural patterns that can be practically applied to implement them.
+Depending on the implementation, it is possible to define \emph{internal} and \emph{external} augmentation.  
+This setup allows for the dynamic addition of new functionalities to the \ac{DT}, either through external or internal processing.
+
+\begin{figure}
     \centering
-    \captionsetup{type=equation}
-    \begin{minipage}{\textwidth}
-        % \begin{equation}
-        %     \text{LP}_{\text{DT}}(t) = \langle \text{V}, \text{LP}_{\text{PT}}, \text{S}_{\text{DT}}, \text{H}_{DT} \rangle
-        %     \label{eq:lpdt_definition}
-        % \end{equation}
-         \begin{equation}
-            LP_{DT}(t) = \langle  LP_{PT}(t), LP_{Soft.}(t)\rangle
-            \label{eq:lpdt_definition}
-        \end{equation}
-        \begin{equation}
-            DT(t_i) = \langle LP_{DT}(t_i), S_{DT}(t_i), H(t_a, t_b)\rangle \quad \text{and} \quad  t_a, t_b \leq t_i
-        \label{eq:dt-definition}
-        \end{equation}
-        \begin{equation}
-            DT(t_i) =
-            \begin{cases}
-                LP_{PT} = \emptyset, \ S_{DT} = \emptyset, \ H = \emptyset & \text{if } LP_{Soft.} \in \{\text{\texttt{Started}, \texttt{Stopped}}\} \\
-                LP_{PT} = \emptyset, \ S_{DT} = \emptyset, \ H = H(t_f, t_o) & \text{if } LP_{Soft.} \in \{\text{\texttt{UnBound}, \texttt{Bound}, \texttt{OutOfSync}, \texttt{Done}}\} \\
-                LP_{PT} = \emptyset, \ S_{DT} = \emptyset, \ H = H(t_f, t_d) & \text{if } LP_{Soft.} = \text{\texttt{Done}} \\
-                LP_{PT} = LP_{PT}(t_i), \ S_{DT} = S_{DT}(t_i), \ H = H(t_f, t_i) & \text{if } LP_{Soft.} = \text{\texttt{Synchronized}}
-            \end{cases}
-            \label{eq:lpdt_complete_mapping}
-        \end{equation}
-    \end{minipage}
-\end{figure*}
+    \includegraphics[width=\textwidth]{figures/event_driven_augmentation.pdf}
+    \caption{Event-Driven architecture of a DT to support and enable effective Augmentation function management and execution.}
+    \label{fig:event_driven_augmentation}
+\end{figure}
 
-\subsection{Challenges in Life Cycle Harmonization}
-\label{sec:challenges}
+As \Cref{fig:event_driven_augmentation} shows, the core architecture of the \ac{DT} is centered around a shared \texttt{Event Bus}, which serves as the communication backbone, handling events and actions within the \ac{DT} system.
+Starting from the \ac{PI}, physical events \( e_{PA} \) are processed by the \texttt{Shadowing Function} ($Shad$) which computes the \ac{DT} State $S_{DT}$ based on the received events and the \texttt{\ac{DT} Models} ($M$), ensuring that the \ac{DT} accurately reflects the current state of the \ac{PA}.
+The \texttt{\ac{DT} State} component maintains this state in memory, while the \texttt{History} ($H$) component persists past events and states for reference and analysis.
 
-A key challenge in current DT lifecycle modeling is the broad characterization of the \texttt{Synchronized} phase, which 
-%lacks a clear distinction between the lifecycle phases of the PT and the DT.
-only generically considers synchronization requirements between the PT and the DT, without having explicit awareness of the PT lifecycle and the potential changes in its operational context.
-This general and unstructured approach limits the ability to model the lifecycle in a consistent and uniform manner, failing to properly address the dynamism of the PT behavior. %transitions and phases that the DT undergoes in alignment with the PT. 
+\texttt{Augmentation Functions} (\( Augm_{i} \)) provide additional capabilities or insights to the \ac{DT}, interacting with \( M \), \( H \), and internal state information \( \sigma \).
+The interaction between the \( Shad \) and the \( Augm_{i} \) is entirely event-driven, based on trigger events \( \tau \) and \( e_{Augm} \) flowing out of the augmentation functions with their results.
+These results are then sent to the \( Shad \) for further state computation and to the \texttt{Digital Interface} (\( DI \)) to respond to requests for \( Augm_{i} \) from external services and applications.
+The \( DI \), mirroring the \ac{PI}, handles outgoing events of the \ac{DT} (e.g., \( e_{DT} \) carrying the new \( S_{DT} \) or its variations) or \( e_{Augm} \) with the results of an augmentation function, and manages incoming actions and requests from digital entities as digital actions \( a_{DT} \).
 
-As previously introduced, the lifecycle of a DT consists of several phases related to its execution as a software entity.
-Among these, the \texttt{Synchronized} state is particularly critical, as it assumes a continuous exchange of information between the DT and its associated PT.
-This exchange typically occurs at a known frequency, enabling the DT to maintain an up-to-date digital representation of the PT.
-However, this general assumption may not always hold true due to variations in the PT's internal states.
-The issue arises because PT can adjust telemetry frequency and have different value ranges over time, depending on the phases of their lifecycle and their operational context (e.g., moving from \texttt{Ready} to \texttt{Working}).
-These variations introduce complexity in maintaining the cyber-physical alignment between. Without appropriate modeling, these changes might be misinterpreted as failures while they are expected variations due to the PT's phase transition.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/augmentation_patterns.pdf}
+    \caption{Patterns for augmentation functions execution: internally (left), externally (center), or through a hybrid solution (right).}
+    \label{fig:augm_function_event_driven_patterns}
+\end{figure}
 
-Furthermore, PTs can enter operational states that temporarily inhibit their ability to communicate, even while maintaining an active connection to the DT. For instance, a PT might enter a \texttt{Rebooting} state during which it cannot send telemetry data.
-Similarly, resource constraints on the PT, such as \textit{CPU overload} or \textit{network bandwidth exhaustion}, may result in disrupted or paused communication that may or may not be tolerable for the DT model and application.
-These states introduce scenarios where the absence of messages from the PT does not necessarily indicate a failure or misalignment but rather reflects the PT's operational context. 
-In other cases, the PT may not entirely cease communication but instead alter its update frequency in response to operational changes. For example, an industrial robotic arm might increase its data transmission frequency during a high-precision assembly task to provide real-time feedback, while in an idle or maintenance mode, it could reduce the update rate to conserve energy and network bandwidth.
-This adaptive behavior necessitates that the DT dynamically adjust its expectations and processing strategies based on the PT's operational state, avoiding false-positive anomalies caused by intentional communication variability.  
-By distinguishing between inhibited communication (e.g., \texttt{Rebooting} or \texttt{Overloaded}) and adjusted communication patterns (e.g., frequency scaling in \texttt{Idle} vs. \texttt{Active} states), the DT can better align with the PT's lifecycle. This alignment ensures the DT remains a reliable and synchronized digital counterpart, accurately reflecting the PT's operational context and providing a robust foundation for decision-making.  
 
-To address these situations, the DT must incorporate mechanisms to: \textit{(i) Detect and Classify Non-Communication States:} Recognize when the lack of communication from the PT is due to a valid operational state (e.g., rebooting) rather than a system failure; \textit{(ii) Model PT State-Dependent Communication Behavior:} Explicitly account for PT states that imply non-communication, such as \textit{idle}, \textit{rebooting}, or \textit{overloaded}, within the lifecycle framework. This requires extending the DT state model to represent such scenarios accurately.  
+Based on this event-driven model, we identify three approaches for implementing augmentation functions (\Cref{fig:augm_function_event_driven_patterns}):
+\begin{itemize}
+    \item \textit{internal} augmentation, where functions are executed within the \ac{DT} process;
+    \item \textit{external} augmentation, where functions are executed outside the \ac{DT} process by means of an external service;
+    \item \textit{hybrid} augmentation, where functions are executed through a combination of internal and external processes.
+\end{itemize}
 
-By integrating these considerations, the DT lifecycle framework can better align with the operational realities of the PT, ensuring robust synchronization even in the face of irregular communication patterns. This approach enhances the reliability of the DT as a comprehensive and accurate digital representation of its physical counterpart.
+\subsubsection{Internal Augmentation}
+Augmentation functions are executed \textit{internally}, i.e. within the same operating system process as the \ac{DT}, thus sharing the same resources allocated to the \ac{DT} instance (e.g., CPU or GPU computation capabilities).
+From an external perspective, these functions are perceived as internal functionalities of the \ac{DT} and only the internal event bus of the \ac{DT} is used.
 
-%To address this, we propose a more modular and structured approach within the Synchronized phase, where the alignment between the PT and DT lifecycles is better defined. 
-%For example, in the industrial domain, a DT of a machine may enter the Synchronized phase but should then transition through more specific sub-phases such as \textit{Ready}, \textit{Working}, or \textit{Busy}. Each of these sub-phases would have clearly defined transition criteria, phases, and associated $S_{DT}$, providing a more granular and accurate representation of the DT's behavior. This approach would ensure that the DT lifecycle better reflects the operational states of the PT, enhancing synchronization and enabling more precise monitoring and decision-making throughout the machine's lifecycle.
-
-%By refining the harmonization between cyber-physical phases, the DT lifecycle can better reflect the evolution of the PT, offering a more robust framework for aligning and managing both digital and physical systems. Furthermore, monitoring DT metrics may change across different phases of the lifecycle. For example, an industrial machine may transition through phases such as \textit{Ready} and \textit{Working}, each with distinct data requirements, metrics, and implications for the collected information. In this context, parameters like the temperature of an oven or the accelerometer data of a drill, computed and represented in the $S_{DT}$, can have completely different meanings depending on the $LP_{PT}$.
-%For instance, temperature readings from an oven can indicate different operational phases, such as warming up or processing a piece, while accelerometer data from a drill can vary based on the type of product it is working on. Accessing the same information (or DT monitoring metrics \cite{bellavista2024odte}) without proper harmonization between the phases of the PT and DT lifecycle significantly limits cyber-physical awareness. This misalignment can lead to misunderstandings and an inaccurate representation of the physical status, ultimately resulting in an unreliable DT.
-
-\subsection{Harmonizing Cyber-Physical Phases}
-\label{sec:harmonizing_cp_phases}
-
-%A key aspect of lifecycle analysis is the differentiation between DT phases that operate primarily as software entities and those directly responsible for reflecting the current $LP_{PT}$. By clearly distinguishing these aspects, the paper aims to establish a systematic, synchronized, and harmonized integration of cyber-physical lifecycles.
-
-A fundamental aspect of the proposed approach is that the computation of the DT state ($S_{DT}$) should occur exclusively during the \texttt{Synchronized} phase.
-This phase is distinct in that it is the only stage where the DT actively mirrors both the state of the PT and its corresponding physical lifecycle phases ($LP_{PT}$).
-In contrast, other phases of the DT software lifecycle (denoted as $LP_{Soft.}$), such as \texttt{Start}, \texttt{UnBound}, \texttt{Bound}, \texttt{Done}, and \texttt{Stopped}, are primarily concerned with the execution-centric aspects of the DT.
-These phases track the DT's progression and transitions throughout its operational lifecycle but do not involve the computation or representation of states.
-By confining the computation of $S_{DT}$ to the \texttt{Synchronized} phase, the approach ensures that the DT reliably reflects the PT’s current state and lifecycle phases. This creates a balanced methodology that maintains a clear distinction between software evolution and the cyber-physical synchronization of DTs and PTs. 
-
-To describe and characterize the $LP_{Soft.}$, it is essential to define reference moments in time that are associated with phase transitions.
+This approach ensures low latency and tight integration with the \ac{DT} core functionalities, as overhead between the \ac{DT} and the augmentation functions is minimized.
 %
-Time $t_s$ marks the moment the DT starts and becomes operational, while time $t_f$ corresponds to the first successful synchronization. At time$t_o$ the DT transitions out of the synchronized phase, typically moving into either the \texttt{UnBound} or \texttt{Bound} phase. Finally, $t_d$ represents the time in which the DT enters the \texttt{Done} phase and ceases synchronization but remains active to provide access to its stored information.
+For instance, in a manufacturing scenario an internal augmentation function could periodically monitor the operational parameters of a machine physical counterpart.
+By running within the \ac{DT} process, this function can quickly react to changes in the machine state, such as detecting abnormal vibrations that might indicate a potential failure (e.g., using signal processing approaches).
+The internal event bus would handle the real-time data stream from the machine sensors, feeding the computation of the \ac{DT} state while allowing the augmentation function to promptly process this data and update the \ac{DT}.
 
-The overall DT lifecycle phase $LP_{DT}$ can then be formalized as shown in Eq.~\ref{eq:lpdt_definition}, as a composition of $LP_{Soft.}$ and $LP_{PT}$.
+\subsubsection{External Augmentation}
+Augmentation functions run \textit{externally} as processes entirely separate from the \ac{DT}, possibly without any knowledge of the \ac{DT} internal model.
+Since the functions are implemented on external processes, they can use inter-process communication to synchronize and hence they can be distributed across different computing nodes and resources, for a more fine-grained allocation.
 %
-As shown in Eq.~\ref{eq:dt-definition}, at any given time instant $t_i$ a DT exposes information about its lifecycle $LP_{DT}$, its current state $S_{DT}$, and its history $H$ which encapsulates the DT's evolution within a specific time interval $(t_a, t_b)$.
-This history records the progression of $S_{DT}$ over time as it relates to the lifecycle phases and the synchronization status of the DT with the PT.
-For example, if the DT enters the \texttt{Out of Sync} phase, certain updates to $S_{DT}$ will not be reflected in the history.
-This formalization provides a foundation for structuring and characterizing each phase of the DT lifecycle.
-It also clarifies what an external observer can expect from the DT at any given time. By mapping the overall lifecycle phase $LP_{DT}(t_{i})$ as a function of the different possible values of $LP_{Soft.}$, as detailed in Eq.~\ref{eq:lpdt_complete_mapping}, this approach allows the DT to be analyzed and interpreted over time in alignment with the evolving phase of the associated PT.
+This translates either in multi-process deployment of the \ac{DT} on the same host, or possibly in fully distributed deployment of the \ac{DT} on a computing cluster.
 
-When $LP_{Soft.}$ is \texttt{Started}, it represents the initialization phase where the DT software has been instantiated but no communication with the PT has been established. At this stage, $LP_{PT}$ is undefined since the PT lifecycle phase has not yet been engaged. Similarly, $S_{DT}$ has not been computed, as the DT has not acquired any state information. The history $H$ is also empty, as no synchronization or state updates have occurred yet.
+In the latter scenario, multiple event buses are present. The primary event bus will always be the internal one, while additional external event buses, possibly implemented with different technologies, will be integrated with the internal one. Such integration allows the system to provide triggers, events, and information to the augmentation functions and retrieve their results to synchronize them with the \ac{DT} logic in a completely transparent manner, both for the \ac{PA} and external applications.
 
-When $LP_{Soft.}$ is \texttt{Unbound}, it indicates that the DT is operational but not yet synchronized. This phase may occur either during the initial activation of the DT or as a result of transitioning from a previously synchronized phase due to errors such as network disruptions or software malfunctions. In this phase, $LP_{PT}$ remains undefined because the PT lifecycle phase has not been incorporated. $S_{DT}$ is also undefined since the DT is not synchronized with the PT and has not computed its state. However, the history $H$ retains information about events recorded from the first synchronization timestamp $t_{f}$ to the moment the DT transitioned out of the synchronized phase, marked by $t_{o}$.
+A \textit{Synchronization Interface (Sync)} within the \ac{DT} will be responsible for synchronizing the internal and external event buses concerning the events and triggers associated with the augmentation functions. This component must be capable of managing the protocols or formats for mapping between the logic of the internal event bus and the external one.
 
-When $LP_{Soft.}$ is \texttt{Bound}, it signifies that the DT has successfully established a connection with the PT and identified its resources and capabilities. However, the DT has not yet achieved full synchronization with the PT. This lack of synchronization could result from insufficient data quality or an inadequate amount of information required to compute the DT's internal state. Similar to the \texttt{Unbound} phase, $LP_{PT}$ remains undefined since the PT's lifecycle phase is not yet incorporated into the DT's operations. Likewise, $S_{DT}$ remains uninitialized because the DT's state has not been computed. The history $H$, however, retains the events recorded from the first synchronization timestamp $t_{f}$ up to the moment the DT transitioned out of the synchronized phase, denoted by $t_{o}$.
+Since augmentation functions can be external, the state (\( \sigma \)) of an augmentation function will be maintained externally to the \ac{DT}. For internal augmentation functions, \( \sigma \) will be internal to the \ac{DT}, but isolated from other \ac{DT} components and solely dedicated to the augmentation function.
 
-When $LP_{Soft.}$  is \texttt{Synchronized}, the DT is fully synchronized with the PT. In this state, $LP_{PT}$ corresponds to the lifecycle phase of the PT (e.g., in the example of Fig.~\ref{fig:dt_lifecycle_pt_sync}, this could be the \texttt{Working} phase) at the time $t_i$.
-At this point, $S_{DT}$ contains the current computed state of the DT, reflecting the alignment between the DT and PT.
-The history $H$ encompasses all events and states from the start time $t_{s}$ up to the current time $t_{i}$, documenting the DT's evolution in sync with the PT.
-If the DT operates correctly, it can remain in the \textit{Synchronized} phase for the duration of its lifecycle, continually updating as the PT's lifecycle progresses.
-During this phase, multiple records of lifecycle evolution can be captured as $LP_{PT}$ evolves (e.g., moving from \texttt{Working} to \texttt{Busy}), and multiple computations of $S_{DT}$ may occur within the same $LP_{PT}$.
-For instance, while in the \texttt{Working} phase, the DT could compute multiple states corresponding to variations in physical properties such as accelerometer readings or energy consumption, ensuring the DT continuously reflects the PT's behavior in a dynamic and precise manner.
+Taking as reference a manufacturing use case, we can exemplify the value of such externalization by considering a \ac{DT} monitoring various machines on the production line, collecting real-time data on operational status and performance.
+Augmented features for maintenance prediction and production schedule optimizations could be delegated to an external data analytics service which, using the external event bus, may process the \ac{DT} data with advanced machine learning algorithms and send back results to the \ac{DT} without overloading the \ac{DT} core system.
 
-When $LP_{Soft.}$ is \texttt{Out of Sync}, the DT has lost synchronization with the PT due to various reasons, such as poor quality of received data or increased network latency that affects the timeliness of the DT's state computation. In this state, $LP_{PT}$ is empty because the PT's lifecycle phase is no longer actively tracked during desynchronization. Additionally, $S_{DT}$ is empty since the DT state is no longer being updated. The history $H$ contains the record from the start time $t_{s}$ to the last time the DT was synchronized, denoted as $t_{o}$.
+\paragraph{Hybrid Augmentation}
+Augmentation functions run both internally and externally, by combining the strengths of both methods.
+A synchronization interface ensures communication between the internal and external event buses.
+%
+Stateful functions can store their state both externally, for those that require external resources, and internally, as a structural element of the \ac{DT} for internal functions.
 
-When $LP_{Soft.}$ is \texttt{Done}, the DT synchronization has been intentionally paused, and the DT remains active for accessing stored information. In this phase, $\text{LP}_{PT}$ is empty, $S_{DT}$ is empty, and $H$ contains the history from the start time $t_{s}$ to the last time the DT went out of sync, denoted as $t_{o}$.
-
-Finally, when $LP_{Soft.}$ is \texttt{Stopped}, the DT lifecycle is terminated. $LP_{PT}$ is empty, $S_{DT}$ is empty, and $H$ is also empty, as the DT is offline and data is no longer accessible.
-
-%The proposed detailed lifecycle description offers a comprehensive understanding of each phase, emphasizing its significance and the implications for both the DT and PT states and history. This clarity enables more precise analysis and management of the DT system over time.
-
-By clearly defining and distinguishing between the various phases, our approach enhances the alignment between DTs and their physical counterparts, ensuring that each transition and state change is accurately captured and reflected. The main benefits of this approach include: 
-\textit{(i) Enhanced Cyber-Physical Awareness}: a structured lifecycle model ensures that critical transitions of phases and states of the PT are precisely tracked and understood, enhancing the overall awareness and responsiveness of the system;
-\textit{(ii) Better Decision-Making}: with a clear understanding of each phase and its impact, applications and services can make more informed decisions based on accurate and timely information about the current relationship between PT and DT;
-\textit{(iii) Adaptability}: this modular and structured approach can be scaled and adapted to various applications (e.g., an example set in an industrial scenario is illustrated in Section~\ref{sec:industrial_use_case}), making it versatile and applicable across different domains.
-
-
-
-
-%=======================================================
-\section{Modeling Augmented Behavior}
-%=======================================================
-
-\note{TODO recover work from unpublished work}
+This approach is the most flexible and offers significant advantages.
+For example, in a smart city application, internal augmentation functions can handle real-time traffic monitoring, benefiting from low latency and immediate response times.
+Meanwhile, external augmentation functions can process long-term traffic pattern analysis for strategic urban planning, leveraging powerful external computational resources without burdening the \ac{DT} core system.
+%
+Such hybrid model provides the flexibility to optimize for both real-time and complex, resource-intensive tasks, ensuring that the \ac{DT} remains efficient and scalable.
 
 %=======================================================
 \section{The \acl{WLDT} Framework}
 %=======================================================
 
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/engineering-wldt/wldt_architecture.pdf}
+    \caption{WLDT Framework's Software Architecture.}
+    \label{fig:wldt_architecture}
+\end{figure}
 
-
-\subsection{WLDT: A New Plugin-Based Architecture} 
-\label{sec:wldt-architecture}
 
 The WLDT framework has been re-designed and extended with key requirements: \textit{Simplicity}, \textit{Extensibility}, \textit{Portability}, and \textit{Microservice Readiness}.
 Simplicity ensures easy creation of DT instances using existing modules or custom behaviors for specific scenarios. 
@@ -577,7 +797,7 @@ Extensibility allows easy API extension, enabling customization and addition of 
 Portability and microservice readiness ensure that DTs can run on any platform without modifications.
 The core engine is lightweight, offering IoT features for developing DT applications as independent microservices.
 The main components of the WLDT architecture are illustrated in Figure~\ref{fig:wldt_architecture}, which outlines the three architectural levels: the core library, the DT model, and the implementation of physical and digital interfaces through adapters.
-In the WLDT framework, \textit{adapters} -- modular components that implement the PI and DI -- are essential for facilitating communication between PTs and DTs, as well as with external digital entities.
+In the WLDT framework, \textit{adapters} -- modular components that implement the PI and DI -- are essential for facilitating communication between \ac{PA}s and DTs, as well as with external digital entities.
 Physical Adapters (PAs) interface with the physical world, while Digital Adapters (DAs) manage interactions within the digital environment.
 
 The \textit{Metrics Manager} provides the functionalities for managing and tracking various metrics within DT instances, combining both internal and custom metrics through a flexible and extensible approach.
@@ -625,30 +845,30 @@ Further sections elaborate on these aspects concerning lifecycle structure and a
 The modeling of DTs involves defining their life cycle, which we have mapped into five states: \textit{UnBound}, \textit{Bound}, \textit{Synchronized}, \textit{OutofSync}, and \textit{Done}.
 These states are directly inspired by recent state-of-the-art definitions in the field, particularly from \cite{web_of_dt} and \cite{bellavista2023requirements}, which provide a comprehensive framework for understanding and managing the dynamic evolution of DTs across different stages.
 
-In the \textit{UnBound} state, all internal modules are active but not yet associated with the corresponding PT.
-The DT transitions to the \textit{Bound} state once the binding procedure is completed, establishing a connection with the PT and enabling bidirectional event flow.
-In the \textit{Synchronized} state, the DT’s state is aligned with the PT, initiating the shadowing process.
+In the \textit{UnBound} state, all internal modules are active but not yet associated with the corresponding \ac{PA}.
+The DT transitions to the \textit{Bound} state once the binding procedure is completed, establishing a connection with the \ac{PA} and enabling bidirectional event flow.
+In the \textit{Synchronized} state, the DT’s state is aligned with the \ac{PA}, initiating the shadowing process.
 The \textit{OutofSync} state indicates errors in the shadowing process, where state alignment or application-generated events cannot be processed.
 Finally, the DT reaches the \textit{Done} state when the shadowing process ends but remains active for external requests (e.g., asset history access after its lifecycle).
 
 To transition from \textit{UnBound} to \textit{Bound}, the DT establishes a relationship with the Physical Layer.
-For instance, a PT using two protocols, $P_1$ and $P_2$, communicates through dedicated adapters.
-A key challenge is discovering the PT’s capabilities to begin the digitalization process. WLDT addresses this by describing a PT’s characteristics, properties and actions through its physical adapters enabling the DT to synchronize with the PT.
-The DT transitions to \textit{Bound} only when the required adapters are bound and PT descriptions are generated, even when multiple PTs are associated with a single DT.
+For instance, a \ac{PA} using two protocols, $P_1$ and $P_2$, communicates through dedicated adapters.
+A key challenge is discovering the \ac{PA}’s capabilities to begin the digitalization process. WLDT addresses this by describing a \ac{PA}’s characteristics, properties and actions through its physical adapters enabling the DT to synchronize with the \ac{PA}.
+The DT transitions to \textit{Bound} only when the required adapters are bound and \ac{PA} descriptions are generated, even when multiple \ac{PA}s are associated with a single DT.
 
-To move from \textit{Bound} to \textit{Synchronized}, the DT identifies PT capabilities for digitalization and starts the shadowing process (e.g., monitoring a thermostat's target temperature and humidity sensors).
-The DT’s Model begins observing these properties through the adapters, which communicate with the PT and generate events for property changes.
-The DT’s Shadowing function processes these events to compute the new DT state, maintaining synchronization with the PT.
+To move from \textit{Bound} to \textit{Synchronized}, the DT identifies \ac{PA} capabilities for digitalization and starts the shadowing process (e.g., monitoring a thermostat's target temperature and humidity sensors).
+The DT’s Model begins observing these properties through the adapters, which communicate with the \ac{PA} and generate events for property changes.
+The DT’s Shadowing function processes these events to compute the new DT state, maintaining synchronization with the \ac{PA}.
 Any change in the DT state generates an event, which is exposed to the digital world through the Digital Interface and its Adapters.
-These events may also trigger actions on the DT or propagate requests to the PT if needed.
+These events may also trigger actions on the DT or propagate requests to the \ac{PA} if needed.
 
 %%%
 \subsection{Modular and Reusable Digital \& Physical Adapters}
 \label{subsec:adapters}
 
-A Physical Adater (PA) in WLDT is responsible for connecting to a specific PT. 
+A Physical Adater (PA) in WLDT is responsible for connecting to a specific \ac{PA}. 
 Developers can either leverage existing adapters—customized through configuration for context-specific reuse—or create new ones tailored to their specific requirements.
-The core responsibilities of a PA include also the generation of a description of the associated PT that details the properties, events, actions, and relationships of the PT; producing events to reflect changes in the physical state, such as variations in properties, events, and relationships; and handling action requests from the digital realm via the DT shadowing function and the twin's model.
+The core responsibilities of a PA include also the generation of a description of the associated \ac{PA} that details the properties, events, actions, and relationships of the \ac{PA}; producing events to reflect changes in the physical state, such as variations in properties, events, and relationships; and handling action requests from the digital realm via the DT shadowing process and the twin's model.
 Each PA has an internal dedicated lifecycle within the DT to ensure it can respond to incoming actions appropriately. Adapters are identified by unique IDs, enabling the library to coordinate multiple adapters, adjust logs, and execute functions upon receiving new events. 
 
 Conversely, Digital Adapters (DAs) in WLDT act as the bridge between the DT's core and the external digital world.
@@ -730,7 +950,7 @@ Figure \ref{fig:pad_dt_wot} schematically illustrates the evolution of data and 
 On the physical side, data is structured using OPC-UA with a hierarchical organization, containing telemetry data and action methods mapped to specific data types.
 Accelerometer data is transmitted over MQTT on a specific topic with a JSON payload containing axis acceleration values. 
 
-The \acp{PAD} act as an intermediary, translating data from the PT into a format suitable for the DT core, decoupling it from the complexity of interacting with the \ac{PA} and enabling discovery, understanding, and utilization of available data and methods.
+The \acp{PAD} act as an intermediary, translating data from the \ac{PA} into a format suitable for the DT core, decoupling it from the complexity of interacting with the \ac{PA} and enabling discovery, understanding, and utilization of available data and methods.
 Using the information from the \acp{PAD}, the \ac{DT} model computes the \ac{DT}'s state with target properties, events, and actions, based on either one-to-one matching of physical characteristics or augmented by combining multiple physical properties into computed \ac{DT} properties or events, such as computing the value of the \ac{OEE} property or triggering anomaly detection events based on accelerometer data. 
 
 Finally, the \ac{DiA} of the \ac{DT} leverages \ac{WoT} \ac{TD} to describe the DT's data and functionalities through a standardized, interoperable, and machine-readable approach.
@@ -789,7 +1009,7 @@ In contrast, monolithic systems struggle with managing interoperability and syst
 
 \subsection{Industrial Use Case}
 \label{sec:industrial_use_case}
-%To demonstrate the applicability of the proposed lifecycle synchronization model, we conducted an experimental evaluation within a real-world industrial scenario. This evaluation highlights how the alignment between the DT and PT lifecycles can be effectively achieved through structured data management and phase synchronization. The industrial case involves mapping the lifecycle phases of physical devices.
+%To demonstrate the applicability of the proposed lifecycle synchronization model, we conducted an experimental evaluation within a real-world industrial scenario. This evaluation highlights how the alignment between the DT and \ac{PA} lifecycles can be effectively achieved through structured data management and phase synchronization. The industrial case involves mapping the lifecycle phases of physical devices.
 
 An industrial scenario has been considered to apply the proposed approach for DT's lifecycle modeling and characterization. Specifically, scaled industrial stations manufactured by Fischertechnik\footnote{Fischertechnik: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} has been adopted as reference industrial prototyping environment with multiple stations and involved machines. The first station, referred to as the \textit{Multiprocess Station with Oven}, features an oven, a robotic arm for handling operations, and a rotary table equipped with multiple processing stages. The second station, named the \textit{Indexed Line}, comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
 
@@ -813,11 +1033,11 @@ An industrial scenario has been considered to apply the proposed approach for DT
 
 The design, development, and deployment of Digital Twins (DTs) for the target use case are motivated by the need for precise monitoring, control, and optimization of physical machinery and stations. By creating digital replicas of the physical systems, we aim to enhance operational efficiency, reduce downtime, and enable predictive maintenance through detailed real-time data analysis and simulation capabilities.
 
-To achieve these objectives, multiple DTs have been designed, developed, and deployed to represent the associated Physical Twins (PTs). Specifically, each station was divided into several processing machines, with a DT created for each one. Subsequently, a \textit{composed} DT was developed for each station to aggregate data from the individual machine DTs, enabling a complete digital representation of the station. This allows for the monitoring and management of the combined operations of multiple physical assets working together through the production process. For example, Figure \ref{fig:multiprocess-station-schematic-overview} illustrates the schematic representation of the Multiprocess Station along with the DTs it comprises.
+To achieve these objectives, multiple DTs have been designed, developed, and deployed to represent the associated Physical Twins (\ac{PA}s). Specifically, each station was divided into several processing machines, with a DT created for each one. Subsequently, a \textit{composed} DT was developed for each station to aggregate data from the individual machine DTs, enabling a complete digital representation of the station. This allows for the monitoring and management of the combined operations of multiple physical assets working together through the production process. For example, Figure \ref{fig:multiprocess-station-schematic-overview} illustrates the schematic representation of the Multiprocess Station along with the DTs it comprises.
 
-The DTs were implemented using the White Label Digital Twin (WLDT)\footnote{WLDT Library: \url{https://wldt.github.io/}} library~\cite{wldt_picone_2021}. WLDT is a Java implementation of an event-driven DT framework that supports data ingestion through IoT interfaces and message queues. We extended the library to support the proposed lifecycle management approach by implementing both the Physical Twin Lifecycle ($LP_{PT}$) and the Digital Twin Lifecycle ($LP_{DT}$). Each DT features various adapters for external communication, including both physical and digital interfaces. For physical interface management, the DTs controlling individual machines use an OPC-UA\footnote{OPC-UA-Foundation: \url{https://opcfoundation.org/}} adapter, which enables interaction with Siemens S7-1200 PLCs\footnote{Siemens-S7-1200-PLC:\url{https://www.siemens.com/global/en/products/}}. Additionally, each DT includes MQTT\cite{mqtt} Digital and HTTP Digital adapters to expose both its current state and the lifecycle's phases it represents through different protocols and interaction patterns (Pub/Sub and RESTful).
+The DTs were implemented using the White Label Digital Twin (WLDT)\footnote{WLDT Library: \url{https://wldt.github.io/}} library~\cite{wldt_picone_2021}. WLDT is a Java implementation of an event-driven DT framework that supports data ingestion through IoT interfaces and message queues. We extended the library to support the proposed lifecycle management approach by implementing both the Physical Twin Lifecycle ($LP_{PA}$) and the Digital Twin Lifecycle ($LP_{DT}$). Each DT features various adapters for external communication, including both physical and digital interfaces. For physical interface management, the DTs controlling individual machines use an OPC-UA\footnote{OPC-UA-Foundation: \url{https://opcfoundation.org/}} adapter, which enables interaction with Siemens S7-1200 PLCs\footnote{Siemens-S7-1200-PLC:\url{https://www.siemens.com/global/en/products/}}. Additionally, each DT includes MQTT\cite{mqtt} Digital and HTTP Digital adapters to expose both its current state and the lifecycle's phases it represents through different protocols and interaction patterns (Pub/Sub and RESTful).
 
-Each machine DT handles the synchronization between the $LP_{PT}$ and the corresponding $LP_{DT}$. Furthermore, an anomaly detection algorithm runs within each DT, enabling it to identify and report issues that the PLC alone might not detect, thus dynamically computing the $LP_{PT}$ when necessary (e.g., when a piece does not reach a reference photocell on the machinery within a predetermined time and an anomaly is consequently detected).
+Each machine DT handles the synchronization between the $LP_{PA}$ and the corresponding $LP_{DT}$. Furthermore, an anomaly detection algorithm runs within each DT, enabling it to identify and report issues that the PLC alone might not detect, thus dynamically computing the $LP_{PA}$ when necessary (e.g., when a piece does not reach a reference photocell on the machinery within a predetermined time and an anomaly is consequently detected).
 
 The DTs also calculate the \textit{Overall Equipment Effectiveness} (OEE)\footnote{OEE: \url{https://www.oee.com/}}, a key efficiency metric in the industrial domain that measures the productivity of manufacturing equipment by combining its availability, performance, and quality rates. We compute OEE in our DTs to provide a comprehensive measure of equipment effectiveness, which is critical for identifying areas of improvement and optimizing production processes. This data is exposed for external monitoring.
 
@@ -839,10 +1059,10 @@ To accurately define the phases of the physical machinery, it was essential to s
 
 \subsection{Lifecycle Awareness \& Coordination}
 
-In an industrial setting, the digital representation of a station is often a hierarchical composition of individual machines, each represented by its own DT. This structure enables intelligent coordination not only between machines within the same station but also across different stations. For example, coordination between the \textit{Multiprocess Station} and the previously mentioned \textit{Indexed Line} becomes more manageable compared to a direct access to low level raw data of the different physical machines. Incorporating the PT lifecycle into the DT lifecycle simplifies coordination by establishing consistent lifecycle phases across machines.
-Without this approach, coordination among multiple DTs required using low-level physical information and telemetry, making the process more complex and less intuitive. Now, as illustrated by Algorithm \ref{code:soft-stop-logic}, high-level control logic can be implemented directly leveraging information encapsulated by $LP_{DT}$ mapping in real-time the phase and the associated transitions of the associated physical counterparts $LP_{PT}$. Specifically, the algorithm outlines the steps the composite DT can take to halt production on the multiprocess station. By leveraging this additional layer of abstraction, the composite DT no longer relies on raw sensor data for control operations, enabling a more declarative and effective coordination process, and distributing responsibilities across different DTs.
+In an industrial setting, the digital representation of a station is often a hierarchical composition of individual machines, each represented by its own DT. This structure enables intelligent coordination not only between machines within the same station but also across different stations. For example, coordination between the \textit{Multiprocess Station} and the previously mentioned \textit{Indexed Line} becomes more manageable compared to a direct access to low level raw data of the different physical machines. Incorporating the PA lifecycle into the DT lifecycle simplifies coordination by establishing consistent lifecycle phases across machines.
+Without this approach, coordination among multiple DTs required using low-level physical information and telemetry, making the process more complex and less intuitive. Now, as illustrated by Algorithm \ref{code:soft-stop-logic}, high-level control logic can be implemented directly leveraging information encapsulated by $LP_{DT}$ mapping in real-time the phase and the associated transitions of the associated physical counterparts $LP_{PA}$. Specifically, the algorithm outlines the steps the composite DT can take to halt production on the multiprocess station. By leveraging this additional layer of abstraction, the composite DT no longer relies on raw sensor data for control operations, enabling a more declarative and effective coordination process, and distributing responsibilities across different DTs.
 
-The composite DT leverages the PT lifecycle phases of individual machines to define the overall lifecycle of the entire multiprocess station. This provides a comprehensive overview of each station's operational behavior, enabling more effective and intuitive system management.
+The composite DT leverages the PA lifecycle phases of individual machines to define the overall lifecycle of the entire multiprocess station. This provides a comprehensive overview of each station's operational behavior, enabling more effective and intuitive system management.
 
 \note{FIX ALGORITHM}
 % \begin{algorithm}
@@ -916,7 +1136,7 @@ The digitalization process creates five machine-level DTs, one for each machine 
 The DT ecosystem digitalizes the physical system without replacing the PLC logic, allowing for the independent operation of the PLC if the DT ecosystem fails.
 DTs are deployed on edge nodes for monitoring and control without disrupting core operations.
 
-Each DT connects to the broker through MQTT Physical Adapters, which manage subscriptions to relevant topics and publish the description of PTs. The internal model of each DT calculates metrics like OEE (based on production rate, uptime, downtime, and quality) and tracks power consumption. Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are defined at startup and remain static during the experiment.
+Each DT connects to the broker through MQTT Physical Adapters, which manage subscriptions to relevant topics and publish the description of PA. The internal model of each DT calculates metrics like OEE (based on production rate, uptime, downtime, and quality) and tracks power consumption. Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are defined at startup and remain static during the experiment.
 Machine DT states are exposed via MQTT and HTTP Digital Adapters, enabling flexible interaction patterns and action requests through HTTP.
 
 %%%

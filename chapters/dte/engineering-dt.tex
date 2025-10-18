@@ -49,10 +49,22 @@ Moving this towards an abstract architectural perspective, a \ac{DT} can be desc
 \end{itemize}
 
 
-Table~\ref{tab:evaluation} discusses how the proposed architecture supports the core properties of \acp{DT}~\cite{dt-IoT-context-Minerva-2020} compared to both existing research from the scientific literature and features offered by major production-ready platforms, including Microsoft Azure, Eclipse Ditto, Amazon AWS, and Bosch IoT Suite.
+Table~\ref{tab:evaluation} discusses how the proposed architecture supports the core properties of \acp{DT}~\cite{dt-IoT-context-Minerva-2020} compared to both existing research from the scientific literature and features offered by major production-ready platforms.
 
-These platforms mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
+Among these platforms, general-purpose cloud solutions such as AWS IoT TwinMaker and Microsoft Azure Digital Twins have become prominent.
+They provide an integration layer on top of existing cloud data storage and IoT services and hence mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
+%
+In such environments, the interaction with the physical world is typically managed using an IoT middleware that collects data and routes it to internal communication buses.
+%
+These buses are consumed by serverless functions that implement the \ac{DT} model.
+Additionally, such cloud platforms often provide digital communication capabilities with built-in visualization, interfaces, and query support.
+%
 Data acquisition pipelines, supported protocols and data formats are often defined at the platform level, not on a per-\ac{DT} basis, leading to limitations in the shadowing process and client interactions.
+
+Beyond traditional and widely adopted cloud solutions, several industrial platforms are offered by major players like Siemens, General Electric, Bosch, and IBM.
+These platforms are often domain-specific and provide strong integration with the physical assets and systems produced by the same companies.
+These solutions are tailored to the specific needs of their respective industries, offering robust capabilities for managing and interacting with physical entities.
+They do not, though, have a common modeling approach and as such, they offer limited interoperability among the different solutions, as the competitive nature of the market tends to prefer both hardware and software lock-in instead of promoting integration.
 
 In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI} and \ac{DI} are responsible for capturing events from their respective domains (physical and digital) and forwarding them to the \ac{M} for processing. This allows \acp{DT} to operate as independent software entities, communicating with the external world through finely configurable interfaces.
 
@@ -164,6 +176,7 @@ In the following sections the abstract architecture will be refined to highlight
 
 %=======================================================
 \section{Modular Design of Digital Twin Interfaces}
+\label{sec:dte:engineering-dt:physical-digital-adapters}
 %=======================================================
 
 As introduced in \Cref{sec:back:dt:interoperability}, interoperability is a key requirement for \ac{DT} development~\cite{Acharya_Khan_Päivärinta_2024,Klar_Arvidsson_Angelakis_2024}.
@@ -253,7 +266,7 @@ The responsibility of the \ac{PI} becomes then to manage the different \acp{PhA}
 %
 Note that although terminology of \ac{PhA} is borrowed from \cite{web-of-dt-ricci-2022}, where it is originally introduced, the \emph{Physical Asset Adapter} proposed in \cite{web-of-dt-ricci-2022} is in fact a conceptual monolithic component, whereas in this concrete proposal a \ac{PhA} is considered as a single-responsibility module of a potentially more complex \ac{PI}.
 
-\paragraph{Generating \aclp{PAD}}
+\subsubsection{Generating \aclp{PAD}}
 To facilitate managing different \acp{PhA}, the concept \emph{\ac{PAD}} is introduced: a representation of the capabilities provided by a communication channel in terms of \emph{properties}, \emph{actions}, \emph{events}, and \emph{relationships} that characterize the associated \ac{PA}.
 %
 Each \ac{PhA}, since it encapsulates the characteristics of a channel, can generate the corresponding \ac{PAD}, effectively decoupling the asset's functionality from the specific communication protocols used.
@@ -311,7 +324,7 @@ Even if the \ac{PA} were to change, (e.g., a software update on a robot changes 
 %
 Through this mechanism, \acp{DT} effectively achieve their bridging role, shielding applications from the complexity of physical deployments.
 
-\paragraph{Describing \aclp{DI}}
+\subsubsection{Describing \aclp{DI}}
 
 A further level of interoperability is possible when allowing \acp{DT} to describe their \ac{DI}, advertising capabilities and available communication channels that applications can exploit.
 
@@ -376,6 +389,7 @@ A path to address these limitations could be extending \acp{TD} or supporting ad
 
 %=======================================================
 \section{Managing the Digital Twin Lifecycle}
+\label{sec:dte:engineering-dt:dt-lifecycle}
 %=======================================================
 
 
@@ -766,7 +780,7 @@ Since augmentation functions can be external, the state (\( \sigma \)) of an aug
 Taking as reference a manufacturing use case, we can exemplify the value of such externalization by considering a \ac{DT} monitoring various machines on the production line, collecting real-time data on operational status and performance.
 Augmented features for maintenance prediction and production schedule optimizations could be delegated to an external data analytics service which, using the external event bus, may process the \ac{DT} data with advanced machine learning algorithms and send back results to the \ac{DT} without overloading the \ac{DT} core system.
 
-\paragraph{Hybrid Augmentation}
+\subsubsection{Hybrid Augmentation}
 Augmentation functions run both internally and externally, by combining the strengths of both methods.
 A synchronization interface ensures communication between the internal and external event buses.
 %
@@ -782,27 +796,63 @@ Such hybrid model provides the flexibility to optimize for both real-time and co
 \section{The \acl{WLDT} Framework}
 %=======================================================
 
-
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/engineering-wldt/wldt_architecture.pdf}
+    \includegraphics[width=0.7\textwidth]{figures/wldt_architecture.pdf}
     \caption{WLDT Framework's Software Architecture.}
     \label{fig:wldt_architecture}
 \end{figure}
 
+The concepts introduced in the previous sections have been implemented in an extended and evolved version of the \acf{WLDT} framework (originally introduced in \cite{PICONE2021100661}) offering a modular DT software architecture designed to maximize flexibility, promote portability, and enable seamless integration across diverse physical assets in diverse application domains.
+%
+\ac{WLDT} is an open-source Java framework available on GitHub\footnote{\url{https://wldt.github.io}}.
 
-The WLDT framework has been re-designed and extended with key requirements: \textit{Simplicity}, \textit{Extensibility}, \textit{Portability}, and \textit{Microservice Readiness}.
-Simplicity ensures easy creation of DT instances using existing modules or custom behaviors for specific scenarios. 
-Extensibility allows easy API extension, enabling customization and addition of new features through concurrent module execution.
-Portability and microservice readiness ensure that DTs can run on any platform without modifications.
-The core engine is lightweight, offering IoT features for developing DT applications as independent microservices.
-The main components of the WLDT architecture are illustrated in Figure~\ref{fig:wldt_architecture}, which outlines the three architectural levels: the core library, the DT model, and the implementation of physical and digital interfaces through adapters.
-In the WLDT framework, \textit{adapters} -- modular components that implement the PI and DI -- are essential for facilitating communication between \ac{PA}s and DTs, as well as with external digital entities.
-Physical Adapters (PAs) interface with the physical world, while Digital Adapters (DAs) manage interactions within the digital environment.
+The \ac{WLDT} framework has been re-designed and extended with key requirements:
+\begin{itemize}
+    \item \textbf{Simplicity}: to facilitate the creation of \ac{DT} instances using existing modules or custom behaviors for specific scenarios;
+    \item \textbf{Extensibility}: to allow easy extension of the \ac{DT} \ac{API}, enabling customization and addition of new features through concurrent module execution;
+    \item \textbf{Portability \& Microservice Readiness}: to ensure that \ac{DT}s can run on any platform without modifications, supporting deployment as independent microservices.
+\end{itemize}
+
+The main components of the \ac{WLDT} architecture are illustrated in \Cref{fig:wldt_architecture}, which outlines the three architectural levels: the core library, the DT model, and the implementation of physical and digital interfaces through \ac{PhA} and \ac{DiA} (\Cref{sec:dte:engineering-dt:physical-digital-adapters}).
 
 The \textit{Metrics Manager} provides the functionalities for managing and tracking various metrics within DT instances, combining both internal and custom metrics through a flexible and extensible approach.
 The \textit{Logger} is designed to facilitate efficient and customizable logging within implemented and deployed DTs, with configurable log levels and versatile output options.
 The \textit{Utils \& Commons} component contains a collection of utility classes and common functionalities that can be readily employed across DT implementations, ranging from handling common data structures to providing helpful tools for string manipulation.
+
+The \textit{Event Communication Bus} represents the internal Event Bus, designed to support communication between the different components of the \ac{DT} instance (\ac{PI}, \ac{M} and \ac{DI}).
+%
+It allows for the definition of customized events to model both physical and digital inputs and outputs. Each \ac{WLDT} component can publish on the shared Event Bus and define a filter to specify which types of events it is interested in managing, associating a specific callback to process different messages.
+
+The \textit{Digital Twin Engine} defines the multi-threaded engine of the library, allowing the execution and monitoring of multiple \acp{DT} and their core components simultaneously.
+It orchestrates the different internal modules of the architecture while keeping track of each one, and it serves as the core of the platform, enabling the execution and control of deployed \acp{DT}.
+Currently, it supports the execution of multiple twins within the same Java process, but the same engine abstraction could extend the framework to support distributed execution through different processes or microservices.
+
+The DT component consists of a modular structure within \ac{WLDT}, combining core functionalities and capabilities of physical and digital adapters.
+%
+Each DT's core module is its \textit{Model}, which is responsible for implementing the twin's behavior over time. This model controls both the \textit{Shadowing Function} and \textit{Augmentation Function(s)}.
+%
+The Shadowing Function manages the digitalization process by integrating data from physical adapters and action requests from digital adapters.
+It maintains the DT's \textit{State}, organizing properties, events, actions, and relationships as introduced in \Cref{sec:dte:engineering-dt:abstract-architecture}.
+%
+Augmentation Functions enhance physical capabilities by introducing new properties and actions through intelligent functionalities or dedicated processing (e.g., anomaly detection or data aggregation).
+The DT's core is managed by the library to ensure consistency and lifecycle management, adapting to computational phases and interactions with physical and digital realms via adapters. 
+
+\ac{WLDT} implements functionalities to manage the \ac{DT} synchronization lifecycle as described in \Cref{sec:dte:engineering-dt:dt-lifecycle}, ensuring proper transitions between phases and maintaining alignment with the physical asset's lifecycle.
+%
+Within the \ac{DT} core, the \emph{Shadowing Function} is responsible for receiving \acp{PAD} from \acp{PhA} and processing them to define when the \ac{DT} can be considered correctly \texttt{Bound} and when the \ac{DT} can be considered \texttt{Synchronized}, starting the \ac{DT} state computation. 
+
+Developers can either leverage existing adapters---customized through configuration for context-specific reuse---or create new ones tailored to their specific requirements.
+Each adapter has an internal dedicated lifecycle within the DT to ensure it can start, setup the necessary resources and respond to incoming events appropriately.
+%
+Adapters are identified by unique IDs, enabling the library to coordinate multiple adapters, adjust logs, and execute functions upon receiving new events. 
+%
+\ac{DiA} have direct access to the \ac{DT}'s state as well as the \ac{DT} history through callbacks or synchronous access, allowing it to retrieve information and expose it to digital consumers through various protocols according to the application context.
+
+
+%========================================================
+\section{Benefits of the Proposed Approach}
+%========================================================
 
 %%%
 \begin{figure}[th!]
@@ -814,8 +864,6 @@ The \textit{Utils \& Commons} component contains a collection of utility classes
 \end{figure}
 %%%
 
-The \textit{Event Communication Bus} represents the internal Event Bus, designed to support communication between the different components of the DT instance (PI, DTM and DI). It allows for the definition of customized events to model both physical and digital inputs and outputs. Each WLDT component can publish on the shared Event Bus and define an Event Filter to specify which types of events it is interested in managing, associating a specific callback to process different messages.
-
 %%%
 \begin{figure*}[th!]
     \setlength{\belowcaptionskip}{-13pt}
@@ -825,62 +873,6 @@ The \textit{Event Communication Bus} represents the internal Event Bus, designed
     \label{fig:dt-internal-structure-overview}
 \end{figure*}
 %%%
-
-The \textit{Digital Twin Engine} defines the multi-threaded engine of the library, allowing the execution and monitoring of multiple DTs and their core components simultaneously.
-It orchestrates the different internal modules of the architecture while keeping track of each one, and it serves as the core of the platform, enabling the execution and control of deployed DTs.
-Currently, it supports the execution of twins within the same Java process, but the same engine abstraction could extend the framework to support distributed execution through different processes or microservices.
-
-The DT component consists of a modular structure within WLDT, combining core functionalities and capabilities of physical and digital adapters.
-Each DT's core module is its \textit{Model}, which is responsible for implementing the twin's behavior over time. This model controls both the \textit{Shadowing Function} and \textit{Augmentation Function(s)}.
-The Shadowing Function manages the digitalization process by integrating data from physical adapters and action requests from digital adapters.
-It maintains the DT's \textit{State}, organizing properties, events, actions, and relationships as introduced in Section \ref{sec:dt_modelling}.
-Augmentation Functions enhance physical capabilities by introducing new properties and actions through intelligent functionalities or dedicated processing (e.g., anomaly detection or data aggregation).
-The DT's core is managed by the library to ensure consistency and lifecycle management, adapting to computational phases and interactions with physical and digital realms via adapters. 
-Further sections elaborate on these aspects concerning lifecycle structure and adapters.
-
-%%%
-\subsection{Cyber-Physical Awareness \& Life-cycle}
-\label{sec:dt-lifecycle}
-
-The modeling of DTs involves defining their life cycle, which we have mapped into five states: \textit{UnBound}, \textit{Bound}, \textit{Synchronized}, \textit{OutofSync}, and \textit{Done}.
-These states are directly inspired by recent state-of-the-art definitions in the field, particularly from \cite{web_of_dt} and \cite{bellavista2023requirements}, which provide a comprehensive framework for understanding and managing the dynamic evolution of DTs across different stages.
-
-In the \textit{UnBound} state, all internal modules are active but not yet associated with the corresponding \ac{PA}.
-The DT transitions to the \textit{Bound} state once the binding procedure is completed, establishing a connection with the \ac{PA} and enabling bidirectional event flow.
-In the \textit{Synchronized} state, the DT’s state is aligned with the \ac{PA}, initiating the shadowing process.
-The \textit{OutofSync} state indicates errors in the shadowing process, where state alignment or application-generated events cannot be processed.
-Finally, the DT reaches the \textit{Done} state when the shadowing process ends but remains active for external requests (e.g., asset history access after its lifecycle).
-
-To transition from \textit{UnBound} to \textit{Bound}, the DT establishes a relationship with the Physical Layer.
-For instance, a \ac{PA} using two protocols, $P_1$ and $P_2$, communicates through dedicated adapters.
-A key challenge is discovering the \ac{PA}’s capabilities to begin the digitalization process. WLDT addresses this by describing a \ac{PA}’s characteristics, properties and actions through its physical adapters enabling the DT to synchronize with the \ac{PA}.
-The DT transitions to \textit{Bound} only when the required adapters are bound and \ac{PA} descriptions are generated, even when multiple \ac{PA}s are associated with a single DT.
-
-To move from \textit{Bound} to \textit{Synchronized}, the DT identifies \ac{PA} capabilities for digitalization and starts the shadowing process (e.g., monitoring a thermostat's target temperature and humidity sensors).
-The DT’s Model begins observing these properties through the adapters, which communicate with the \ac{PA} and generate events for property changes.
-The DT’s Shadowing function processes these events to compute the new DT state, maintaining synchronization with the \ac{PA}.
-Any change in the DT state generates an event, which is exposed to the digital world through the Digital Interface and its Adapters.
-These events may also trigger actions on the DT or propagate requests to the \ac{PA} if needed.
-
-%%%
-\subsection{Modular and Reusable Digital \& Physical Adapters}
-\label{subsec:adapters}
-
-A Physical Adater (PA) in WLDT is responsible for connecting to a specific \ac{PA}. 
-Developers can either leverage existing adapters—customized through configuration for context-specific reuse—or create new ones tailored to their specific requirements.
-The core responsibilities of a PA include also the generation of a description of the associated \ac{PA} that details the properties, events, actions, and relationships of the \ac{PA}; producing events to reflect changes in the physical state, such as variations in properties, events, and relationships; and handling action requests from the digital realm via the DT shadowing process and the twin's model.
-Each PA has an internal dedicated lifecycle within the DT to ensure it can respond to incoming actions appropriately. Adapters are identified by unique IDs, enabling the library to coordinate multiple adapters, adjust logs, and execute functions upon receiving new events. 
-
-Conversely, Digital Adapters (DAs) in WLDT act as the bridge between the DT's core and the external digital world.
-Their primary functions include receiving and exposing events related to changes in properties, events, available actions, and relationships from the DT’s core;
-communicating the received information to external systems according to the implementation and supported protocols;
-and handling incoming digital actions, forwarding them to the core, and ensuring they are validated and processed by the Shadowing Function.
-Each DA has an internal life cycle to support its coordination by the WLDT core and has also direct read access to the current twin's State through callbacks or synchronous access, allowing it to navigate all fields of the current digital state and expose it in the digital domain through various protocols according to the application context.
-
-
-%========================================================
-\section{Benefits of the Proposed Approach}
-%========================================================
 
 \subsection{Interoperability in a Manufacturing Use Case}
 \label{sec:industrial_use_case}
@@ -1180,11 +1172,11 @@ Department-level DTs use MQTT-based physical adapters to ensure consistent commu
 \subsection{Experimental Evaluation}
 \label{ssec:masa_exp_evaluation}
 
-To validate the WLDT framework, we implemented the DTs for the Multiprocess Station with Oven, containerized using Docker, and deployed on an Edge node with an Intel i7 2.4GHz processor and 32 GB of RAM. We monitored three key metrics for each DT: CPU usage (percentage, with each container using one core), memory consumption (in MiB), and network traffic (cumulative inbound and outbound in Kbit/sec).
+To validate the \ac{WLDT} framework, we implemented the DTs for the Multiprocess Station with Oven, containerized using Docker, and deployed on an Edge node with an Intel i7 2.4GHz processor and 32 GB of RAM. We monitored three key metrics for each DT: CPU usage (percentage, with each container using one core), memory consumption (in MiB), and network traffic (cumulative inbound and outbound in Kbit/sec).
 Additionally, we calculated the OEE computed by each DT to assess the performance of both individual machines and the station. Figure \ref{fig:exp-results} shows the results of this experiment. The total duration was 10 minutes (600 seconds), as shown on the x-axis of each chart. The graphs illustrate CPU usage, memory usage, network traffic, and the computed OEE (from left to right). Analyzing CPU usage, we observe that there were no significant spikes during the production cycle. Even during the most computationally demanding moments, CPU utilization remained around 30\%, indicating a stable and efficient execution.
 The memory usage chart shows a similarly stable pattern, with DT instances settling around an average usage of 300 MiB, demonstrating consistent memory behavior over time.
 As for network traffic, values remained low—typically around a few tens of Kbit/sec.
 Noticeable traffic peaks correspond to active processing phases, where machines and their respective DTs exchange larger volumes of data.
 Finally, the OEE graph highlights the performance of industrial machines computed by each DT. The Oven, which is the first machine in the station and requires the longest processing time, shows the highest OEE, as it remains under constant workload.
-Conversely, the output conveyor exhibits a lower OEE, as it receives fewer parts to process due to the upstream bottleneck created by the Oven. This experimental phase aimed to demonstrate the effectiveness of WLDT-based DTs in an industrial setting.
-The collected metrics confirm that DT instances can operate efficiently on standard commercial Edge nodes, handling CPU, memory, and network constraints while also supporting domain-specific computations such as OEE. These results validate the potential of the WLDT framework for practical DT development and deployment in real-world industrial scenarios.
+Conversely, the output conveyor exhibits a lower OEE, as it receives fewer parts to process due to the upstream bottleneck created by the Oven. This experimental phase aimed to demonstrate the effectiveness of \ac{WLDT}-based DTs in an industrial setting.
+The collected metrics confirm that DT instances can operate efficiently on standard commercial Edge nodes, handling CPU, memory, and network constraints while also supporting domain-specific computations such as OEE. These results validate the potential of the \ac{WLDT} framework for practical DT development and deployment in real-world industrial scenarios.

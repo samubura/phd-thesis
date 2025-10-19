@@ -1,5 +1,5 @@
 In an attempt to answer \ref{rq:1}, 
-this chapter presents our proposal for the engineering of \acp{DT}
+this chapter presents a proposal for the engineering of \acp{DT}
 focusing on the challenges of integrating heterogeneous sources of \ac{PA} data
 and exposing \ac{DT} functionalities as services for digital applications.
 %
@@ -146,7 +146,7 @@ Computed states can be stored to maintain a history $H$ of the \ac{DT}, which ca
 Additionally, to fulfil the \emph{shadowing} process, 
 state updates can then be communicated to applications through the \ac{DI}, fulfilling the objective of the \ac{DT} in providing an up-to-date representation of the \ac{PA}.
 %
-We can represent the shadowing as a function $Shad$ that given an event from the \ac{PI} $e_{PA}$, the set of models $M$, and the history of previous states $H$, computes the new state of the \ac{DT} and generates an event $e_{DT}$ to be sent through the \ac{DI}:
+The shadowing process can be represented as a function $Shad$ that given an event from the \ac{PI} $e_{PA}$, the set of models $M$, and the history of previous states $H$, computes the new state of the \ac{DT} and generates an event $e_{DT}$ to be sent through the \ac{DI}:
 
 \begin{equation}
         e_{DT}(S_{DT}) = Shad_{PA \rightarrow DT}(M, e_{PA}, H) \\
@@ -350,8 +350,10 @@ To this end, using Semantic Web technologies (see \Cref{sec:back:web:semantic-we
 %     \label{fig:mf_dt_ecosystem}
 % \end{figure*}
 
+%-------------------------------------------------------
 \subsection{\acl{WoT}: enabling DT Interoperability}
-\label{sec:wot-dt-interop}
+\label{sec:dte:dt-engineering:wot-for-dt}
+%-------------------------------------------------------
 
 \ac{WoT}~\cite{wot-arch} standards (\Cref{chap:back:web:WoT}) share the goal of adopting uniform API and data format descriptions to hide low-level complexities and promote interoperability with the proposal of self-descriptive \ac{PhA} and \ac{DiA}.
 
@@ -406,7 +408,6 @@ However, these models often lack concrete guidance on how to implement the inter
 This gap leads to potential inconsistencies between the \ac{DT} and \ac{PA}, as the interaction between models and the management of state changes is not adequately captured~\cite{alam2017access,Malakuti2019fourlayer,Lpez2021}.
 
 
-% In \cite{Redelinghuys2019}, a six-layer architecture for \acp{DT} is proposed, where the first two layers are dedicated to the \ac{PA} (sensors and controllers), and the third to the fifth layers manage data storage, communication, and cloud integration. However, the architecture lacks a clear process for how these layers communicate with each other or how changes in the \ac{DT} state are captured and updated across the layers. Similarly, in the Generic \ac{DT} Architecture (GDTA)~\cite{app10248903}, a layered approach is used, where the \ac{DT} state is computed at the \emph{information layer} through data processing pipelines. However, this architecture does not incorporate an explicit mechanism for the integration of the different components of the \ac{DT}, leaving gaps in how the evolving state of the \ac{DT} is managed. Other models explicitly reference multiple components that contribute to the definition of the \ac{DT} state. For example, in \cite{alam2017access} and similarly in \cite{Malakuti2019fourlayer}, the authors propose multi-layer \ac{DT} architecture for cyber-physical systems (CPS), where \ac{DT} state changes are driven by multiple functional units. However, in these models, the outputs of each unit are not mediated by a shadowing process, which would ensure consistency and synchronization of the \ac{DT} state and lifecycle management. Our approach addresses these issues by proposing a more structured lifecycle for \acp{DT}, where the communication and interaction between the different components are clearly defined. By introducing a shadowing process that orchestrates the different models, we ensure that the \ac{DT} state remains consistent and accurately reflects the evolving state of the \ac{PA}.
 
 
 \begin{figure}[t]
@@ -597,6 +598,7 @@ Despite these open challenges, the proposed structured lifecycle model represent
 
 %=======================================================
 \section{Modeling Augmentation Functionalities}
+\label{sec:dte:engineering-dt:dt-augmentation}
 %=======================================================
 
 \acp{PA} are typically limited by the nature of their physical characteristics throughout their lifecycle. In contrast, \acp{DT} can capitalize on software-based flexibility to modify, update, and enhance functionality over time.
@@ -614,12 +616,11 @@ Indeed, without a well-defined and measurable boundary for augmentation features
 \subsection{Extending the DT Model with Augmentation}
 %--------------------------------------------
 
-Recalling the \ac{DT} model structure introduced in \Cref{sec:dte:engineering-dt:abstract-architecture}. 
-We here extend it to explicitly include augmentation functionalities.
+The \ac{DT} model introduced in \Cref{sec:dte:engineering-dt:abstract-architecture} is here extended to explicitly include augmentation functionalities.
 %
 In practical terms, augmentation serves as a bridge transforming raw data into meaningful, actionable outcomes guided by the underlying model.
 \acp{DT} may expose additional services and functionalities that enhance the capabilities of the \ac{PA}.
-We can represent such functionalities as a set of \emph{augmentation functions} $F$, where $Augm_{i}$ denotes the individual augmentation functions implemented within the DT. Each augmentation function $Augm_i$ may leverage a specific model $m \in M$, to interpret and respond to changes in the DT.
+Such functionalities can be represented as a set of \emph{augmentation functions} $F$, where $Augm_{i}$ denotes the individual augmentation functions implemented within the DT. Each augmentation function $Augm_i$ may leverage a specific model $m \in M$, to interpret and respond to changes in the DT.
 
 \begin{equation}\label{eq:augm_set}
     F = \{Augm_{1}, Augm_{2}, \dots, Augm_{n}\}\\
@@ -632,7 +633,7 @@ DT = \langle PI, M, Shad, F, H, DI \rangle
 \tag{\ref{eq:5D_dt_model}}
 \end{equation}
 
-We distinguish augmentation functions based on two aspects:
+Augmentation functions can be distinguished based on two aspects:
 
 
 \paragraph{Triggering mechanism} (\( \tau \)): defines how and when the function is activated in response to events within the \ac{DT}.
@@ -748,7 +749,7 @@ The \( DI \), mirroring the \ac{PI}, handles outgoing events of the \ac{DT} (e.g
 \end{figure}
 
 
-Based on this event-driven model, we identify three approaches for implementing augmentation functions (\Cref{fig:augm_function_event_driven_patterns}):
+Based on this event-driven model, it is possible to identify three approaches for implementing augmentation functions (\Cref{fig:augm_function_event_driven_patterns}):
 \begin{itemize}
     \item \textit{internal} augmentation, where functions are executed within the \ac{DT} process;
     \item \textit{external} augmentation, where functions are executed outside the \ac{DT} process by means of an external service;
@@ -777,7 +778,7 @@ A \textit{Synchronization Interface (Sync)} within the \ac{DT} will be responsib
 
 Since augmentation functions can be external, the state (\( \sigma \)) of an augmentation function will be maintained externally to the \ac{DT}. For internal augmentation functions, \( \sigma \) will be internal to the \ac{DT}, but isolated from other \ac{DT} components and solely dedicated to the augmentation function.
 
-Taking as reference a manufacturing use case, we can exemplify the value of such externalization by considering a \ac{DT} monitoring various machines on the production line, collecting real-time data on operational status and performance.
+Taking as reference a manufacturing use case, the value of such externalization can be exemplified by considering a \ac{DT} monitoring various machines on the production line, collecting real-time data on operational status and performance.
 Augmented features for maintenance prediction and production schedule optimizations could be delegated to an external data analytics service which, using the external event bus, may process the \ac{DT} data with advanced machine learning algorithms and send back results to the \ac{DT} without overloading the \ac{DT} core system.
 
 \subsubsection{Hybrid Augmentation}
@@ -851,47 +852,170 @@ Adapters are identified by unique IDs, enabling the library to coordinate multip
 
 
 %========================================================
-\section{Benefits of the Proposed Approach}
+\section{Evaluation of the Proposed Approach}
 %========================================================
 
-%%%
-\begin{figure}[th!]
-    \setlength{\belowcaptionskip}{-8pt}
+In this section, the proposed architectural approach for engineering \acp{DT} is evaluated through the implementation of an industrial scenario.
+%
+This showcase demonstrates the practical application of the concepts introduced in the previous sections and highlights the benefits and challenges of the approach in a real-world context.
+
+%-------------------------------------------
+\subsection{Industrial Scenario Description}
+%-------------------------------------------
+
+As a reference scenario, a manufacturing setting where \ac{DT} are deployed to monitor and manage a production line is considered. 
+%
+The production line is realized through the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}}, controlled by PLCs that publish real-time data via OPC-UA and integrated with Arduino RP2040 boards\footnote{Arduino RP2040: \url{https://docs.arduino.cc/hardware/nano-rp2040-connect/}} for accelerometer data collection and processing and communicating over MQTT.
+This microfactory setup provides a controlled yet dynamic environment for testing and refining DT technologies in a realistic industrial context.
+
+\begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/engineering-wldt/fischer-layout-first-level-dt.pdf}
-    \caption{A schematic view of the target industrial scenario.}
-    \label{fig:discher-dt-first-level}
+    \includegraphics[width=0.75\columnwidth]{figures/engineering-wldt/fischer-layout-first-level-dt.pdf}
+    \caption{A schematic view of the Multiprocess Station with Oven of the target industrial scenario.}
+    \label{fig:fischer-dt-first-level}
 \end{figure}
-%%%
 
-%%%
-\begin{figure*}[th!]
-    \setlength{\belowcaptionskip}{-13pt}
+In this scenario, pieces are processed along a production line, passing through multiple machines.
+%
+The first station, referred to as the \textit{Multiprocess Station with Oven}.
+As shown in \Cref{fig:fischer-dt-first-level}, the module consists of five machines arranged in a flow shop layout: 
+three material handling units (vacuum gripper carrier, turntable, and conveyor)
+and two transformation stations (oven and saw station).
+%
+Each machine is equipped with sensors (light barriers and limit switches) and actuators (with two or three operational states).
+%
+The second station, named the \textit{Indexed Line}, comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
+
+The goal of the scenario is to implement, through \acp{DT}, a system with the following desired features: 
+\begin{itemize}
+    \item monitor the state of each machine in the production line;
+    \item track production performance, including the number of pieces processed and the efficiency of each machine;
+    \item monitor power consumption of each machine to optimize energy usage;
+    \item regulate the production speed of each machine to ensure smooth operation and avoid bottlenecks;
+    \item compute the overall production performance of the entire production line;
+    \item compute the overall energy consumption of the entire production line;
+    \item manage external action requests, at the system level, to adjust production parameters or respond to specific events;
+\end{itemize} 
+
+%--------------------------------------------
+\subsection{Digital Twin System Architecture}
+%--------------------------------------------
+
+To achieve the desired features, a multi-layered architecture is proposed, consisting of machine-level, department-level, and factory-level \acp{DT}.
+%
+Each machine-level \ac{DT} processes incoming data on properties and events to generate insights such as production and energy KPIs, while also managing action requests to regulate their individual speed.
+%
+Additionally, two department-level \acp{DT} are created, matching the two different goals of tracking energy consumption and production performance.
+%
+All \acp{DT} are built using the \ac{WLDT} framework.
+
+The production efficiency is computed at the machine level using the \ac{OEE} metric\footnote{OEE: \url{https://www.oee.com/}} calculated from production rate, uptime, and downtime.
+%
+At the department level, \acp{DT} representing the Indexed Departments assess performance by computing Weighted \ac{OEE}~\cite{OEE-manufacturing-cell-Gamberini-2017,Introduction-to-TPM-total-productive-maintenance-Nakajima-1995}, derived from individual machine \acp{DT}, and track throughput, defined as processed pieces per unit time.
+Throughput is determined by monitoring entry and exit events within the department, utilizing relationships captured by the associated \acp{DT}.
+
+\begin{figure}
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/engineering-wldt/DTs-zoom-in.pdf}
-    \caption{Internal structure of machine-level DTs with the details of adapters, states and capabilities}
-    \label{fig:dt-internal-structure-overview}
-\end{figure*}
-%%%
+    \includegraphics[width=0.7\textwidth]{figures/dt-lifecycle/mps_dt_structure_2.pdf}
+    \caption{Multiprocess Station Digital Twin architecture overview.}
+    \label{fig:multiprocess-station-dt-structure}
+\end{figure}
 
-\subsection{Interoperability in a Manufacturing Use Case}
-\label{sec:industrial_use_case}
-%%%
+\Cref{fig:multiprocess-station-dt-structure} shows the resulting \ac{DT} system architecture for the \textit{Multiprocess Station with Oven}.
+%
+Each machine of the station is represented by a dedicated \ac{DT} which connects to the physical asset through a \ac{PhA} that interacts with the PLC iva OPC-UA.
+%
+At the department level, the \ac{DT} of the \textit{Multiprocess Station with Oven} aggregates data from the machine-level \acp{DT}, computing overall performance metrics and exposing department-level actions.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/engineering-wldt/Fischer-relationships.pdf}
+    \caption{Relationships between \acp{DT} in the Multiprocess Station serve the purpose of tracking the physical relationships between different machines at the digital level.}
+    \label{fig:dt-assets-relationships-overview}
+\end{figure}
+
+Figure \Cref{fig:dt-assets-relationships-overview} illustrates the relationships among the various \acp{DT} in the Multiprocess Station.
+%
+Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are statically defined in this setting, but are used by department-level \acp{DT} do track the flow of pieces and compute throughput and total pieces processed.
+%
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/dt-interoperability/mf_dt_structure.pdf}
+    \caption{The \acl{DT} ecosystem architecture of the Indexed Department, alongside a schematic representation of the conveyors.}
+    \label{fig:indexed-department-dt-structure}
+\end{figure}
+
+Similarly, \Cref{fig:indexed-department-dt-structure} illustrates the \ac{DT} ecosystem architecture for the \textit{Indexed Line Department}. Again, each machine is represented by a dedicated \ac{DT} connected to the physical asset through \acp{PhA}. In this setup, machines integrate the communication of the PLC via OPC-UA and Arduino boards via MQTT.
+%
+Finally, a factory-level \ac{DT} aggregates data from both departments, 
+computing the overall production performance and energy consumption.
+
+
+Machine Level \acp{DT} expose a digital interface through \acp{DiA}. 
+%
+An MQTT digital interface is used to connect machine-level \acp{DT} to the department-level \ac{DT}, enabling composition between \acp{DT} in a hierarchical structure. 
+%
+All \acp{DT} also expose an \ac{HTTP} digital interface which serves as the primary access point for external applications and services.
+%
+The \ac{HTTP} interface can further be described using \ac{WoT} \acp{TD}, enabling seamless integration with other \ac{WoT}-compliant systems and applications as discussed in \Cref{sec:dte:dt-engineering:wot-for-dt}.
+
+%-------------------------------------------------------------------------
+\subsection{Reducing Complexity through Reusable Adapters}
+%-------------------------------------------------------------------------
+
+Notably, the physical and digital adapters that implement MQTT, OPC-UA, and HTTP protocols, along with \ac{WoT} over HTTP for serving \acp{TD}, are reusable across different instances.
+These adapters, through configurable parameters, enable effective communication and integration within both digital and physical environments.
+
+Upon startup, each \ac{DT} connects to its data source, publishes the \ac{PAD} of the physical asset, and interacts with the PLC or Arduino to collect and send data, enabling digitalization and interoperability among heterogeneous equipment. 
 
 %%%
-\begin{figure*}[t]
-    \setlength{\belowcaptionskip}{-13pt}
+\begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/dt-interoperability/dt_interoperability-pad_dt_wot.pdf}
     \caption{The transition from physical to digital representation via the \ac{PAD}, the \ac{DT} State, and the \ac{DTD} for external consumers.}
     \label{fig:pad_dt_wot}
-\end{figure*}
+\end{figure}
 %%%
 
-The proposed \ac{DT} architectural approach is showcased using the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} Indexed-Line Station, controlled by a Siemens PLC that publishes real-time data via OPC-UA, integrated with Arduino RP2040 boards\footnote{Arduino RP2040: \url{https://docs.arduino.cc/hardware/nano-rp2040-connect/}} for accelerometer data collection and processing and communicating over MQTT\footnote{MQTT Protocol: \url{https://mqtt.org/}}.
 
-\begin{figure}[t]
-  \setlength{\belowcaptionskip}{-5pt}
+\Cref{fig:pad_dt_wot} schematically illustrates the evolution of data and representation from the physical to the digital realms through the adoption of the proposed \ac{DT} architectural approach, \ac{PAD} integration, and \ac{WoT} \acp{TD} used as \acp{DTD} on the digital side, specifically for the output conveyor of the Indexed Department production line (\Cref{fig:indexed-department-dt-structure}).
+On the physical side, data is structured using OPC-UA with a hierarchical organization, containing telemetry data and action methods mapped to specific data types.
+Accelerometer data is transmitted over MQTT on a specific topic with a JSON payload containing axis acceleration values. 
+
+The \acp{PAD} act as an intermediary, translating data from the PT into a format suitable for the DT core, decoupling it from the complexity of interacting with the \ac{PT} and enabling discovery, understanding, and utilization of available data and methods.
+Using the information from the \acp{PAD}, the \ac{DT} model computes the \ac{DT}'s state with target properties, events, and actions, based on either one-to-one matching of physical characteristics or augmented by combining multiple physical properties into computed \ac{DT} properties or events, such as computing the value of the \ac{OEE} property or triggering anomaly detection events based on accelerometer data. 
+
+Finally, the \ac{DiA} of the \ac{DT} leverages \ac{WoT} \ac{TD} to describe the DT's data and functionalities through a standardized, interoperable, and machine-readable approach.
+The \ac{TD} specifies how these can be accessed via protocols and data formats.
+This approach enables effective interoperability from the physical to the digital, using a modular and decoupled structure through \acp{DT} in the target industrial use case.
+
+This deployment aims to measure the impact of digitization and responsibility decoupling by comparing the system complexity in scenarios with and without \ac{DT} adoption and also with respect to the different \ac{DT}'s architectural layers.
+%
+This allows to assess the benefits of a modular, structured DT-based approach, particularly in terms of interoperability and heterogeneity management.
+
+To quantify how effectively the proposed approach of \ac{PhA} and \ac{DiA} manages cyber-physical heterogeneity,
+the \textit{Cyber-Physical Complexity Index (CP-CI)} proposed in \cite{lippi_dt_causality_learning, LOMBARDO2024107203} is adopted as a measure of complexity of the system. 
+
+The CP-CI quantifies the perceived complexity of a cyber-physical application based on:
+\begin{itemize}
+    \item \textit{Required Protocols (p)}: communication protocols needed for device interaction;
+    \item \textit{Communication Patterns (c)}: interaction models (e.g., Publish/Subscribe, Request/Response);
+    \item \textit{Data Formats (d)}: required data representations or serialization methods;
+    \item \textit{Interaction Points (n)}: modules or services involved in data exchange; and
+    \item \textit{Aggregation Points (a)}: levels of abstraction for physical data (e.g., merging data from multiple machines).
+\end{itemize}
+Each criterion is weighted with a \textit{Criteria Importance Factor} (\(CIF\)) from 1 (low) to 3 (high), indicating its impact on development, deployment, and maintenance.
+
+Focusing on \ac{DT} interoperability, the CP-CI is extended to include both inbound and outbound interfaces, essential for bridging the physical and cyber layers with differing requirements.
+This extension enables a more precise assessment of the complexity in managing interoperability across system boundaries.
+The CP-CI was applied not only to the entire \ac{DT} but also to its internal layers: \ac{PI}, Core, and \ac{DI}.
+These results were compared to those of a monolithic external application that directly handles business logic and interoperability, bearing the full complexity, highlighting the advantages of the modular \ac{DT} design.
+High importance ($CIF=3$) was assigned to managing heterogeneous data formats ($d$) and aggregation points ($a$), as they are crucial for creating interoperable data models.
+Medium importance ($CIF=2$) was given to protocol diversity ($p$) and interaction with multiple entities ($n$), which become more significant as systems scale.
+Low importance ($CIF=1$) was assigned to multiple communication patterns ($c$), as their concurrent use is standard in distributed applications.
+
+
+\begin{figure}
   \centering
   \begin{subfigure}[t]{0.32\linewidth}
       \centering
@@ -915,268 +1039,299 @@ The proposed \ac{DT} architectural approach is showcased using the \emph{Fischer
   \label{fig:dt_complexity_index}
 \end{figure}
 
-The scenario emulates a production line, with a \ac{DT} system deployed to monitor production and measuring the overall efficiency.
-The \ac{DT} ecosystem architecture is depicted in Figure \ref{fig:mf_dt_ecosystem}.
-Four machine-level \acp{DT} are deployed, each with a \ac{PI} supporting the relevant communication protocols to interact with the different machines, namely through MQTT and OPC-UA\footnote{OPC-UA: \url{https://opcfoundation.org/about/opc-technologies/opc-ua/}}.
-These \acp{DT} track machine states, monitor performance, and coordinate production by processing data from the physical system and digital action requests.
-An additional department-level \ac{DT} aggregates data from machine-level \acp{DT}, extracting system metrics and exposing department-level actions. 
 
-All the \acp{DT} are built using the \ac{WLDT} open-source framework\footnote{WLDT framework: \url{https://wldt.github.io}}: a Java-based multithreaded stack, facilitating the definition of \ac{DT} and supporting the implementation of shadowing and digitalisation processes.
-%Within the framework, we implemented our proposal of physical and digital adapters to validate the approach and facilitate interoperability with a broader range of devices and applications.
-The frameworks implements our proposal of physical and digital adapters that we exercise in this example.
-
-\ac{DT} of composed physical assets, such as the \textit{Indexed Line Department} \ac{DT} (see Figure \ref{fig:mf_dt_ecosystem}, top) use lower-level \acp{DT} as data sources.
-Notably, the physical and digital adapters that implement MQTT, OPC-UA, and HTTP protocols, along with \ac{WoT} over HTTP for serving \acp{TD}, are reusable across different instances.
-These adapters, through configurable parameters, enable effective communication and integration within both digital and physical environments.
-
-Machine-level \acp{DT} provide real-time data on their physical counterparts, such as workpiece presence, operational state
-(e.g., idle, working, waiting, or broken),
-and performance KPIs like \ac{OEE}\footnote{OEE: \url{https://www.oee.com/}}, calculated from production rate, uptime, and downtime.
+The graphs presented in \Cref{fig:dt_complexity_index} display the CP-CI values obtained across different levels of deployment: a single machine, the indexed department, and the entire factory.
 %
-At the department level, \acp{DT} representing the Indexed Departments assess performance by computing Weighted \ac{OEE}~\cite{OEE-manufacturing-cell-Gamberini-2017,Introduction-to-TPM-total-productive-maintenance-Nakajima-1995}, derived from individual machine \acp{DT}, and track throughput, defined as processed pieces per unit time.
-Throughput is determined by monitoring entry and exit events within the department, utilizing relationships captured by the associated \acp{DT}.
-
-Upon startup, each \ac{DT} connects to its data source, publishes the \ac{PAD} of the physical asset, and interacts with the PLC or Arduino to collect and send data, enabling digitalization and interoperability among heterogeneous equipment. 
-
-Figure \ref{fig:pad_dt_wot} schematically illustrates the evolution of data and representation from the physical to the digital realms through the adoption of the proposed \ac{DT} architectural approach, \ac{PAD} integration, and \ac{WoT} \acp{TD} used as \acp{DTD} on the digital side, specifically for the output conveyor of the target production line.
-On the physical side, data is structured using OPC-UA with a hierarchical organization, containing telemetry data and action methods mapped to specific data types.
-Accelerometer data is transmitted over MQTT on a specific topic with a JSON payload containing axis acceleration values. 
-
-The \acp{PAD} act as an intermediary, translating data from the \ac{PA} into a format suitable for the DT core, decoupling it from the complexity of interacting with the \ac{PA} and enabling discovery, understanding, and utilization of available data and methods.
-Using the information from the \acp{PAD}, the \ac{DT} model computes the \ac{DT}'s state with target properties, events, and actions, based on either one-to-one matching of physical characteristics or augmented by combining multiple physical properties into computed \ac{DT} properties or events, such as computing the value of the \ac{OEE} property or triggering anomaly detection events based on accelerometer data. 
-
-Finally, the \ac{DiA} of the \ac{DT} leverages \ac{WoT} \ac{TD} to describe the DT's data and functionalities through a standardized, interoperable, and machine-readable approach.
-The \ac{TD} specifies how these can be accessed via protocols and data formats.
-This approach enables effective interoperability from the physical to the digital, using a modular and decoupled structure through \acp{DT} in the target industrial use case.
-
-\subsection{Mapping Cyber-Physical Complexity}
-\label{sec:mappint_cp_complexity}
-
-In our experimental analysis, we also aim to measure the impact of digitization and responsibility decoupling by comparing the system complexity in scenarios with and without \ac{DT} adoption and also with respect to the different \ac{DT}'s architectural layers.
-This allows us to assess the benefits of a modular, structured DT-based approach, particularly in terms of interoperability and heterogeneity management.
-To quantify how effectively our approach manages cyber-physical heterogeneity, we adopt the \textit{Cyber-Physical Complexity Index (CP-CI)} proposed in \cite{lippi_dt_causality_learning, LOMBARDO2024107203}.
-The CP-CI quantifies the complexity of a cyber-physical application based on:
-i) \textit{Required Protocols (p)}: communication protocols needed for device interaction;
-ii) \textit{Communication Patterns (c)}: interaction models (e.g., Publish/Subscribe, Request/Response);
-iii) \textit{Data Formats (d)}: required data representations or serialization methods;
-iv) \textit{Interaction Points (n)}: modules or services involved in data exchange; and
-v) \textit{Aggregation Points (a)}: levels of abstraction for physical data (e.g., merging data from multiple machines).
-Each criterion is weighted with a \textit{Criteria Importance Factor ($CIF$)} from 1 (low) to 3 (high), indicating its impact on development, deployment, and maintenance.
-
-% The CP-CI reflects the perceived complexity of a cyber-physical application, based on the following criteria: i) \textit{Required Protocols (p)}: number of communication protocols needed to interact with physical devices; ii) \textit{Communication Patterns (c)}: number of interaction models (e.g., Publish/Subscribe, Request/Response); iii) \textit{Data Formats (d)}: number of data representations or serialization methods required; iv) \textit{Interaction Points (n)}: number of distinct modules or services involved in data exchange; and v) \textit{Aggregation Points (a)}: number of composition levels needed to abstract physical information (e.g., merging data from multiple machines in a line). Each criterion is weighted using a \textit{Criteria Importance Factor ($CIF$)}, ranging from 1 (low) to 3 (high), to reflect its impact on development, deployment, and system maintenance.
-
-Focusing on \ac{DT} interoperability, we extended the CP-CI to include both inbound and outbound interfaces, essential for bridging the physical and cyber layers with differing requirements.
-This extension enables a more precise assessment of the complexity in managing interoperability across system boundaries.
-The CP-CI was applied not only to the entire \ac{DT} but also to its internal layers: Physical Interface (PI), Core, and Digital Interface (DI).
-These results were compared to those of a monolithic external application that directly handles business logic and interoperability, bearing the full complexity, highlighting the advantages of the modular \ac{DT} design.
-High importance ($CIF=3$) was assigned to managing heterogeneous data formats ($d$) and aggregation points ($a$), as they are crucial for creating interoperable data models.
-Medium importance ($CIF=2$) was given to protocol diversity ($p$) and interaction with multiple entities ($n$), which become more significant as systems scale.
-Low importance ($CIF=1$) was assigned to multiple communication patterns ($c$), as their concurrent use is standard in distributed applications.
-
-The graphs presented in Figure \ref{fig:dt_complexity_index} display the CP-CI values obtained across different levels of deployment: a single machine, a station in the factory (such as the indexed line, where multiple machines and their respective DTs are managed and composed into a single, unified DT), and the entire factory, which includes 9 machines, 2 composed DTs, and one overarching DT for the entire factory, all deployed following the proposed modular and interoperable approach.
-For the machines analyzed, the involved protocols ($p$) and communication patterns ($c$) are both set to 2, as we utilize MQTT and OPC-UA with Pub/Sub and Request/Response interactions.
+For the machines analyzed, the involved protocols ($p$) and communication patterns ($c$) are both set to 2, as MQTT and OPC-UA are used with Pub/Sub and Request/Response interactions.
 On the digital side, both MQTT and HTTP are employed.
 Regarding data formats ($d$), each machine manages 2 distinct formats, accounting for both PLC data and Arduino accelerometer information.
 Furthermore, the interaction points ($n$) and aggregation points ($a$) are both 2, reflecting the aggregation and interaction with two different sub-entities for each machine and its corresponding DT.
 
-The results for single machines (Figure \ref{fig:machine_complexity_index}) highlight the critical role of the PI in the \ac{DT} architecture.
-As a decoupling layer, the PI isolates physical-world complexities from the DT core, managing priorities like protocols, data formats, interaction points, aggregation strategies, and communication patterns.
-This allows the DT core to focus on uniform data, processed through the interface via PAD descriptions and payload transformations, without dealing with heterogeneous physical entities.
-Consequently, the core interacts only with its internal communication pattern and consistent interaction points, regardless of the physical environment’s configuration.
-A similar approach is applied to the DI, which is decoupled from physical complexities and adapts to external digital systems, ensuring modularity and reuse.
+The results for single machines (\Cref{fig:machine_complexity_index}) highlight the critical role of the \ac{PI} in the \ac{DT} architecture.
+As a decoupling layer, the \ac{PI} isolates physical-world complexities from the DT core, managing priorities like protocols, data formats, interaction points, aggregation strategies, and communication patterns.
+This allows the DT core to focus on uniform data, processed through the interface via \ac{PAD} and payload transformations, without dealing with heterogeneous physical entities.
+%
+Consequently, the core interacts only with its internal communication pattern and consistent interaction points, regardless of the physical environment's configuration.
+A similar approach is applied to the \ac{DI}, which is decoupled from physical complexities and adapts to external digital systems, ensuring modularity and reuse.
 
 In contrast, systems without a \ac{DT} must embed all heterogeneity management into a single application, burdening it with business logic, protocol diversity, and data format interoperability.
 This increases complexity and reduces scalability, as reflected by the complexity index parameters.
 
-% The results for single machines (reported in Figure \ref{fig:machine_complexity_index}) underscore the strategic importance of the PI within the \ac{DT} architecture. Acting as a decoupling layer, the PI isolates the complexities of the physical world from the DT core. It manages key priorities related to the physical domain, including protocols, data formats, interaction points, aggregation strategies, and communication patterns. This separation allows the DT core to focus on uniform data, processed and normalized through the interface using PAD descriptions and payload transformations, rather than managing heterogeneous physical entities. As a result, the DT core is shielded from the diversity of protocols, working only with its internal communication pattern and a consistent set of interaction points, regardless of the physical environment's configuration. A similar approach applies to the DI, which is decoupled from physical-world complexities and its interaction is limited to the DT core, adapting to external digital systems based on the specific application context. This modular approach enhances the separation of concerns and promotes reuse, allowing the same DT core to be deployed with various Physical Interfaces suited to different operational contexts.
+As system architecture scales from individual machines to departments (Figure \ref{fig:station_complexity_index}), or entire factories (Figure \ref{fig:factory_complexity_index}), protocol diversity stabilizes while the number of interaction points and data formats increases due to the need for managing heterogeneous components.
+The complexity measure shows that systems at the department or factory level experience a significant rise in complexity, driven by interaction points, aggregation nodes, and data format diversity.
 
-% In contrast, systems that lack a \ac{DT} approach, which bridges and manages the cyber-physical layers, must integrate all interoperability and heterogeneity management into a single application. This places the burden of handling business logic, protocol diversity, and data format interoperability on the application itself, leading to increased complexity and diminished scalability, as reflected in the parameters of the complexity index.
-
-As system architecture scales from individual machines to stations, production lines (Figure \ref{fig:station_complexity_index}), or entire factories (Figure \ref{fig:factory_complexity_index}), protocol diversity stabilizes while the number of interaction points and data formats increases due to the need for managing heterogeneous components.
-Our complexity measure shows that systems at the station or factory level experience a significant rise in complexity, driven by interaction points, aggregation nodes, and data format diversity.
-These results emphasize the benefits of a modular and interoperable approach.
-By encapsulating complexity within DT modules and using interoperable representations, developers can simplify application development.
+These results emphasize the benefits of the modular and interoperable approach presented in \cref{sec:dte:engineering-dt:physical-digital-adapters}.
+By encapsulating complexity within reusable \emph{adapters} and using interoperable representations, developers can simplify application development.
 In contrast, monolithic systems struggle with managing interoperability and system evolution as integration requirements grow.
 
+%---------------------------------------------------
+\subsection{Lifecycle Awareness and Coordination}
+%---------------------------------------------------
 
-\subsection{Industrial Use Case}
-\label{sec:industrial_use_case}
-%To demonstrate the applicability of the proposed lifecycle synchronization model, we conducted an experimental evaluation within a real-world industrial scenario. This evaluation highlights how the alignment between the DT and \ac{PA} lifecycles can be effectively achieved through structured data management and phase synchronization. The industrial case involves mapping the lifecycle phases of physical devices.
+To demonstrate the applicability of the proposed lifecycle synchronization model introduced in \cref{sec:dte:engineering-dt:dt-lifecycle}, 
+each machine-level \ac{DT} handles the synchronization between the $LP_{PA}$ and the corresponding $LP_{DT}$.
+%
+Furthermore, an anomaly detection algorithm runs within each \ac{DT}, enabling it to identify and report issues that the PLC alone might not detect, thus dynamically computing the $LP_{PA}$ when necessary (e.g., when a piece does not reach a reference photocell on the machinery within a predetermined time and an anomaly is consequently detected).
 
-An industrial scenario has been considered to apply the proposed approach for DT's lifecycle modeling and characterization. Specifically, scaled industrial stations manufactured by Fischertechnik\footnote{Fischertechnik: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} has been adopted as reference industrial prototyping environment with multiple stations and involved machines. The first station, referred to as the \textit{Multiprocess Station with Oven}, features an oven, a robotic arm for handling operations, and a rotary table equipped with multiple processing stages. The second station, named the \textit{Indexed Line}, comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
-
-\begin{figure}[t]
-    \setlength{\belowcaptionskip}{-13pt}
-    \centering
-    \includegraphics[width=0.9\columnwidth]{figures/dt-lifecycle/multiprocess-station-shcematic-overview.pdf}
-    \caption{Multi-process Station schematic overview.}
-    \label{fig:multiprocess-station-schematic-overview}
-\end{figure}
+The department-level \ac{DT} of the Multiprocess Station incorporates coordination logic that adjusts machine behavior based on their current phases, ensuring seamless station management.
 
 \begin{figure}
-    \setlength{\belowcaptionskip}{-13pt}
     \centering
     \includegraphics[width=\textwidth]{figures/dt-lifecycle/graph_machine_logic.pdf}
-    \caption{Machine DT Lifecycle with a focus on the different phases in the Synchronization state.}
+    \caption{Lifecycle of a \ac{PA} in the target industrial scenario, highlighting the different phases that the \ac{DT} needs to account for when synchronized.}
     \label{fig:graph-machine-logic}
 \end{figure}
 
-\subsection{DT Design \& Development}
+The machine-level \acp{DT} operate based on data produced by their physical counterparts. Leveraging these temporal data, it is possible to model the lifecycle of the physical object within the DT lifecycle as shown in \Cref{fig:graph-machine-logic}.
+%
+When the DT lifecycle reaches the Synchronized state, it accurately mirrors the corresponding phase of the physical machinery's operation.
+%
+These phases are inspired by the reference structure for industrial machine phases defined by ISA-95~\cite{ISA95} aligning \acp{DT} with recognized industry standards, enhancing their applicability and effectiveness in real-world industrial settings.
 
-The design, development, and deployment of Digital Twins (DTs) for the target use case are motivated by the need for precise monitoring, control, and optimization of physical machinery and stations. By creating digital replicas of the physical systems, we aim to enhance operational efficiency, reduce downtime, and enable predictive maintenance through detailed real-time data analysis and simulation capabilities.
+To accurately define the phases of the physical machinery,
+it is essential to specify the transition conditions between these phases by leveraging the raw data and telemetry received from sensors and actuators via OPC-UA from the PLC.
+%
+The DT processes this data to compute and maintain the synchronized lifecycle, ensuring a precise and real-time reflection of the physical object's operational state.
 
-To achieve these objectives, multiple DTs have been designed, developed, and deployed to represent the associated Physical Twins (\ac{PA}s). Specifically, each station was divided into several processing machines, with a DT created for each one. Subsequently, a \textit{composed} DT was developed for each station to aggregate data from the individual machine DTs, enabling a complete digital representation of the station. This allows for the monitoring and management of the combined operations of multiple physical assets working together through the production process. For example, Figure \ref{fig:multiprocess-station-schematic-overview} illustrates the schematic representation of the Multiprocess Station along with the DTs it comprises.
+Department-level \acp{DT} enable hierarchical coordination not only between machines within the same station but also across different stations.
+%
+For example, coordination between the \textit{Multiprocess Station} and the previously mentioned \textit{Indexed Line} can be simplified by establishing consistent lifecycle phases across machines.
+%
+Without this approach, coordination among multiple DTs requires using low-level physical information and telemetry, making the process less intuitive.
 
-The DTs were implemented using the White Label Digital Twin (WLDT)\footnote{WLDT Library: \url{https://wldt.github.io/}} library~\cite{wldt_picone_2021}. WLDT is a Java implementation of an event-driven DT framework that supports data ingestion through IoT interfaces and message queues. We extended the library to support the proposed lifecycle management approach by implementing both the Physical Twin Lifecycle ($LP_{PA}$) and the Digital Twin Lifecycle ($LP_{DT}$). Each DT features various adapters for external communication, including both physical and digital interfaces. For physical interface management, the DTs controlling individual machines use an OPC-UA\footnote{OPC-UA-Foundation: \url{https://opcfoundation.org/}} adapter, which enables interaction with Siemens S7-1200 PLCs\footnote{Siemens-S7-1200-PLC:\url{https://www.siemens.com/global/en/products/}}. Additionally, each DT includes MQTT\cite{mqtt} Digital and HTTP Digital adapters to expose both its current state and the lifecycle's phases it represents through different protocols and interaction patterns (Pub/Sub and RESTful).
+\begin{algorithm}
+\caption{Multiple DTs Stopping Procedure}
+\begin{algorithmic}
+\State \texttt{invoke(OvenDT, STOP)}
+\While{ \texttt{OvenDT.phase} \textbf{is not} \texttt{STOPPED} }
+    \State \texttt{wait(OvenDT.phase} \textbf{is not} \texttt{WORKING)}
+\EndWhile
+%\vspace{1em}
+%\State \textbf{publish} event ``change-vacuum-gripper-cycle" with value \texttt{false}
+\State \texttt{invoke(GripperDT, STOP)}
+\While{ \texttt{GripperDT.phase} \textbf{is not} \texttt{STOPPED}}
+    %\State \textbf{log} waiting for end of vacuum-gripper \texttt{WORKING} state
+    \State \texttt{wait(GripperDT.phase} \textbf{is not} \texttt{WORKING)}
+\EndWhile
+%\vspace{1em}
+%\State \textbf{publish} event ``change-turntable-cycle" with value \texttt{false}
+\State \texttt{invoke(TurntableDT, STOP)}
+\While{ \texttt{TurntableDT.phase} \textbf{is not} \texttt{STOPPED} }
+    %\State \textbf{log} waiting for end of turntable \texttt{WORKING} state
+    \State \texttt{wait(TurntableDT.phase} \textbf{is not} \texttt{WORKING)}
+\EndWhile
+%\vspace{1em}
+\State \texttt{invoke(OutputConveyorDT, STOP)}
+\end{algorithmic}
+\label{code:soft-stop-logic}
+\end{algorithm}
 
-Each machine DT handles the synchronization between the $LP_{PA}$ and the corresponding $LP_{DT}$. Furthermore, an anomaly detection algorithm runs within each DT, enabling it to identify and report issues that the PLC alone might not detect, thus dynamically computing the $LP_{PA}$ when necessary (e.g., when a piece does not reach a reference photocell on the machinery within a predetermined time and an anomaly is consequently detected).
-
-The DTs also calculate the \textit{Overall Equipment Effectiveness} (OEE)\footnote{OEE: \url{https://www.oee.com/}}, a key efficiency metric in the industrial domain that measures the productivity of manufacturing equipment by combining its availability, performance, and quality rates. We compute OEE in our DTs to provide a comprehensive measure of equipment effectiveness, which is critical for identifying areas of improvement and optimizing production processes. This data is exposed for external monitoring.
-
-The composite DT uses an MQTT adapter as its physical interface to collect data and lifecycle phases from the individual machine DTs. It incorporates coordination logic that adjusts machine behavior based on their current phases, ensuring seamless station management. Additionally, the composite DT has its own MQTT Digital and HTTP Digital adapters to expose the station’s overall state externally. The described DT structure is illustrated in Figure \ref{fig:multiprocess-station-dt-structure}.
-
-The DTs of the machines operate based on data produced by their physical counterparts. This data originates from readings of all sensors present on the machinery, along with the states of its actuators. These data are mapped to the DT state, ensuring that at any given moment, the DT reflects the state of the physical object. Leveraging these temporal data, it was possible to model the lifecycle of the physical object within the DT lifecycle.
-
-When the DT lifecycle reaches the Synchronized state, it accurately mirrors the corresponding phase of the physical machinery's operation. The modeled lifecycle, as shown in Figure \ref{fig:graph-machine-logic}, outlines the generic phases defined for each machine. These phases not only reflect the actual operation of the machinery but are also inspired by the reference structure for industrial machine phases defined by ISA-95\footnote{ISA-95:https://www.isa.org/standards-and-publications/isa-standards/isa-standards-committees/isa95}. This alignment ensures that our DTs adhere to recognized industry standards, enhancing their applicability and effectiveness in real-world industrial settings.
-
-To accurately define the phases of the physical machinery, it was essential to specify the transition conditions between these phases by leveraging the raw data and telemetry received from sensors and actuators via OPC-UA from the PLC. The DT processes this data to compute and maintain the synchronized lifecycle, ensuring a precise and real-time reflection of the physical object's operational state. This approach enables the DT to seamlessly transition between phases based on the actual conditions and performance of the machinery, providing an accurate digital representation.
-
-\begin{figure}[t]
-    \setlength{\belowcaptionskip}{-13pt}
-    \centering
-    \includegraphics[width=\columnwidth]{figures/dt-lifecycle/mps_dt_structure_2.pdf}
-    \caption{Multi-process Station Digital Twin overview.}
-    \label{fig:multiprocess-station-dt-structure}
-\end{figure}
-
-\subsection{Lifecycle Awareness \& Coordination}
-
-In an industrial setting, the digital representation of a station is often a hierarchical composition of individual machines, each represented by its own DT. This structure enables intelligent coordination not only between machines within the same station but also across different stations. For example, coordination between the \textit{Multiprocess Station} and the previously mentioned \textit{Indexed Line} becomes more manageable compared to a direct access to low level raw data of the different physical machines. Incorporating the PA lifecycle into the DT lifecycle simplifies coordination by establishing consistent lifecycle phases across machines.
-Without this approach, coordination among multiple DTs required using low-level physical information and telemetry, making the process more complex and less intuitive. Now, as illustrated by Algorithm \ref{code:soft-stop-logic}, high-level control logic can be implemented directly leveraging information encapsulated by $LP_{DT}$ mapping in real-time the phase and the associated transitions of the associated physical counterparts $LP_{PA}$. Specifically, the algorithm outlines the steps the composite DT can take to halt production on the multiprocess station. By leveraging this additional layer of abstraction, the composite DT no longer relies on raw sensor data for control operations, enabling a more declarative and effective coordination process, and distributing responsibilities across different DTs.
-
+As illustrated by \Cref{code:soft-stop-logic}, high-level control logic can be implemented directly leveraging information encapsulated by $LP_{DT}$ mapping the phase and the transitions of the associated physical counterparts $LP_{PA}$. Specifically, the algorithm outlines the steps the department-level DT can take to halt production on the multiprocess station.
+By leveraging this additional layer of abstraction, the department-level DT no longer relies on raw sensor data for control operations, enabling a more declarative and effective coordination process, and distributing responsibilities across different DTs.
+%
 The composite DT leverages the PA lifecycle phases of individual machines to define the overall lifecycle of the entire multiprocess station. This provides a comprehensive overview of each station's operational behavior, enabling more effective and intuitive system management.
 
-\note{FIX ALGORITHM}
-% \begin{algorithm}
-% \caption{Multiple DTs Stopping Procedure}
-% \begin{algorithmic}
-% \State \texttt{invoke(OvenDT, STOP)}
-% \While{ \texttt{OvenDT.phase} \textbf{is not} \texttt{STOPPED} }
-%     \State \texttt{wait(OvenDT.phase} \textbf{is not} \texttt{WORKING)}
-% \EndWhile
-% %\vspace{1em}
-% %\State \textbf{publish} event ``change-vacuum-gripper-cycle" with value \texttt{false}
-% \State \texttt{invoke(GripperDT, STOP)}
-% \While{ \texttt{GripperDT.phase} \textbf{is not} \texttt{STOPPED}}
-%     %\State \textbf{log} waiting for end of vacuum-gripper \texttt{WORKING} state
-%     \State \texttt{wait(GripperDT.phase} \textbf{is not} \texttt{WORKING)}
-% \EndWhile
-% %\vspace{1em}
-% %\State \textbf{publish} event ``change-turntable-cycle" with value \texttt{false}
-% \State \texttt{invoke(TurntableDT, STOP)}
-% \While{ \texttt{TurntableDT.phase} \textbf{is not} \texttt{STOPPED} }
-%     %\State \textbf{log} waiting for end of turntable \texttt{WORKING} state
-%     \State \texttt{wait(TurntableDT.phase} \textbf{is not} \texttt{WORKING)}
-% \EndWhile
-% %\vspace{1em}
-% \State \texttt{invoke(OutputConveyorDT, STOP)}
-% \end{algorithmic}
-% \label{code:soft-stop-logic}
-% \end{algorithm}
+
+%-------------------------------------
+\subsection{Performance Evaluation}
+%-------------------------------------
 
 
-
-\subsection{Industrial Digital Twins with WLDT}
-\label{sec:industrial-dt-wldt}
-
-The proposed DT architectural approach has been initially applied and validated in a realistic industrial environment: a microfactory which serves as an experimental platform for DTs and industrial ecosystems. The industrial environment has been strategically chosen since it represents one of the most challenging application scenarios for DTs, characterized by stringent requirements in terms of integration with heterogeneous systems, and the management of fragmented data through multiple stakeholders. 
-
-However, it is crucial to emphasize that the proposed approach is inherently flexible and designed to be applicable in a wide spectrum of other  contexts. While the initial validation focused on the industrial domain we foster the application of our framework in other domains and use cases, such as Smart Cities \cite{10.1145/3570361.3614070} and Health \cite{9325551} where the concepts of DTs can bring significant value. The modularity and scalability of our solution facilitate its adoption in various types of applications, and future work may explore in detail its effectiveness in these additional contexts.
-
-Specifically, the validation in the industrial domain was carried out using the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}} Indexed-Line Station, featuring the \emph{Multiprocess Station with Oven} module.
-This microfactory setup provides a controlled yet dynamic environment for testing and refining DT technologies in a realistic industrial context.
-
-%%%
-\begin{figure*}
-    \setlength{\belowcaptionskip}{-13pt}
+\begin{figure}
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/engineering-wldt/Fischer-relationships.pdf}
-    \caption{DTs relationships with both those existing in the physical space as well those belonging to the digital composition.}
-    \label{fig:dt-assets-relationships-overview}
-\end{figure*}
-%%%
-
-As shown in Figure~\ref{fig:discher-dt-first-level}, the module consists of five machines arranged in a flow shop layout: three material handling units (vacuum gripper carrier, turntable, and conveyor) and two transformation stations (oven and saw station).
-Each machine is equipped with sensors (light barriers and limit switches) and actuators (with two or three operational states), all managed by a 24V industry-grade digital board.
-A Raspberry Pi-based soft-PLC, connected to a 24V Digital I/O expansion board, controls the system and coordinates machine operations via sensors and actuators. Real-time process data is published to an MQTT broker DTs can subscribe to to receive data.
-
-The digitalization goal is to monitor the state, track production performance and power consumption, and regulate the production speed of each machine through a DT.
-Additionally, to compute the overall production performance and manage external action requests, and to track the overall power consumption, two department-level DTs are created, matching the two different modeling goals.
-Each machine-level DT processes incoming data on properties and events to generate insights such as production and energy KPIs, while also managing action requests to regulate their individual speed.
-Relationships between DTs are crucial, as they represent connections between physical assets, which can be used by external applications and other DTs, facilitating \emph{compositions} to form higher-level DTs.
-
-% The digitalization of the department begins with the machine layer, using DT compositions to create higher-level DTs. To capture different aspects of the department (e.g., overall production performance and energy consumption), machine-level DTs can be integrated into two distinct department-level compositions, each specializing in one of the targeted aspects.
-
-% This specialization is achieved by selecting specific information in the DT configuration and using the department DT model to manipulate, augment, and output relevant information. Department-level DTs, structured similarly to machine-level DTs, handle action requests through their internal models, just like the lower-level DTs. Relationships maintain their importance, representing actual connections between the department DT (whether specialized in performance or energy tracking) and other DTs within the system.
-
-%%%
-
-\subsection{Machines Digital Twins}
-\label{subsec:dt-machine-level} 
-
-The digitalization process creates five machine-level DTs, one for each machine in the factory (Figure~\ref{fig:discher-dt-first-level}). These DTs each interact via an MQTT broker through the PI, are equipped with an internal model implemented by the Shadowing Function, and have a Digital Interface to share data.
-The DT ecosystem digitalizes the physical system without replacing the PLC logic, allowing for the independent operation of the PLC if the DT ecosystem fails.
-DTs are deployed on edge nodes for monitoring and control without disrupting core operations.
-
-Each DT connects to the broker through MQTT Physical Adapters, which manage subscriptions to relevant topics and publish the description of PA. The internal model of each DT calculates metrics like OEE (based on production rate, uptime, downtime, and quality) and tracks power consumption. Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are defined at startup and remain static during the experiment.
-Machine DT states are exposed via MQTT and HTTP Digital Adapters, enabling flexible interaction patterns and action requests through HTTP.
-
-%%%
-\begin{figure*}
-    \setlength{\belowcaptionskip}{-13pt}
-    \centering
-    \includegraphics[width=\textwidth]{figures/engineering-wldt/experimental_results.pdf}
-    \caption{Experimental Results: CPU usage percentage [\%], Memory usage [Mib], Network usage [KBit/sec] and OEE [\%]}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/wldt-results-2.pdf}\\[-2pt]
+        \includegraphics[width=\linewidth]{figures/wldt-results-1.pdf}
+    \end{subfigure}
+    \caption{Performance indicators of the Multiprocess Station DTs: CPU usage percentage [\%], Memory usage [Mib], Network usage [KBit/sec] and OEE [\%]}
     \label{fig:exp-results}
-\end{figure*}
-%%%
-
-%%%
-
-\subsection{Department Digital Twins}
-\label{subsec:dt-department-level}
-
-The identified department DTs model and monitor KPIs and energy metrics based on the machine DTs structure. The Department KPI DT focuses on tracking performance, including weighted OEE and throughput. Weighted OEE is calculated using OEEs received from each machine DT~\cite{OEE-manufacturing-cell-Gamberini-2017}.
-Throughput, defined as the number of processed pieces per time unit in production systems, is tracked by monitoring entry and exit events of pieces processed by machines within the department, facilitated by relationships in the DT ecosystem.
-
-The Department-KPI DT tracks piece processing start and completion, calculates throughput, and monitors total pieces processed.
-Relationships between lower and upper-level DTs are shown in Figure~\ref{fig:dt-assets-relationships-overview}.
-The Department DT accepts action requests via its HTTP digital adapter, adjusting production rates through its Shadowing Function, which cascades actions to underlying DTs and physical assets.
-The Department-Energy DT monitors energy consumption, aggregating data from machine-level DTs, and processes it through an internal model to derive target metrics.
-It also uses an HTTP digital adapter for external interaction.
-Department-level DTs use MQTT-based physical adapters to ensure consistent communication and enable external applications to coordinate actions across the underlying DT instances.
-
-% The Department-KPI DT can track the start and completion of piece processing, calculate throughput based on time per piece, and total pieces processed. Relationships between lower-level and upper-level DTs are illustrated in Figure~\ref{fig:dt-assets-relationships-overview}. The Department DT accepts action requests via its HTTP digital adapter, supporting operations to adjust production rates. Speed changes are processed through a simple algorithm in the Department DT's Shadowing Function, cascading actions to underlying DTs and associated physical assets. The Department Energy DT monitors overall energy consumption, aggregating data from machine-level DTs regardless of whether it's specific energy consumption or disaggregated voltage and current data. Its internal model handles this heterogeneity to derive target metrics. The Department Energy DT also utilizes an HTTP digital adapter for external interaction, providing access to its internal state information. Department DTs utilize MQTT physical adapters within their physical interface, ensuring consistent implementation of composed DTs. They enable external applications to interact with the department through HTTP digital adapters, managing actions across underlying DTs based on the department's internal model and behavior.
+\end{figure}
 
 
-%%%
-% \begin{figure*}
-%     \centering
-%     \setlength{\belowcaptionskip}{-13pt}
-%     \includegraphics[width=\textwidth]{images/masa_dt_result.png}
-%     \caption{Experimental evaluation of the MASA DT deployment with CPU\%, Memory usage\% and the cumulative Network I/O.}
-%     \label{fig:masa_dt_results}
-% \end{figure*}
-%%%
+To validate the \ac{WLDT} framework,
+the \acp{DT} for the Multiprocess Station with Oven were containerized using Docker, and deployed on an Edge node with an Intel i7 2.4GHz processor and 32 GB of RAM.
+%
+Three key metrics for each DT for a total of 10 minutes (600 seconds):
+\begin{itemize}
+    \item \textbf{CPU Usage}: the percentage of CPU resources utilized by each DT instance over time;
+    \item \textbf{Memory Consumption}: the amount of memory (in MiB) used by each DT instance during its operation;
+    \item \textbf{Network Traffic}: the cumulative inbound and outbound network traffic (in Kbit/sec) generated by each DT instance.
+    \item \textbf{OEE Computation}: the Overall Equipment Effectiveness calculated by each DT to assess machine and station performance.
+\end{itemize}
 
-\subsection{Experimental Evaluation}
-\label{ssec:masa_exp_evaluation}
-
-To validate the \ac{WLDT} framework, we implemented the DTs for the Multiprocess Station with Oven, containerized using Docker, and deployed on an Edge node with an Intel i7 2.4GHz processor and 32 GB of RAM. We monitored three key metrics for each DT: CPU usage (percentage, with each container using one core), memory consumption (in MiB), and network traffic (cumulative inbound and outbound in Kbit/sec).
-Additionally, we calculated the OEE computed by each DT to assess the performance of both individual machines and the station. Figure \ref{fig:exp-results} shows the results of this experiment. The total duration was 10 minutes (600 seconds), as shown on the x-axis of each chart. The graphs illustrate CPU usage, memory usage, network traffic, and the computed OEE (from left to right). Analyzing CPU usage, we observe that there were no significant spikes during the production cycle. Even during the most computationally demanding moments, CPU utilization remained around 30\%, indicating a stable and efficient execution.
+\Cref{fig:exp-results} shows the results.
+Analyzing CPU usage, there were no significant spikes during the production cycle.
+Even during the most computationally demanding moments, CPU utilization remained around 30\%, indicating a stable and efficient execution.
+%
 The memory usage chart shows a similarly stable pattern, with DT instances settling around an average usage of 300 MiB, demonstrating consistent memory behavior over time.
 As for network traffic, values remained low—typically around a few tens of Kbit/sec.
 Noticeable traffic peaks correspond to active processing phases, where machines and their respective DTs exchange larger volumes of data.
+%
 Finally, the OEE graph highlights the performance of industrial machines computed by each DT. The Oven, which is the first machine in the station and requires the longest processing time, shows the highest OEE, as it remains under constant workload.
-Conversely, the output conveyor exhibits a lower OEE, as it receives fewer parts to process due to the upstream bottleneck created by the Oven. This experimental phase aimed to demonstrate the effectiveness of \ac{WLDT}-based DTs in an industrial setting.
-The collected metrics confirm that DT instances can operate efficiently on standard commercial Edge nodes, handling CPU, memory, and network constraints while also supporting domain-specific computations such as OEE. These results validate the potential of the \ac{WLDT} framework for practical DT development and deployment in real-world industrial scenarios.
+%
+Conversely, the output conveyor exhibits a lower OEE, as it receives fewer parts to process due to the upstream bottleneck created by the Oven.
+
+This experimental setup aimed to demonstrate the effectiveness of \ac{WLDT}-based DTs in an industrial setting.
+The collected metrics confirm that DT instances can operate efficiently on standard commercial Edge nodes, handling CPU, memory, and network constraints while also supporting domain-specific computations such as OEE.
+These results validate the potential of the \ac{WLDT} framework for practical DT development and deployment in real-world industrial scenarios.
+
+%-------------------------------------------------
+\subsection{Implementing Augmented Digital Twins}
+%-------------------------------------------------
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/experimental_evaluation_scheme_new_industry.pdf}
+    \caption{Experimental setup for evaluating the design of augmented digital twins for a pose estimation task.}
+    \label{fig:augmentation-experimental-setup}
+\end{figure}
+
+A different experimental evaluation was conducted to validate the benefits of the modular design of augmentation proposed in \Cref{sec:dte:engineering-dt:dt-augmentation}.
+%
+The reference scenario involves the real-time monitoring of an industrial operator's movements within a manufacturing environment through a \ac{DT} whose state is augmented with pose estimation capabilities computed from inertial sensor data.
+
+\Cref{fig:augmentation-experimental-setup} illustrates the experimental setup designed to evaluate the proposed augmentation function patterns within a \ac{DT}.
+%
+The \ac{DT} uses both physical devices and emulated traces, and embeds a machine learning model to estimate pose of the operator which is then visualized in a Unity3D\footnote{Unity: \url{https://unity.com/}} environment connected to the \ac{DT}.
+%
+This setup showcases how internal and external augmentation functions can be implemented in practice and what are the implications on the \ac{DT} performance.
+
+The \ac{DT} acquires data from a Movesense Active sensor\footnote{Movesense: \url{https://www.movesense.com/movesense-active/}}: a wearable device featuring a 9-axis Inertial Measurement Unit (IMU) with accelerometer, gyroscope, and magnetometer capabilities, along with ECG and heart rate monitoring. This sensor, connected via Bluetooth Low Energy (BLE), allows for continuous tracking of physiological and motion-related data essential to represent the operator's state. Since the sensor can be configured to measure and send data with different sampling rates (13 Hz, 52 Hz, and 104 Hz) it was possible to test the \ac{DT} responsiveness under different conditions. 
+%
+For the reported experiments, the \ac{DT} has been deployed on a machine with an Intel i5-13600KF processor (5.1 GHz, 14 cores, 20 threads) and 32 GB of RAM and an RTX 4070ti GPU (12 GB GDDR6X).
+
+%....................................................................
+\subsubsection{Performance of Internal Augmentation Functions}
+%....................................................................
+
+To evaluate the performance of the augmentation functions, execution times, CPU usage, and memory consumption on the workstation were monitored.
+%
+Execution times were measured by testing various configurations.
+The augmentation functions are implemented \emph{internally} in Java as periodic functions activated at a fixed period.
+Each function computes the average of accelerometer values received from the Movesense sensor since the last activation.
+
+In the first experiment, the activation interval of the functions was fixed (5 seconds).
+Measurements of function execution time were taken using different sensor sampling frequencies (13, 52, and 104Hz) while varying the number of concurrently running functions (1, 3, and 5 functions).
+%
+\Cref{tab:AF_exec_time_fixed_act_period} presents the results from this experiment.
+%
+\begin{table}
+    \setlength{\belowcaptionskip}{-6pt}
+    \centering
+    \begin{tabular}{p{4cm} p{2cm} p{2cm} p{2cm}}
+    \hline
+    \textbf{\#Augm.} & \textbf{13Hz} & \textbf{52Hz} & \textbf{104Hz} \\ \hline
+    \textit{1 function} & 2.55ms & 6.58ms & 10.76ms \\ \hline
+    \textit{3 functions} & 2.69ms & 6.54ms & 8.42ms \\ \hline
+    \textit{5 functions} & 2.79ms & 6.79ms & 11.79ms \\ \hline\hline
+    \end{tabular}
+    \caption{Average AF execution time with fixed activation period (5s) varying sensor sampling frequency and number of simultaneous functions.}
+    \label{tab:AF_exec_time_fixed_act_period}
+\end{table}
+%
+The experimental evaluation of augmentation functions confirmed that even when multiple augmentation functions coexist within the same DT instance the \ac{DT} maintains good performance.
+
+In the second experiment, the sampling frequency was fixed at 13 Hz.
+%
+In this setup, both the number of functions and their activation intervals were varied (1, 5, 10, and 30 seconds). The results from this experiment are detailed in \Cref{tab:AF_exec_time_fixed_sens_frequency}.
+The \ac{DT} performance is still robust, with minimal increases in execution times even as the number of functions and activation intervals varied. This confirmed the system ability to handle multiple augmentation functions efficiently.
+%
+\begin{table}
+    \centering
+    \begin{tabular}{p{4cm} p{0.4cm} p{2cm} p{2cm} p{2cm} p{2cm}}
+    \hline
+    \textbf{\#Augm} & \multicolumn{1}{c}{\textbf{1s}} & \multicolumn{1}{c}{\textbf{5s}} & \multicolumn{1}{c}{\textbf{10s}} & \multicolumn{1}{c}{\textbf{30s}}\\ \hline
+    \textit{1 function} & \multicolumn{1}{c}{1.70ms} & \multicolumn{1}{c}{2.05ms} & \multicolumn{1}{c}{4.17ms} & \multicolumn{1}{c}{12.64ms}\\ \hline
+    \textit{3 functions} & \multicolumn{1}{c}{1.57ms} & \multicolumn{1}{c}{2.15ms} & \multicolumn{1}{c}{3.54ms} & \multicolumn{1}{c}{13.92ms}\\ \hline
+    \textit{5 functions} & \multicolumn{1}{c}{2.37ms} & \multicolumn{1}{c}{2.20ms} & \multicolumn{1}{c}{5.93ms} & \multicolumn{1}{c}{11.1ms}\\ \hline\hline
+    \end{tabular}
+     \caption{Avg AF execution with fixed frequency at 13Hz varying number of functions and activation period.}
+    \label{tab:AF_exec_time_fixed_sens_frequency}
+\end{table}
+
+A third experiment was conducted to further examine execution times with up to five Movesense sensors connected to the DT simultaneously. The function activation frequency was fixed at 5 seconds, while the number of connected devices and sampling frequencies were adjusted. \Cref{tab:AF_exec_time_multiple_devices} summarizes the outcomes. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{p{4cm} p{2cm} p{2cm} p{2cm}}
+    \hline
+    \textbf{\#Devices} & \textbf{13Hz} & \textbf{52Hz} & \textbf{104Hz} \\ \hline
+    \textit{1 Device} & 3.60ms & 16.29ms & 32.59ms \\ \hline
+    \textit{3 Devices} & 7.70ms & 46.61ms & 81.76ms \\ \hline
+    \textit{4 Devices} & 18.56ms & 62.06ms & 111.71ms \\ \hline
+    \textit{5 Devices} & 23.12ms & 75.68ms & 104.42ms \\ \hline\hline
+    \end{tabular}
+    \caption{Average AF execution time with multiple devices connected, varying sensor sampling frequency.}
+    \label{tab:AF_exec_time_multiple_devices}
+\end{table}
+
+To evaluate the resource consumption of the augmentation functions running on the DT, a fourth experiment was performed using a single augmentation function with a 5-second activation interval.
+In this setup, both CPU usage (as a percentage) and memory consumption (in MB) were measured across the three different sampling frequencies available with Movesense sensor (13, 52 and 104Hz).
+%
+The results for CPU and memory usage are summarized in \Cref{tab:AF_CPU_MEM_usage}. 
+%
+\begin{table}[t]
+    \setlength{\belowcaptionskip}{-6pt}
+    \centering
+    \begin{tabular}{p{4cm} p{3cm} p{3cm}}
+    \hline
+    \textbf{Data Freq.} & \textbf{CPU\%} & \textbf{Mem [MB]} \\ \hline
+    \textit{13Hz} & 0.72\% & 158MB \\ \hline
+    \textit{52Hz} & 0.98\% & 157MB \\ \hline
+    \textit{104Hz} & 1.16\% & 156MB \\ \hline\hline
+    \end{tabular}
+    \caption{Average AF CPU and memory usage with one function at a 5-second activation period and varying sensor sampling frequency.}
+    \label{tab:AF_CPU_MEM_usage}
+\end{table}
+%
+The results showed that the DT maintained efficient resource utilization across different sampling frequencies, further validating the architecture ability to support high-frequency data streams and complex computations even with multiple data sources and physical devices connected and managed by the \ac{DT}. These experiments collectively demonstrated that the feasibility of the proposed event-driven architecture for DT augmentation functions.
+
+The architecture successfully supports augmentation of DT functionalities, providing timely insights and maintaining good performance, even under varied and demanding conditions.
+
+\todo{experiments}
+
+
+\subsubsection{Pose Estimation with External Augmentation}
+
+For the implementation of the pose estimation \ac{DT} feature,
+the augmentation function is implemented externally using a Recurrent Neural Network from the TransPose project~\cite{TransPoseSIGGRAPH2021} using accelerometer data from six inertial sensors positioned on the operator's body to compute its position.
+%
+As shown in \Cref{fig:augmentation-experimental-setup} the original dataset of the project is used to emulate traces that are sent with a 30Hz frequency to the \ac{DT} through its physical interface using MQTT.
+%
+The augmentation function operates externally, running in parallel with the DT. Data exchange occurs via a Redis event bus, and once the position is determined, the \ac{DT} shadowing function publishes the result through the digital interface using a WebSocket to apply the inferred pose on a 3D model of a person in a Unity3D environment for visualization purposes.
+
+The latency between data transmission and the reception of the estimated pose by the Unity3D application is measured to assess the performance of the external augmentation function.
+%
+First the neural network is executed using only the CPU, and then with GPU acceleration, to evaluate the impact of consciously allocating resources to augmentation functions.
+
+Both the neural network model and the DT are executed on the same workstation. \Cref{fig:af_time_shift_30hz_cpu} illustrates the total latency introduced by the DT and the model compared with the latency associated to the same function executed outside the DT.
+%
+With CPU-only execution, the overall delay increases as the model cannot keep up, causing event queue buildup and increased latency. 
+As shown in \Cref{fig:af_time_shift_30hz_gpu}, with the allocation of GPU resources the delay between transmission and reception remains stable over time, with most latency now attributed to model execution rather than DT processes.
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+    \centering
+        \includegraphics[width=\textwidth]{figures/temporal_graph_time_shift_30hz_cpu.pdf}
+        \subcaption{}
+        \label{fig:af_time_shift_30hz_cpu}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+    \centering
+        \includegraphics[width=\textwidth]{figures/temporal_graph_time_shift_30hz_gpu.pdf}
+        \subcaption{}
+        \label{fig:af_time_shift_30hz_gpu}
+    \end{subfigure}
+    \caption{Pose estimation latency computed within the DT compared to standalone execution, using the CPU (a) and using the GPU (b).}
+    \label{fig:af_results}
+\end{figure}
+
+This experiment demonstrates that the proposed model for the augmentation functions effectively supports developers in distributing the computational load on dedicated resources, thus improving the overall \ac{DT} performances. 
+
+In conclusion, the experimental evaluation demonstrates that the proposed event-driven architecture for DT augmentation functions is both feasible and efficient.
+The internal, external, and hybrid augmentation strategies offer flexibility, enabling real-time data processing and complex computations.
+The architecture supports high-frequency data streams and provides timely insights, making it suitable for different applications.

@@ -1341,3 +1341,20 @@ The architecture supports high-frequency data streams and provides timely insigh
 \section{Final Remarks}
 %==============================
 
+This chapter presents contributions to the engineering of \acp{DT} focusing on key challenges in the modeling and implementation of \acp{DT} as active components in an \ac{IoT} system, capable of integrating heterogeneous data sources, managing their synchronization with the \ac{PA} lifecycle and provide augmented functionalities. 
+
+Despite the target scenario used for validation being an industrial manufacturing setting, emulated through a lab-scale production line, the proposed architectural framework and patterns are general and can be applied to other domains.
+%
+Indeed, the \ac{WLDT} framework, implementing the functionalities described in this chapter, has been used in different contexts such as smart-cities and healthcare. 
+
+The chapter addresses the research question:
+
+\paragraph{\ref{rq:1} How can we engineer \acp{DT} to integrate heterogeneous data sources and provide an up-to-date uniform representation of the mirrored assets?}
+%
+The modular architecture grounded on the concept of \acp{PhA} and \acp{DiA} effectively decouples the complexities of physical and digital environments from the core responsibilities of the \ac{DT}.
+%
+This enables integration of heterogeneous data sources by means of reusable components, simplifying the development of \acp{DT} and promoting interoperability.
+%
+Furthermore, the lifecycle management managed at the \ac{DT} level ensures that domain-specific synchronization requirements can be validated and enforced, providing applications with accurate and timely information about the state of the \ac{PA}.
+%
+Finally, the modular approach to \ac{DT} augmentation allows for the flexible integration of additional functionalities, either internally or externally, without impacting the core shadowing responsibilities of the \ac{DT}.

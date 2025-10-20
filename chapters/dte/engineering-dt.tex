@@ -795,6 +795,7 @@ Such hybrid model provides the flexibility to optimize for both real-time and co
 
 %=======================================================
 \section{The \acl{WLDT} Framework}
+\label{sec:dte:engineering-dt:wldt-framework}
 %=======================================================
 
 \begin{figure}
@@ -1289,27 +1290,8 @@ The results showed that the DT maintained efficient resource utilization across 
 
 The architecture successfully supports augmentation of DT functionalities, providing timely insights and maintaining good performance, even under varied and demanding conditions.
 
-\todo{experiments}
-
 
 \subsubsection{Pose Estimation with External Augmentation}
-
-For the implementation of the pose estimation \ac{DT} feature,
-the augmentation function is implemented externally using a Recurrent Neural Network from the TransPose project~\cite{TransPoseSIGGRAPH2021} using accelerometer data from six inertial sensors positioned on the operator's body to compute its position.
-%
-As shown in \Cref{fig:augmentation-experimental-setup} the original dataset of the project is used to emulate traces that are sent with a 30Hz frequency to the \ac{DT} through its physical interface using MQTT.
-%
-The augmentation function operates externally, running in parallel with the DT. Data exchange occurs via a Redis event bus, and once the position is determined, the \ac{DT} shadowing function publishes the result through the digital interface using a WebSocket to apply the inferred pose on a 3D model of a person in a Unity3D environment for visualization purposes.
-
-The latency between data transmission and the reception of the estimated pose by the Unity3D application is measured to assess the performance of the external augmentation function.
-%
-First the neural network is executed using only the CPU, and then with GPU acceleration, to evaluate the impact of consciously allocating resources to augmentation functions.
-
-Both the neural network model and the DT are executed on the same workstation. \Cref{fig:af_time_shift_30hz_cpu} illustrates the total latency introduced by the DT and the model compared with the latency associated to the same function executed outside the DT.
-%
-With CPU-only execution, the overall delay increases as the model cannot keep up, causing event queue buildup and increased latency. 
-As shown in \Cref{fig:af_time_shift_30hz_gpu}, with the allocation of GPU resources the delay between transmission and reception remains stable over time, with most latency now attributed to model execution rather than DT processes.
-
 
 \begin{figure}
     \centering
@@ -1329,6 +1311,22 @@ As shown in \Cref{fig:af_time_shift_30hz_gpu}, with the allocation of GPU resour
     \caption{Pose estimation latency computed within the DT compared to standalone execution, using the CPU (a) and using the GPU (b).}
     \label{fig:af_results}
 \end{figure}
+
+For the implementation of the pose estimation \ac{DT} feature,
+the augmentation function is implemented externally using a Recurrent Neural Network from the TransPose project~\cite{TransPoseSIGGRAPH2021} using accelerometer data from six inertial sensors positioned on the operator's body to compute its position.
+%
+As shown in \Cref{fig:augmentation-experimental-setup} the original dataset of the project is used to emulate traces that are sent with a 30Hz frequency to the \ac{DT} through its physical interface using MQTT.
+%
+The augmentation function operates externally, running in parallel with the DT. Data exchange occurs via a Redis event bus, and once the position is determined, the \ac{DT} shadowing function publishes the result through the digital interface using a WebSocket to apply the inferred pose on a 3D model of a person in a Unity3D environment for visualization purposes.
+
+The latency between data transmission and the reception of the estimated pose by the Unity3D application is measured to assess the performance of the external augmentation function.
+%
+First the neural network is executed using only the CPU, and then with GPU acceleration, to evaluate the impact of consciously allocating resources to augmentation functions.
+
+Both the neural network model and the DT are executed on the same workstation. \Cref{fig:af_time_shift_30hz_cpu} illustrates the total latency introduced by the DT and the model compared with the latency associated to the same function executed outside the DT.
+%
+With CPU-only execution, the overall delay increases as the model cannot keep up, causing event queue buildup and increased latency. 
+As shown in \Cref{fig:af_time_shift_30hz_gpu}, with the allocation of GPU resources the delay between transmission and reception remains stable over time, with most latency now attributed to model execution rather than DT processes.
 
 This experiment demonstrates that the proposed model for the augmentation functions effectively supports developers in distributing the computational load on dedicated resources, thus improving the overall \ac{DT} performances. 
 

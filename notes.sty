@@ -8,3 +8,9 @@
 % in both cases, Author is optional and defaults to the thesis author, Color is optional and defaults to green
 
 \newcommand{\missingref}[1][something]{\sidenote{cite #1}}
+
+
+
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {\textsf{\footnotesize{#1}}};}}

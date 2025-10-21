@@ -404,3 +404,336 @@ In the prototype, all observers receive the whole \ac{KG} whenever there is an u
   \caption{\ac{WoDT} Platform modules and interfaces, represented using components and connectors.}
   \label{fig:platform-c&c}
 \end{figure}
+
+
+%=======================================
+\section{Comparison with Related Works}
+%=======================================
+
+This section compares the \ac{HWoDT} proposal with related approaches that target the integration of \acp{DT} in ecosystems. 
+%
+The aim of this comparison is to highlight the similarities and differences with existing solutions, discussing advantages and limitations of existing approaches with respect to the \ac{HWoDT}.
+
+The \ac{HWoDT} proposal is not meant to compete with existing standards or framework, but rather to either complement them or provide an alternative approach to \ac{DT} interoperability.
+%
+The main principle of the \ac{HWoDT} is to promote interoperability through the adoption of \ac{REST} principles and Semantic Web technologies, given their proven effectiveness in enabling integration across heterogeneous systems on the Web.
+
+
+%----------------------------------------------------
+\subsection{HWoDT vs. Industrial Standards}
+%----------------------------------------------------
+
+The \ac{HWoDT} tackles the relevant issue of enabling \ac{DT} interoperability targeting the creation of \emph{heterogeneous \acp{DTE}}.
+%
+This is an open challenge in the \ac{DT} research community (see \Cref{sec:back:dt:interoperability}), and several interoperability frameworks are being proposed to streamline the integration of \acp{DT}~\cite{Barnard_2024}.
+%
+Among the most relevant standards some of the most relevants are \ac{OPC-UA}, \ac{AAS}, \ac{AML} and the \ac{W3C} \ac{WoT}. \Cref{tab:interop_comparison} summarizes a comparison of these standards across selected aspects.
+
+Given the different nature of these standards, they can be viewed as complementary rather than competing against each other.
+%
+There have been integration efforts in order to leverage their different strengths. For instance, \ac{OPC-UA} has been integrated with web technologies~\cite{DBLP:journals/csi/CavalieriSS19} to support direct integration with web clients, operations in \ac{AAS}~\cite{platform_i40_aas_part1_v2} and affordances in \ac{WoT}\footnote{\url{https://profiles.opcfoundation.org/workinggroup/97}} can have an \ac{OPC-UA} protocol bindings, and \ac{AML} specifications can be linked to \ac{AAS} to have a coherent view of the involved assets~\cite{DBLP:conf/etfa/DrathRH19,DBLP:conf/indin/WengerZ018}.
+%
+In this view, the Semantic Web technologies adopted in the \ac{HWoDT} approach can be integrated on top of existing standards and complement their features.
+
+\begin{table*}
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt} % reduce inter-column spacing
+    \renewcommand{\arraystretch}{1.3} % slightly tighter rows
+   \begin{tabular}{>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}}
+    \toprule
+    \midrule
+    \textbf{} & \textbf{AAS} & \textbf{OPC-UA} & \textbf{AML} & \textbf{WoT} & \textbf{Semantic Web} \\
+    \hline
+    \hline
+    \textbf{Scope} &
+    Asset digital representation &
+    Device data / \ac{M2M} &
+    Tool interoperability &
+    Web-scale access &
+    Cross-domain knowledge \\
+    \hline
+    \textbf{Data model} &
+    Submodels + semantic IDs &
+    Hierarchical node graph (address space) &
+    Hierarchies (CAEX, CAD, PLCopen) &
+    Thing Description (JSON-LD) &
+    Triple Graphs (RDF / OWL) \\
+    \hline
+    \textbf{Semantics} &
+    Structured submodels, semantic references &
+    (Sub)Types and Relationships &
+    Role-based, structural  &
+    JSON-LD semantics, ontology-aligned &
+    General-purpose ontologies \\
+    \hline
+    \textbf{Querying and Data access} &
+    REST API &
+    Browse address space &
+    File access &
+    SPARQL (if RDF-mapped) &
+    SPARQL / Web browsing \\
+    \hline
+    \bottomrule
+    \end{tabular}
+    \caption{Comparison of interoperability frameworks across selected aspects.}
+    \label{tab:interop_comparison}
+\end{table*}
+
+
+The Semantic Web excels at general-purpose knowledge representation, and integration of such heterogeneous knowledge under a uniform interface (\Cref{sec:back:web:semantic-web-technologies}).
+%
+Additionally, it enables reasoning through ontological inference and expressive queries across concepts, supporting use cases that have limited support when using the aforementioned standards alone (see \cref{tab:interop_comparison}, Querying and Data access).
+%
+It is then not surprising that alignment between Semantic Web technologies and industrial standards are being investigated, highlighting similarities between e.g., \ac{OPC-UA}~\cite{DBLP:conf/etfa/MajumderWD19,DBLP:conf/etfa/PerzyloP0K19} and \ac{AAS}~\cite{DBLP:conf/icphys/BedenCB21, platform_i40_aas_part1_v2} data models, to benefit from these features.
+
+The \ac{HWoDT} proposal, follows this trend, suggesting that the hypermedia layer can serve as an integration on top of existing \acp{DT}, which may already have an implementation based on industrial standards.
+%
+Additionally, since the described interoperability standards emerged from the Industry 4.0 movement, they generally target only industrial domains. This poses a significant gap when needing to map concepts and represent entities from different domains.
+%
+The \ac{HWoDT} approach, addresses this gap through the use of Web ontologies which have been developed for a high variety of application domains and can be seamlessly integrated within the same \ac{KG}.
+
+Finally, providing a synchronized representation is a key feature of \acp{DT}.
+The \ac{HWoDT} approach, designed with a \ac{DT}-centric perspective, requires each \ac{DT} to produce and update such representation of its current state through the \ac{DTKG}. This supports consumers in both querying an up-to-date view of the whole ecosystem and observing changes on the \ac{DT} state.
+%
+Similar behavior can be implemented by \ac{AAS} servers (e.g. Eclipse BaSyx\footnote{\url{https://eclipse.dev/basyx/}}) that automatically retrieve data from \ac{OPC-UA} endpoints, but is limited by the expressiveness of queries on the \ac{AAS} model typically relying on Web APIs with no hypermedia support.
+
+Overall, the comparison shows that the \ac{HWoDT} approach is compatible and complementary to existing \ac{DT} interoperability efforts and follows existing research directions aimed at bridging the Semantic Web on top of industrial standards.
+The approach can be used as an additional layer integrating \acp{DT} implemented with (or without) other standards to support:
+\begin{itemize}
+    \item integration with \acp{DT} outside the industrial domain,
+    \item advanced query with reasoning on semantic structures,
+    \item simple Web-based navigation and direct access to the up-to-date representation of the mirrored asset,
+    and 
+    \item subscription to changes in the \ac{DT} state.
+\end{itemize}
+
+%-------------------------------------
+\subsection{HWoDT vs. WoT mashups}
+%-------------------------------------
+
+Leveraging the \ac{HWoDT}, developers can focus only on application logic, abstracting away the complexity of heterogeneous \ac{DT} integration.  
+This yields two important advantages that are shared with the \ac{WoT} approach:  
+\begin{inlinelist}
+    \item the application layer is more stable as it remains unaffected by the introduction of new \acp{DT};
+    and  
+    \item the \ac{DT} layer can evolve or replace underlying implementations without affecting upper layers as long as the exposed interface is not changed.
+\end{inlinelist}
+
+Still, a fundamental difference between the \ac{HWoDT} and the (semantic) \ac{WoT} is the ability to seamlessly browse a \ac{KG} of the \ac{DTE} that captures explicitly the \acp{DT}' observable state. 
+%
+In a W3C \ac{WoT} application, even if \acp{TD} were to be semantically annotated and stored in a \ac{KG}, selecting \emph{things} based on their state properties would require sending the necessary requests to retrieve the current value of each property of each thing.
+%
+This is because the W3C \ac{WoT} is not tailored to the requirements of \acp{DT}, which, instead, are by definition capable of shadowing---and thus to always show the current state of the asset they represent.
+%
+Furthermore, the W3C \ac{WoT} does not specify how to handle dynamic relationships between things, limiting the possibility of expressing powerful queries on the state of interrelated assets.
+%
+The \ac{HWoDT} proposal, leverages this \ac{DT}-specific feature through the \ac{DTKG} component, simplifying the interaction. 
+%
+Similarly, even when dealing with a set of heterogeneous \acp{DT}, without the unifying abstraction of the \ac{HWoDT}, consumers would need to retrieve the \ac{DT} state representation from each individual \ac{DT}, interpret them and merge the data to resolve the query (\Cref{fig:comparison-custom-vs-hwodt}).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{figures/hwodt/comparison_custom_hwodt.pdf}
+  \caption{Comparison of the steps required to perform a ``query'' across heteregenous \acp{DT} versus with the \ac{HWoDT} approach, which abstracts heterogeneity through a uniform interface.}
+  \label{fig:comparison-custom-vs-hwodt}
+\end{figure}
+
+%-------------------------------------------------------
+\subsection{HWoDT vs. Closed DT Platforms}
+%-------------------------------------------------------
+
+The \ac{HWoDT} approach, offers a solution to implement open \acp{DTE} on top of heterogeneous \ac{DT} technologies.
+%
+This contrasts with the vision of other \ac{DT} platforms which, instead, support homogeneous \acp{DTE} and offer support for the definition of multiple \acp{DT} within the same instance, but constraining all of them to adhere to specific technological choices.
+
+The most recognized technology for building \acp{DTE} is the off-the-shelf solution offered by \acl{ADT}.
+The graph-based rationale within the platform has been an inspiration for the \ac{HWoDT}, as a way to connect multiple \acp{DT} and obtain a cohesive view of the physical reality.
+
+Still, \acl{ADT} is a Platform-as-a-Service solution, only available through the Azure cloud, strongly limiting its application in different scenarios where the \acp{DTE} might be constructed on a private infrastructure.
+%
+The technological stack is completely custom, creating a vendor lock-in on the developed \acp{DT} models.
+% 
+Azure requires \acp{DT} to be defined using its own custom \ac{DTDL}, supports only custom ontologies (or requires converting existing ones form \ac{OWL} to \ac{DTDL}) and supports queries on the \emph{twin graph} only through a custom SQL-like query language.
+%
+Furthermore, in closed approaches, it would not be possible to create relationships with entities that are outside of the supporting platform. For instance, the relationship model of \azureTwin{} requires to define possible relationships between \ac{DTDL} models.
+%
+The \ac{HWoDT} addresses this limitation by enabling the definition of cross-platform \ac{DT} relationships using Linked Data principles.   
+This enhances the expressiveness of \acp{DTE} and allows developers to model ecosystems that more accurately reflect domain knowledge.
+
+Through the \ac{HWoDT} we reclaim the vision of open \acp{DTE} that can be enabled by a stack of open standards and technologies. 
+%
+This offers an alternative to closed platforms, allowing the development of \acp{DTE} in a variety of different settings tailored to the specific use case needs.
+
+Although open-source \ac{DT} platforms like the aforementioned Eclipse Ditto exist, they have not being designed with an ecosystem perspective in mind. 
+Differently from the \ac{HWoDT}, platforms like Ditto merely support having multiple instances of \acp{DT} hosted on the same platform and exposing similar \ac{API}. 
+%
+This constraints the \ac{DT} implementation to adhere to Ditto models, protocols and \ac{API}, does not offer native support for tracking meaningful dynamic relationships between assets and has very limited query capabilities\footnote{Ditto supports queries through a search \ac{API} based on the Resource Query Language \url{https://eclipse.dev/ditto/basic-search.html}}
+
+
+%-------------------------------------------------------
+\subsection{HWoDT vs. Other Web-based DTs}
+%-------------------------------------------------------
+
+
+The \ac{HWoDT} is not the first attempt to leverage Web features in \acp{DT} implementations. Service-oriented and micro-service architectures are among the most prominent architectural patterns when it comes to implementing \acp{DT} according to a recent survey~\cite{ferko2022architecting}, making a strong parallel with Web services.
+
+In \cite{Liu_Jiang_Jiang_2020} the authors propose a Web-based approach for the development of \acp{DT} of a production system.
+They leverage a multi-layer architecture with the uppermost layer exposing \ac{REST} \acp{API} and ontologies to describe the components of a \ac{CPS} using the abstraction of production nodes.
+%
+Although the approach shares some similarities with the \ac{HWoDT} proposal in enabling a uniform interface to organize modules of a \ac{CPS}, it is heavily restricted to the manufacturing domain and, crucially, it relies on all the production nodes to use the same technological stack and does not include heterogeneous \acp{DT}.
+
+In \cite{Autiosalo_Siegel_Tammi_2021} the authors propose an approach for a \emph{Digital Twin Web} and an open-source implementation of a Web server to host \ac{DT} description documents called Twinbase through Git-based workflows.
+%
+The approach shares the main motivations that are behind the \ac{HWoDT} proposal, leveraging Web standards to promote interoperability and connect \acp{DT} in a network that any consumer can access with a Web browser. The main goal is to provide a meta-level registry of \acp{DT} so that consumers can discover them and also shares the idea of having relationships between \ac{DT} instances.
+%
+Despite these similarities, the approach differs for several reasons. First, the proposed description is not using any semantics, enforcing a very basic model for representing the \acp{DT} using Yaml files. Second, the represented \acp{DT} are mostly static, and do not share their state in a uniform way but only link to other resources or \acp{API} to interact with the \ac{DT} state under a set of generic \emph{features} the \ac{DT} can expose. Third, the proposed architecture based on Git workflows is limiting to a very specific subset of applications that can deal with that kind of interface to publish updates.
+
+Finally, other approaches exploit the \ac{WoT} in the context of \acp{DT}. In this work, the \ac{WoT} \acp{TD} is semantically extended to implement a preliminary \ac{DTD}. 
+%
+A similar extension is presented in \cite{González-Gerpe_Cimmino_Bernardos_Poveda-Villalón_García-Castro} which proposes to use the \ac{TD} ontology in the construction domain, extending it to capture the five-dimensional model of \acp{DT}~\cite{qi2021enablingtechdt}.
+%
+The \ac{WoT} is also the foundation of WoTwins~\cite{SciulloWoTwins2022} a framework to generate automatically \acp{DT} starting from existing \ac{WoT} things, modeling their behavior and enabling prediction features. 
+%
+These works highlight the relevance of the \ac{WoT} as a standard for the future of \ac{DT} applications, despite its limitations in capturing fully the nature of a \ac{DT} in its entirety which may require extensions and development of custom ontologies aligned with the \ac{WoT} model.
+
+%==========================================
+\section{Prototype Performance Evaluation}
+%==========================================
+
+A performance evaluation of the prototype is carried out to quantify the performance implications introduced by the additional layer introduced by the \ac{HWoDT} to implement \acp{DTE}.
+%
+\Cref{fig:latency-hwodt} schematically shows the communication between components in a \ac{HWoDT}-based system. \circled{A} is the latency between \ac{PA} and \ac{DT}, \circled{B} is the latency between the \ac{DT} and the \ac{HWoDT} adapter, \circled{C} is the latency between the adapter and the platform, while \circled{D} is the latency between the platform and the client. In a scenario where the DT is used without the platform \circled{E} would be the latency between the DT and the client. This shows that the additional potential latency loss in a \ac{HWoDT} system is given by \circled{B}+\circled{C}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\columnwidth]{figures/hwodt/HWoDT-latency.pdf}
+  \caption{Latency in an HWoDT-based system.}
+  \label{fig:latency-hwodt}
+\end{figure}
+
+Accordingly, the following evaluation assesses the performance of the \ac{HWoDT} platform prototype, thereby characterizing the overhead incurred when integrated atop existing interoperability standards.
+Even though performance optimization was not a primary focus in the development of the \ac{HWoDT} platform prototype, it can still be useful to make some considerations on the performance of the \ac{HWoDT} approach.
+%
+To do so an experimental setup is used to measure the latency \circled{B}+\circled{C}+\circled{D} when interacting with the platform and compare it with \circled{E}.
+
+%-----------------------------------
+\subsection{Experimental Setup}
+%-----------------------------------
+
+The experiment is designed to stress the performance of the platform in a resource-intensive scenario, and measure the delay perceived by consumers wishing to interact with \acp{DT} and the ecosystem as a whole.
+%
+A synthetic workload is used because---differently from a real-world \ac{IoT} dataset which may include data spikes over time---the scenario allows us to have a fully controllable environment to scale the traffic and evaluate the response of the platform under different loads.
+
+A \ac{DTE} of a network of temperature sensors is implemented, with \acp{DT} reporting an update every second using \acp{DT} implemented with the \ac{WLDT} framework, running within the same process.
+%
+Each \ac{DT} generates a random temperature value between 0 and 100 every second, with a random initial offset of up to one second to avoid perfect synchronization of the \acp{DT}' data streams. The \ac{DT} state includes a timestamp marking when the state was computed by the \acp{DT}.
+%
+The different interaction patterns of the \ac{DTE} are tested:
+\begin{itemize}
+    \item with clients \emph{observing} all the \acp{DT} receiving all the \acp{DT} state notifications;
+    \item with clients periodically \emph{querying} the \ac{DTE} to retrieve all sensors that have a reported temperature greater than 50. 
+\end{itemize}
+%
+The key metrics collected are the \emph{freshness} of the information, which is computed as the difference between the time a state notification is received and the timestamp of the message (or the greatest timestamp when observing the \ac{DTE} \ac{KG}).
+%
+Additionally, the time taken to perform a query on the ecosystem retrieving the state of all \acp{DT} matching a condition is measured.
+
+The experiments have been carried out running the \acp{DT} the \ac{WoDT} platform and the client applications on the same machine equipped with a 13th Gen Intel(R) Core(TM) i7-13700H CPU and 32 GB of RAM, using the OpenJDK 21.0.7 runtime.
+%
+Data is collected by analyzing logs of the client applications.
+
+All \acp{DT} have been implemented with the \ac{WLDT} framework. 
+The framework supports defining \ac{DT} implementations and uses a plugin-based architecture to expose different interfaces. 
+This has been useful to implement different interaction patterns for the same \ac{DT}.
+
+Measurements are repeated with 50, 100 and 200 \acp{DT}, and performing operations with 1, 50, 100 clients each observing all \acp{DT} and querying the entire \ac{DTE}.
+
+
+%-----------------------------------
+\subsection{Results}
+%-----------------------------------
+
+This section briefly reports results of the performance evaluation focusing on the different interaction patterns of the \ac{WoDT} platform prototype and comparing them with baseline direct interactions with individual \acp{DT}.
+%
+The results are summarized in \Cref{fig:sequence-interactions}, showing two bar plots reporting the average values of the two metrics collected in the experiments.
+%
+Results confirm that the overhead introduced by the \ac{HWoDT} platform is not negligible, but still acceptable for many \ac{DT} applications, especially when considering the benefits of having a uniform interface to interact with heterogeneous \acp{DT}, especially when considering the ability to query the whole \ac{DTE} \ac{KG}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hwodt/mean_latency_barplot.pdf}
+        \label{fig:observation-delay}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hwodt/mean_request_time_barplot.pdf}
+        \label{fig:query-time}
+    \end{subfigure}
+    \caption{Performance indicators with different loads of \acp{DT} and clients working on the ecosystem: (a) average time difference when observing \acp{DT} either directly or through the \ac{WoDT} platform, and (b) average time per operation when querying the DT ecosystem either through the \ac{WoDT} SPARQL endpoint or directly retrieving the state from each \ac{DT} API.}
+    \label{fig:sequence-interactions}
+\end{figure}
+
+%...................................
+\subsubsection{\aclp{DT} Observation}
+%...................................
+
+The \ac{HWoDT} adapter sends updates of the \ac{DTKG} on a WebSocket connection to the platform. Clients are set up to connect to the platform and observe each \ac{DT} through a WebSocket connection.
+This aims to measure the delay introduced by the communication between the adapter and the platform, before getting to a final consumer. 
+%
+As the platform also supports observing the full \ac{DTE} \ac{KG}, a client also observes directly the \ac{KG} updates over a WebSocket connection (\circled{B}+\circled{C}+\circled{D}).
+%
+This is compared against direct observation of the \ac{DT}, which is implemented by sending each state update to an MQTT broker. Clients connect to all topics \texttt{dt/+/state} to observe all \acp{DT} (\circled{E}).
+
+Whenever a message is received, the \emph{freshness} metric is computed as the difference between the timestamp of the message and the time the message is received using the system clock (which is synchronized as all processes run on the same machine). 
+%
+For the \ac{DTE} \ac{KG} as a new state update is generated for each change of each \ac{DT}, the greater timestamp among all \acp{DT} is taken to compute the freshness.
+
+\Cref{fig:observation-delay} shows the average time difference with the different observation techniques. 
+As expected, directly observing individual \acp{DT} is more efficient, as there is virtually no overhead. Users of the \ac{WoDT} platform should prefer this whenever possible, following the affordances of \acp{DT} in the \ac{DTD}.
+%
+In all scenarios, the delay grows with the number of \acp{DT}. This is especially evident when considering the observation of the whole \ac{DTE} \ac{KG}, which is the least efficient. Analyzing the performance of the prototype it was possible to deduce that this is caused by the serialization of the whole \ac{KG} to stream it at every update, which is computationally intensive. 
+%
+This is also the reason why the figure avoids reporting the observation of the ecosystem \ac{KG} with more than 1 client, as the results are significantly worse than the other options, even with just 1 client.
+Performances are expected to be less drastically impacted when using smarter \ac{KG} update notification strategies---such as sending incremental changes (e.g., as in \cite{roffia2018fi})---at the cost of requiring more complex clients, capable of applying the changes to reconstruct the full state.
+
+%...................................
+\subsubsection{Repeated Querying}
+%...................................
+
+Clients can query the \ac{DTE} through the SPARQL endpoint of the \ac{WoDT} platform.
+%
+This is compared with performing an interrogation directly on all \acp{DT} to retrieve the current state and then filtering it on the client side which is implemented by having all \acp{DT} expose a simple HTTP endpoint \texttt{GET /state} to retrieve the current state of the \ac{DT} (similarly to what is shown in \Cref{fig:comparison-custom-vs-hwodt})
+%
+For each client, requests are sent every second, ideally, since \acp{DT} send updates at the same frequency, this would be a realistic way to monitor the sensor network in our scenario.
+
+The overall time the operation takes is measured by computing the time of sending the request and the response for the SPARQL query, and the time of performing all HTTP requests and then filtering for the direct interaction.
+The time of performing SPARQL queries (\circled{B}+\circled{C}+\circled{D}) is compared against the time taken by a client to perform an HTTP request to retrieve the state of each \ac{DT} and filter them on the client side \circled{E}.
+%
+\Cref{fig:query-time} shows that the average time taken to perform a query is significantly less than requesting the state on each \ac{DT}, especially when the number of \acp{DT} in the ecosystem grows. 
+%
+Notably, when running only 1 client, the overhead of the computation of the platform \ac{KG} makes using queries less effective. 
+
+%...................................
+\subsubsection{Remarks}
+%...................................
+
+Results indicate that, with large numbers of \acp{DT}, using SPARQL queries becomes a more scalable and effective approach for observing the evolution of the ecosystem over time, comparable with direct observation of all \acp{DT}.
+%
+While this approach may not capture every individual update from each \ac{DT}, it reliably provides the latest available state at the time of each query.
+In this experimental setting, for instance, querying every second is realistically sufficient to capture almost all updates, as the client would match the update frequency of the sensors.
+This trade-off favors scalability and responsiveness, especially in dynamic settings where maintaining subscriptions for all \acp{DT} would be resource-intensive or impractical.
+
+The centralized implementation of the platform makes it a potential bottleneck. Specifically, interacting with the \ac{DTE} KG is costly because the graph gets updated by all \acp{DT} updates.
+%
+This is a reasonable trade-off as interacting with the \ac{DTE} provides advanced functionalities that would be impossible or very difficult to replicate simply by interacting with individual \acp{DT}.
+%
+Nevertheless, it will be interesting to explore optimization techniques for future improvements of the platform, as well as decentralized approaches to provide ecosystem services that would make the system less reliant on the platform itself.
+
+% %=================================================
+% \section{Discussion, Limitations and Future Works}
+% %=================================================
+

@@ -862,30 +862,32 @@ This showcase demonstrates the practical application of the concepts introduced 
 
 %-------------------------------------------
 \subsection{Industrial Scenario Description}
+ \label{ssec:dte:dt-engineering:scenario}
 %-------------------------------------------
 
 As a reference scenario, a manufacturing setting where \ac{DT} are deployed to monitor and manage a production line is considered. 
 %
 The production line is realized through the \emph{Fischertechnik Training Factory Industry 4.0}\footnote{Fischertechnik Industry \& Universities: \url{https://www.fischertechnik.de/en/products/industry-and-universities}}, controlled by PLCs that publish real-time data via OPC-UA and integrated with Arduino RP2040 boards\footnote{Arduino RP2040: \url{https://docs.arduino.cc/hardware/nano-rp2040-connect/}} for accelerometer data collection and processing and communicating over MQTT.
+The schematic representation of the microfactory production line is shown in \Cref{fig:microfactory-production-line}.
 This microfactory setup provides a controlled yet dynamic environment for testing and refining DT technologies in a realistic industrial context.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.75\columnwidth]{figures/engineering-wldt/fischer-layout-first-level-dt.pdf}
-    \caption{A schematic view of the Multiprocess Station with Oven of the target industrial scenario.}
-    \label{fig:fischer-dt-first-level}
+    \includegraphics[width=0.8\columnwidth]{figures/mf_highlevel_schema.pdf}
+    \caption{A schematic view of the microfactory production line, with the two departments.}
+    \label{fig:microfactory-production-line}
 \end{figure}
 
 In this scenario, pieces are processed along a production line, passing through multiple machines.
 %
 The first station, referred to as the \textit{Multiprocess Station with Oven}.
-As shown in \Cref{fig:fischer-dt-first-level}, the module consists of five machines arranged in a flow shop layout: 
+As shown in \Cref{fig:microfactory-production-line} (right), the module consists of five machines arranged in a flow shop layout: 
 three material handling units (vacuum gripper carrier, turntable, and conveyor)
 and two transformation stations (oven and saw station).
 %
 Each machine is equipped with sensors (light barriers and limit switches) and actuators (with two or three operational states).
 %
-The second station, named the \textit{Indexed Line}, comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
+The second station, named the \textit{Indexed Line} (\Cref{fig:microfactory-production-line}, left), comprises four conveyor belts, two of which include mechanical processing operations for the workpieces.
 
 The goal of the scenario is to implement, through \acp{DT}, a system with the following desired features: 
 \begin{itemize}

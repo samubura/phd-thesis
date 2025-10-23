@@ -10,22 +10,25 @@
 \renewcommand\lstlistlistingname{List of Listings}
 
 \lstset{
-	showstringspaces=false,
-	basicstyle=\scriptsize\ttfamily,
-	commentstyle={\color{olive}},
-	identifierstyle=\color{black},
-	ndkeywordstyle={\color{blue}},
-	stringstyle={\color{magenta}},
-	emphstyle={},
-	keywordstyle={\color{blue}},
-	breaklines=true,
-	numbers=left,
-	numberstyle=\tiny\color{gray},
-	numbersep=10pt,
-	tabsize=2,
-	extendedchars=true,
-	frame=trBL,
-	frameround=fttt,
+  showstringspaces=false,
+  basicstyle=\scriptsize\ttfamily,
+  commentstyle={\color{olive}},
+  identifierstyle=\color{black},
+  ndkeywordstyle={\color{blue}},
+  stringstyle={\color{magenta}},
+  emphstyle={},
+  keywordstyle={\color{blue}},
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=10pt,
+  tabsize=2,
+  extendedchars=true,
+  frame=single,
+  frameround=none,
+  rulecolor=\color{gray},
+  xleftmargin=0.5cm,
+  framesep=4pt,
 }
 
 \lstdefinelanguage{Kotlin}{
@@ -55,17 +58,28 @@
 % Define separate environments for minted code (so it doesn't conflict)
 \newenvironment{code}{\captionsetup{type=listing}}{}
 
+\setminted{
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{gray},
+  bgcolor=white,
+  fontsize=\scriptsize,
+  breaklines=true,
+  linenos=true,
+  numbersep=10pt,
+  xleftmargin=0.5cm,
+  framerule=0.4pt
+}
+
 % Configure minted styles
 \setminted[turtle]{
-  linenos=true,
-  breaklines=true,
-  fontsize=\scriptsize,
-  frame=none
+	linenos=true,
+	breaklines=true,
+	fontsize=\scriptsize,
 }
 \setminted[sparql]{
-  linenos=true,
-  breaklines=true,
-  fontsize=\scriptsize,
-  frame=none
+	linenos=true,
+	breaklines=true,
+	fontsize=\scriptsize,
 }
 

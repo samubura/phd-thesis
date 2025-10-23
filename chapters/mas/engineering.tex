@@ -704,6 +704,8 @@ The body allows others to observe the owner agent and its behavior, and to perce
 This definition captures the fundamental properties of an agent body in virtual environments, emphasizing its role in reifying the agent (\textbf{concreteness}), identifying it (\textbf{identifiability}), implicitly mediate actions (\textbf{transparency}), routing perceptions from the environment (\textbf{timely perception}) and allowing other agents to observe the agent's behavior through it (\textbf{focusability})~\cite{embodiment2025}.
 
 \begin{code}
+\captionof{listing}{A description of agent {\tt alice} and its body artifact.}
+\label{lst:agent-description}
 \begin{minted}{turtle}
 @base <http://localhost:8080/> .
 @prefix hmas: <https://purl.org/hmas/> .
@@ -727,9 +729,6 @@ This definition captures the fundamental properties of an agent body in virtual 
 <workspaces/production/artifacts/alice/#agent> a hmas:Agent .
 <workspaces/production/#workspace> a hmas:Workspace .
 \end{minted}
-\captionof{listing}{A description of agent {\tt alice} and its body artifact.}
-\label{lst:agent-description}
-\vspace{1.2em}
 \end{code}
 
 \Cref{lst:agent-description} shows an example of implementation of an agent body as an artifact within an hypermedia environment exposed by the Yggdrasil platform~\cite{Ciortea_Boissier_Ricci_2019}.

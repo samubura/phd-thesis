@@ -342,14 +342,202 @@ The basic implementation of the environment acting as a shared data container ca
 \label{sec:mas:engineering:simulation}
 %=======================================================
 
+Aside from being useful for in-silico studies,
+\emph{simulation} may also aid the \emph{development} and \emph{validation}~\cite{uhrmacher_simulation_2002}
+of \acp{MAS} intended for real-world deployment.
+%
+In fact, simulation enables developers to test the behavior of agents
+and their dynamics in complex environments ahead of deployment,
+while postponing costs, risks, and efforts associated with real-world execution.
+
+The price for such flexibility, however,
+is paid in additional development effort:
+first and foremost, to model the deployment context in a simulation environment,
+and, additionally,
+to maintain alignment between the two versions of the \ac{MAS} codebase,
+unless the same \ac{MAS} specification can execute \emph{with no changes}
+on both real hardware and a simulator of choice.
+
+This is particularly challenging when dealing with \ac{BDI} \acp{MAS}.
+There,
+the abstraction gap between the high-level cognitive model of \ac{BDI} agents and most simulators~\cite{singh_integrating_2016},
+along with the minimal support of \ac{BDI} technologies
+for producing \emph{reproducible} simulations of articulated scenarios~\cite{kehoe2016robust}
+lead developers to resort to one of the following approaches~\cite{singh_integrating_2016}:
+%
+\begin{enumerate}
+    \item extension of the \ac{BDI} platform with a dedicated simulation engine,
+    which requires additional development effort (e.g., \cite{HubnerB09,ricci_exploiting_2020});
+    \item construction and maintenance of two parallel codebases
+    one for a simulator extended with \ac{BDI} modeling tools (e.g., \cite{sakellariou_enhancing_2008,TaillandierBCAG16,uhrmacher1998agents}) and one for the actual system,
+    leading to consistency issues;
+    \item integration of the \ac{BDI} platform with a general-purpose simulation engine,
+    typically by synchronizing their execution through some form of middleware (e.g., \cite{singh_integrating_2016,davoust_architecture_2020}).
+\end{enumerate}
+
+Despite the idea of using simulation to support \ac{MAS} development being not new
+there are not many tools that effectively allow one
+\emph{
+    ``to execute agents as they are and to switch arbitrarily between execution in the real environment and the virtual test environment''
+}~\cite{uhrmacher_simulation_2002}.
+
+This section discusses the challenges of decoupling \ac{BDI} agent concurrency when designing \ac{MAS} frameworks, as a necessary step towards enabling the same specification to run both in real concurrent deployments and in discrete-event simulation environments.
+%
+The proposed integration of \jakta{} with the \alchemist{} simulator explores the mapping of the \ac{BDI} control loop, showing that different granularities are possible, to address the challenge of providing a seamless transition between real and simulated environments for \ac{BDI} \acp{MAS}.
+
 %-------------------------------------------------------
 \subsection{Decoupling Concurrency in BDI MAS}
 \label{ssec:mas:engineering:concurrency}
 %-------------------------------------------------------
 
+The analysis of a selection of technologies from table \Cref{tab:frameworks} presented in \cite{DBLP:conf/emas/BaiardiBCPRO24} suggests that most \ac{BDI} frameworks tightly couple the \ac{BDI} control loop with the underlying \emph{concurrency model}. 
+%
+This means that the way in which agents are scheduled and executed is often hardcoded into the framework, limiting flexibility and adaptability to different application requirements.
+
+Several concurrency models are possible for \ac{BDI} \ac{MAS}: 
+\begin{itemize}
+    \item \emph{\ac{1A1T}}: is the most common where each agent runs in a dedicated thread. This model provides true parallelism but can lead to high resource consumption. 
+    \item \emph{\ac{AA1T}}: the degenerate case where all agents run in a single thread, leading to sequential execution (e.g. round-robin scheduling), agents do not run in parallel, but the system is lightweight and easier to debug.
+    \item \emph{\ac{AA1EL}}: at the conceptual level is similar to \ac{AA1T}, but instead of using threads, it employs an event loop to manage agent execution. This model is efficient and suitable for handling blocking operations in the agent logic.
+    \item \emph{\ac{AA1E}}: similarly to \ac{AA1EL} but there is a shared executor allowing for concurrent execution of agents while still benefiting from the efficiency of event-driven programming. Scaling the executor allows for tuning the level of resource usage and parallelism.
+\end{itemize}
+
+Decoupling the specification of the adopted concurrency model from the \ac{BDI} control loop allows to select the most appropriate model for different applications.
+%
+This requires defining clear interfaces between the \ac{BDI} interpreter and the concurrency manager when designing \ac{BDI} frameworks.
+%
+Each agent control-loop phase (e.g., perception, deliberation, action) should be treated as a task that can be scheduled on a concurrency abstraction.
+%
+This decoupling can also serve the purpose of switching between real and simulated execution, as the simulator would act as yet another \emph{executor} of \ac{BDI} tasks.
+
 %-------------------------------------------------------
 \subsection{Discrete-Event Simulation for BDI}
 %-------------------------------------------------------
+
+\ac{DES} is a powerful technique for modeling complex systems, that can support the scheduling of events over simulated time, and advance the simulation clock to when the next event is due.
+%
+Given the fact that \ac{BDI} agents can be seen as driven by events (e.g., percepts, messages, internal triggers), \ac{DES} appears as a natural fit for simulating \ac{BDI} \acp{MAS}. 
+%
+\ac{DES} allows for a fine-grained control over the timing and ordering of events, making it possible to accurately model the asynchronous and concurrent nature of agent interactions.
+
+The integration of a \ac{BDI} \ac{MAS} over a \ac{DES} simulator require mapping the \ac{BDI} control loop iterations onto the simulator's event scheduling.
+%
+Different granularities of mapping are possible, each with its own trade-offs:
+\begin{itemize}
+\item \emph{\ac{AMA}}: the entire \ac{MAS} advances in lockstep, with all agents performing one iteration of the control loop in a sequential order at every step. This is the coarsest granularity, usually adopted when simulating \ac{BDI} agents for debugging purposes (e.g., \cite{HubnerB09}).
+\item \emph{\ac{ACLI}}: each full iteration of the agent's control loop is treated as a single event. Interleave of agent actions is possible, but the agent execution is treated as atomic steps and cannot model the duration of individual phases.
+\item \emph{\ac{ACLP}}: each phase of the control loop (perception, deliberation, action) is mapped to separate events. This allows for more detailed modeling of agent behavior and interactions. All possible interleaving are possible, like in a true concurrent system and hence providing the most accurate simulation of real-world execution.
+\item \emph{\ac{ABE}}: each event in the \ac{BDI} agent (e.g., perception, message receipt, internal trigger) is mapped to a discrete event in the simulator. This allows for fine-grained simulation but may increase the number of scheduled events significantly, potentially impacting performance of the simulation, while not providing significant benefits over \ac{ACLP} in most scenarios as the behavior of agents encapsulate its internal events.
+\end{itemize}
+
+Other than choosing the appropriate granularity for the mapping, switching between real and simulated execution requires careful handling of time management and \emph{external actions} that are invoked on the environment.
+
+In real execution, time can be perceived from the system clock, while in simulation, time is controlled by the simulator.
+%
+Therefore, agents must be designed to use a time abstraction that can be adapted to both real and simulated contexts.
+%
+The same goes for randomness, which should be abstracted to allow for reproducible simulations controlled by the same \emph{seed}. 
+
+For what concerns environment actions, modeling the environment is crucial for accurate simulation. 
+%
+The agent should be decoupled by the specific implementation of the environment, relying on an interface that can be implemented differently for real and simulated contexts.
+%
+The simulated environment should mimic the behavior of the real environment as closely as possible, including the generation of perceptions, the effects of actions that modify the environment state and the communication mechanisms among agents which may need to be tested for reliability under different conditions. 
+
+The design of \jakta{} has been influenced by these considerations.
+%
+This made it possible to integrate \jakta{} with the \alchemist{} \ac{DES} simulator~\cite{PianiniJOS2013}.
+%
+The integration is achieved by letting \alchemist{} schedule the execution of \jakta{} agents by scheduling their control loop iterations and phases with a time distribution.
+%
+
+
+%-------------------------------------------------------
+\subsection{Experimental Demonstrator}
+%-------------------------------------------------------
+
+The prototype implementation demonstrates the feasibility of the approach, and showcases how different granularities of mapping can lead to different simulation behaviors with the same \ac{MAS} specification.
+
+To exemplify this, a simple \ac{MAS} is defined to simulate a leader \ac{UAV} moving in a circular path, while other \acp{UAV}
+must follow its movement retaining their formation around the leader.
+
+\Cref{fig:code} shows code extracts from the scenario implementation, demonstrating that agent logic is reusable across different execution platforms.
+
+\begin{figure}
+    \begin{minipage}[b]{.6\linewidth}
+        \centering
+        \lstinputlisting[
+            language=Kotlin,
+            linewidth=\linewidth,
+            basicstyle=\scriptsize\ttfamily,
+            label={lst:logic},
+    %        caption={Platform-agnostic code}
+        ]{listings/jakta+alchemist/agentsLogic.kt}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{.34\linewidth}
+        \centering
+        \lstinputlisting[
+            language=Kotlin,
+            linewidth=\linewidth,
+            basicstyle=\scriptsize\ttfamily,
+%        caption={Entrypoint},
+            label={lst:agents}
+        ]{listings/jakta+alchemist/agents.kt}
+    \end{minipage}
+    \caption{
+        The agent specifications (left) are completely platform-agnostic and reusable,
+        some glue code (right) wires the logics with the underlying execution platform.
+    }
+    \label{fig:code}
+\end{figure}
+
+
+To investigate the effect of the mapping granularity on the system's behavior, experiments are conducted with the \ac{AMA}, \ac{ACLI}, and \ac{ACLP} granularities.
+%
+To do so, we use the \ac{AMA} as baseline,
+letting the entire \ac{MAS} run a full cycle every simulated second.
+%
+Then the baseline is compared with \ac{ACLI} and \ac{ACLP},
+for which each agent is modeled with an execution frequency $f$
+following a Weibull distribution with mean $f$ and deviation $f\cdot\tau$ modeling the \emph{relative drift} in the internal clock of different devices.
+%
+Additionally, for the \ac{ACLP} granularity deliberation and action delays are modeled,
+associating each phase with an exponential distribution with rate $\lambda = f$:
+faster agents (larger $f$ values) have less delay.
+%
+Every experiment is repeated $100$ times with a different random seed, changing
+the initial positions of the followers
+and the distribution in time of the events for the \ac{ACLI} and \ac{ACLP}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/jakta+alchemist/error_over_time_flattened.pdf}
+    \caption{
+        Average error with time for different granularities, with \ac{ACLI} and \ac{ACLP} running at $f=1Hz$ and $f=2Hz$.
+        Different charts show different values of relative drift $\tau$.
+        Coloured shadows represent $\pm 1\sigma$ over multiple runs.
+    }
+    \label{subfig:err_time}
+\end{figure}
+%
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/jakta+alchemist/error_over_variances.pdf}
+%     \caption{
+%         Mean squared distance error with relative drift ($\tau$), measured for different frequencies for \ac{ACLI} and \ac{ACLP}.
+%         Coloured shadows represent $\pm 1\sigma$.
+%     }
+%     \label{subfig:err_drift}
+% \end{figure}
+\Cref{subfig:err_time} shows the error on the followers position with respect to the ideal formation over time as the mean square distance of all followers \acp{UAV}.
+As expected given the simplistic implementation of the agent's logic, the \ac{AMA} granularity appears to be the most stable, converging quickly to a low error.
+%
+Differently from \ac{AMA}, both \ac{ACLI} and \ac{ACLP} instead, show a degradation in performance at low frequencies and higher relative drifts.
+%
+This is due to the fact that the implementation assumed implicit synchronization among agents and virtually no-delay in the perception-action loop (which is the case in \ac{AMA}), but fail to adapt fast enough when the execution is asynchronous and delayed, similarly to real-world deployments.
+
+This showcase demonstrates that selecting fine-grained granularities for mapping the \ac{BDI} control loop into \ac{DES} events is necessary to accurately simulate real-world deployments, thus supporting the argument that the \ac{BDI} framework should expose the ability to finely decouple the execution of individual phases of the control loop from the concurrency model.
 
 %=======================================================
 \section{BDI Agents in Hypermedia Environments}

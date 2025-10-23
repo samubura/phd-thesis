@@ -1,19 +1,378 @@
+This chapter presents an overview of contributions in the area of engineering \ac{BDI} \ac{MAS} targeting the goal outlined in \ref{rq:5} of making \ac{BDI} \ac{MAS} engineering more accessible for developers wishing to integrate \ac{BDI} agents into larger software systems, there including \acp{DTE} and more broadly Web-based systems.
+%
+Additionally, the chapter explores the role of \emph{explainability} in \ac{BDI} agents, to make agent behavior more transparent to users, as this is a key requirement for intelligent applications applied to critical domains such as healthcare (\Cref{sec:back:h40:explainable-ai}).
+
+
+
 %=======================================================
 \section{Tooling for \acs{BDI} Agent Programming}
 %=======================================================
 
+\ac{BDI}~\cite{rao1991modeling} agents are considered
+an excellent tool for modelling autonomous or intelligent entities
+via high-level \emph{cognitive} abstractions.
+%
+Therefore, in the early 2000s, the expectation of the community was for \ac{AOP}~\cite{Shoham_1993} to gain its spot among other prominent paradigms,
+such as object-oriented (\acs{OOP}), functional (\acs{FP}), imperative (\acs{IP}), and logic (\acs{LP}) programming.
+
+However,
+a few decades later,
+it can be observed that,
+although \ac{BDI} has deeply impacted the research field of \ac{MAS} and \ac{AI},
+it still fails at reaching mainstream programming,
+even in contexts where the application scenario would make it
+a good choice to design autonomous behavior.
+
+Limited adoption of \ac{BDI} in mainstream programming has been widely discussed~\cite{lind2000aose,DBLP:journals/sigsoft/MascardiWR19,DBLP:journals/ijaose/DignumD10,DBLP:books/sp/14/Muller014,DBLP:journals/corr/abs-1209-1428}, with no consensus on the root causes.
+%
+Some argue that improved tooling is needed~\cite{DBLP:conf/dalt/Hindriks14},
+while others suggest that the main barrier is the cost of learning a new paradigm~\cite{DBLP:journals/ijaose/Logan18} without the gain of significant benefits in terms of engineering complex behavior, claiming that new features are needed to make \ac{BDI} more appealing.
+
+These perspectives are not necessarily conflicting, but rather arguably complementary: paradigm adoption depends on both effective abstractions and supportive tools.
+%
+In \cite{DBLP:journals/ijaose/Logan18} \cpp is mentioned as an example of language that despite little tooling support at its inception, gained popularity thanks to the introduction of new abstractions (e.g., classes) that made it more appealing to mainstream developers.
+%
+It could be argued that it was the seamless, gradual integration of such new abstractions into existing \ac{IP} practices that made \cpp successful.
+%
+As seen in the evolution of \cpp and Java, such gradual integration of new abstractions can lower adoption barriers and foster community-driven innovation.
+%
+Thus, paradigm and tooling evolution should proceed in parallel to facilitate broader adoption, possibly by integrating \ac{BDI} concepts into existing mainstream programming practices, paradigms, software ecosystems, and tools.
+
+%-------------------------------------------------------
+\subsection{State of the Art}
+%-------------------------------------------------------
+
+Several open-source, publicly available, and actively maintained\footnote{Following the definition in~\cite{Cardoso_Ferrando_2021}.} frameworks exist for \ac{BDI} \ac{AOP} programming.
+This section highlights representative frameworks, based on recent surveys of logic-based agent-oriented technologies~\cite{lptech4mas-jaamas35} and agent-based programming for \ac{MAS}~\cite{Cardoso_Ferrando_2021}.
+
+\Cref{tab:frameworks} summarizes key characteristic of selected frameworks.
+%
+Other notable actively developed frameworks that did not meet the selection criteria but still deserve mention are
+\jack{}~\cite{Winikoff2005} (not open-source),
+the aforementioned \jacamo{}~\cite{Boissier_Bordini_Hübner_Ricci_Santi_2013} frameworks which extends \jason{} (\Cref{sec:back:mas:aose}),
+\sarl{}~\cite{iat2014sarl} (not \ac{BDI}-specific),
+and \goal{}~\cite{Hindriks2009} (not \ac{BDI}-adhering).
+
+This short overview highlights how existing frameworks differ in terms of intended target applications, execution platforms and agent programming syntax.
+%
+A more in-depth analysis of the state-of-the-art frameworks is presented in \cite{DBLP:journals/sncs/BaiardiBCP24}, 
+focusing on their features and limitations.
+%
+From this analysis, it is possible to observe that
+most frameworks are build with custom \ac{DSL} syntaxes that require learning new languages, as well as dedicated supporting tools (e.g., IDE plugins) that require additional effort to set up and maintain.
+%
+This also hinders integration with existing software ecosystems and tools, as well as reuse of existing libraries and components, as the mechanisms to interface with external code are often limited and not always straightforward to use, requiring developers to shift their mindset away from familiar programming practices.
+
+\begin{table}
+    \centering
+    \small
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{r|c|c|c}
+        \textbf{Framework } & \textbf{Platform} & \textbf{Syntax} & \textbf{Intended Target} \\\hline\hline
+        \textbf{\makecell[r]{\astra~\cite{CollierRL15}} }
+        & JVM
+        & custom DSL
+        & distributed systems
+        \\
+        \textbf{\makecell[r]{\gwendolen~\cite{dennis2008gwendolen}} } 
+        & \makecell[c]{MCAPL~\cite{Dennis2018}}
+        & \agentspeak{}-based
+        & \ac{BDI} verification
+        \\
+        \textbf{\makecell[r]{\jadex~\cite{PokahrBL2005}} } 
+        & JVM
+        & Java + annotations
+        & distributed systems
+        \\
+        \textbf{\makecell[r]{\jason~\cite{Bordini_Hübner_Wooldridge_2007}} } 
+        & JVM
+        & \agentspeak{}
+        & \ac{BDI} research
+        \\
+        \textbf{\makecell[r]{\jsson~\cite{DBLP:conf/emas/KampikN19}} } 
+        & JavaScript
+        & JavaScript
+        & Web applications
+        \\
+        \textbf{\makecell[r]{\lightjason~\cite{aschermann2016eumas}} } 
+        & JVM
+        & \agentspeak{}-based
+        & scalable applications
+        \\
+        \textbf{\makecell[r]{\phidias~\cite{DUrsoLS19}} } 
+        & (Micro)Python
+        & Python DSL
+        & IoT/robotic applications
+        \\
+        \textbf{\makecell[r]{\spadebdi~\cite{PalancaRCJT22}} } 
+        & Python
+        & \agentspeak{}
+        & distributed systems
+        \\
+        \hline
+        \textbf{\makecell[r]{\jakta~\cite{DBLP:journals/sncs/BaiardiBCP24}} } 
+        & JVM*
+        & Kotlin DSL
+        & general-purpose
+        \\
+    \end{tabular}
+    }
+    \normalsize
+    \bigskip
+    \caption{
+        A selection of active \ac{BDI} programming frameworks
+        and their respective execution platforms, syntax and intended target.
+        \jakta{}, the framework proposed in this section, is included to compare with existing frameworks.
+        *\jakta{} is currently implemented on the JVM 
+        but could be ported to other platforms thanks to Kotlin's multiplatform capabilities.
+    }
+    \label{tab:frameworks}
+\end{table}
+
+
+%-------------------------------------------------------
+\subsection{Desiderata for Mainstream \acs{BDI} Tooling}
+%-------------------------------------------------------
+
+As emerging from the previous section,
+the \ac{BDI} \ac{AOP} community has primarily developed toolkits
+as libraries, extensions, or entirely custom languages
+supported by existing execution platforms.
+%
+This approach provides a practical environment for prototyping and deployment,
+allowing developers to leverage the features of the \emph{host} platform.
+%
+Hence,
+a \ac{BDI} framework typically expects users to work in a top-down manner,
+approaching system design as a \ac{MAS} and using \ac{BDI} abstractions to model agents,
+while leveraging the host language primarily for implementing vertical, low-level, practical details.
+
+Although this may be effective for \ac{BDI} experts
+it may pose a barrier for newcomers.
+%
+An effective way to learn a new paradigm is to start with a simple yet functional fragment,
+then incrementally expand its functionalities,
+gradually introducing new concepts and abstractions (example-based learning, see~\cite{vanGog2010}).
+%
+% Indeed, the classic first program in most programming languages is ``\emph{Hello, World},''
+% which simply prints text to the console.
+% %
+% These simple programs typically do not introduce the main abstractions of the language;
+% rather, they serve as a starting point with a \emph{working example}.
+% %
+% We believe that a more gradual and practical approach could be key to making \ac{BDI} programming more accessible.
+
+Based on these considerations and the analysis of existing frameworks, the following desiderata for mainstream \ac{BDI} tooling are identified:
+
+\paragraph{Interoperability with Mainstream Paradigms:} to have \ac{BDI} work as a \emph{practical} paradigm it is necessary to integrate with external systems that typically are not built using \ac{BDI} concepts, which results in a developer to likely incorporate other paradigms in parts of the developed system.
+%
+Many modern programming languages (including Kotlin, Python, Scala, etc.) are designed to be \emph{multi-paradigm}, allowing developers to switch among paradigms with relative ease.
+%
+This approach, known as \emph{paradigm blending},
+prioritizes integration of multiple paradigms in one code fragment
+over composition of multiple fragments using different paradigms.
+%
+When paradigms are blended,
+the same code fragment may contain \emph{syntactical}
+constructs capturing abstractions of diverse paradigms.
+%
+In this context, \ac{BDI} \ac{AOP} could be envisioned
+as yet another paradigm to support,
+letting developers free to use a mix of different abstractions in the same codebase.
+
+
+\paragraph{Code Reuse and Sharing Mechanisms:}
+
+Code reuse is fundamental in software engineering for reducing redundancy and improving maintainability. General-purpose languages support reuse through constructs such as packages, modules, classes, and functions, complemented by import and extension mechanisms.
+%
+This is important for both \emph{in-project} reuse, but especially for \emph{cross-project} reuse, enabling the creation and sharing of libraries and frameworks. These are usually supported by build automation and dependency management tools that facilitate integration and versioning.
+%
+In \ac{AOP}, similar mechanisms would enable modularization and reuse of agent specifications. For \ac{BDI} \ac{MAS}, this could involve sharing plans, beliefs, or rules across agents. However, there is no standardized approach for modularity and reuse at the paradigm level.
+%
+When a framework provides a \ac{FFI}, reuse mechanisms from the host language can be applied to relevant code sections. For example, \jason{} and \spadebdi{} allow internal actions to be defined and reused as Java or Python code, respectively.
+%
+For code written in the \ac{BDI} language, reuse is often limited to file inclusion (e.g., like in \jason{}). Some like \astra{}, support specification extension, while others, such as \jack{} and \jadex{}, use capabilities~\cite{DBLP:conf/promas/BraubachPL05} to encapsulate reusable components, though interpretations vary.
+
+
+\paragraph{Development Tools:}
+Development tools are critical for effective \ac{BDI} programming.
+Modern development environments offer features such as syntax highlighting, code completion, static analysis, and refactoring, which are now expected for a swift development experience.
+%
+Testing libraries and debugging support are also essential for building reliable systems. However, most \ac{BDI} frameworks lag behind mainstream languages in tool maturity, often due to the high maintenance cost for small communities and limited incentives in tool development in research-driven projects.
+%
+Developing and maintaining compatibility of plugins for target development environments is challenging.
+%
+This can be alleviated by developing \emph{internal} \acp{DSL} which can directly leverage existing tools, though sometimes at the expense of language expressiveness.
+%
+Testing and debugging \acp{MAS} remain complex. \ac{BDI} frameworks offer limited support, and recent efforts~\cite{DBLP:conf/atal/RodriguezTW23,amaral2023atal} are still maturing. Additionally, debugging through host language tools is possible but often exposes low-level details irrelevant to \ac{BDI} abstractions.
+%
+Simulation is another important tool, especially for distributed systems. Existing \ac{MABS} frameworks are not tailored for \ac{BDI} agents, leading to an abstraction gap and duplicated effort when implementing both production and simulation environments. Ideally, frameworks should facilitate seamless switching between real and simulated deployments as discussed in \Cref{sec:mas:engineering:simulation}
+
+\paragraph{Configurability:}
+\ac{BDI} frameworks also manage the runtime environment for agents, including input/output, communication, and concurrency models (\Cref{ssec:mas:engineering:concurrency}). Configurability in these aspects is essential for adapting frameworks to diverse application requirements.
+%
+The concurrency model, mapping the agent control flow to execution primitives (e.g., threads, processes, event loops), directly impacts efficiency, determinism, and reproducibility and affects system performance. Most frameworks support one or more concurrency models, but few offer user-oriented APIs for easily customizing or selecting the concurrency model.
+%
+Agent communication is another key aspect, with frameworks differing in their support for local and distributed messaging. Communication typically relies on agent communication languages (ACLs)~\cite{Kone_Shimazu_Nakajima_2000} and underlying network protocols.
+%
+Pluggable communication mechanisms, using standard protocols, are considered good practice, allowing users to select or extend protocols as needed. However, multi-protocol support and well-documented APIs for communication configuration remain uncommon.
+%
+Overall, high configurability in concurrency and communication is a desirable property for mainstream \ac{BDI} tooling, enabling broader applicability and easier integration with existing systems.
+
+%-------------------------------------------------------
+\subsection{The \jakta{} Framework}
+%-------------------------------------------------------
+
+\jakta{} is a new \ac{BDI} programming framework,
+aimed at (gradually) addressing the issues discussed in the sections above.
+%
+\jakta{} is available on GitHub\footnote{\url{https://github.com/jakta-bdi/jakta}}
+under a free, open-source, and permissive licence.
+%
+The main design principles of the tool are \emph{modularity},
+\emph{pluggability} and
+\emph{paradigm interoperability}.
+
+\jakta{} clearly separates:
+\begin{inlinelist}
+    \item definition of concepts (e.g., agents, environment, plans, actions),
+    \item the logic that rules concepts' behavior (e.g., execution loops, selection functions),
+    and
+    \item how these are presented to the final user (e.g., syntax, \ac{API}).
+\end{inlinelist}
+%
+Multi-paradigm interoperability is obtained by designing \jakta{} as an internal \ac{DSL} in Kotlin,
+thus leveraging Kotlin's multi-paradigm features that already support \ac{OOP}, \ac{FP}, and \ac{IP} styles.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/mas/jakta_modules.pdf}
+    \caption{
+        The main modules composing the \jakta{} framework and their dependencies.
+    }
+    \label{fig:jakta-modules}
+\end{figure}
+
+The \jakta{} framework is composed of four main modules (\Cref{fig:jakta-modules}), namely:
+%
+\begin{enumerate}
+    \item the \textbf{\ac{BDI} interpreter}, which governs the execution of agents in environments,
+    regardless of the particular syntax used to define them;
+    \item the \textbf{\ac{DSL}}, which provides a Kotlin syntax to idiomatically define \ac{BDI} \acp{MAS};
+    \item the \textbf{concurrency manager}, which regulates runtime, concurrency, and scheduling aspects for
+    any system run by the \ac{BDI} interpreter;
+    and
+    \item the \textbf{\alchemist{} incarnation},
+    which bridges the \ac{BDI} interpreter with the \alchemist{}~\cite{PianiniJOS2013} discrete-event simulator.
+\end{enumerate}
+
+A detailed description of the \jakta{} syntax is available in \cite{DBLP:journals/sncs/BaiardiBCP24}, for the interested reader.
+%
+Here some examples of \jakta{} code are reported to showcase the main features of the framework.
+
+\noindent
+\begin{minipage}{\linewidth}
+\lstinputlisting[
+    % float,
+    basicstyle=\footnotesize\ttfamily,
+    linewidth=\linewidth,
+    language=Kotlin,
+    caption={Overall structure of a \ac{MAS} specification in \jakta{}.},
+    %{Entrypoint of \jakta{}, it contains the description of the Environment and Agents involved in the application.},
+    label=lst:mas,
+]{listings/jakta-examples/mas_dsl.kt}
+\end{minipage}
+%
+Users can define and launch a \jakta{} \ac{MAS} specification using a \texttt{mas} block (\Cref{lst:mas}).
+All elements composing the \ac{MAS} are defined within it, including the (initial) set of agents, the environment model and other \ac{MAS} configuration elements.
+%
+The \texttt{agent} block in \Cref{lst:mas} defines an individual \ac{BDI} agent,
+specifying its initial beliefs and goals, as well as the plan library it will use at runtime.
+%
+The syntax is valid Kotlin code, which implements at the language level features to support the construction of \acp{DSL} (e.g., lambda with receiver, operator overloading, block-like lambdas, etc.) that can be implemented as \emph{type-safe builders}\footnote{\url{https://kotlinlang.org/docs/type-safe-builders.html}}.
+%
+This makes the \ac{MAS} specification fully supported by existing Kotlin development tools.
+
+\noindent
+\begin{minipage}{\linewidth}
+\lstinputlisting[
+    % float,
+    basicstyle=\scriptsize\ttfamily,
+    linewidth=\textwidth,
+    language=Kotlin,
+    caption={Example of paradigm-blending in \jakta{}. The code snippet uses together \ac{OOP}, \ac{FP}, and \ac{IP} constructs to create a \ac{MAS}.},
+    label={lst:blending},
+]{listings/jakta-examples/blending.kt}
+\end{minipage}
+%
+% Additionally,
+The adoption of a multi-paradigm language such as Kotlin
+natively exposes \ac{OOP}, \ac{FP}, and \ac{IP} constructs within the \ac{BDI} \ac{DSL}.
+This supports a first level of paradigm blending, which allows composing and parametrizing the \ac{MAS} specification with ease.
+%
+The blending is exemplified in \Cref{lst:blending},
+it describes, using \jakta{} syntax,
+a toy example defining a \ac{MAS} with ten agents named as the first ten athletes scraped from a web page.
+%
+The example showcase the combination of the \ac{OOP} paradigm employed for dealing with regular expressions matching and data extraction,
+and the \ac{FP} paradigm used to map URLs to athletes names, and finally to \jakta{} agents.
+
+Further paradigm integration can be leveraged when defining actions.
+%
+In \jakta{}, a valid action is any instance of the \texttt{Action} interface
+(more precisely, of one of its specializations \texttt{InternalAction} or \texttt{ExternalAction}),
+and can be written in-place directly inside a \texttt{mas} definition,
+possibly using \ac{OOP} or \ac{FP} constructs directly in Kotlin.
+
+\jakta{} has an explicit notion of \emph{environment}. The \jakta{} environment is responsible for:
+%
+\begin{inlinelist}
+    \item tracking the agents in the system;
+    \item governing each agent's perception by determining which percepts to deliver;
+    \item governing each agent's actuation by making external actions available;
+    \item governing communication among agents by deciding how messages are delivered;
+    \item enabling stigmergic interaction by making the environment's data accessible to agents.
+\end{inlinelist}
+%
+The basic implementation of the environment acting as a shared data container can be extended to implement more complex functionalities, integrate external systems within the \ac{MAS}, and support distributed communication. 
+
+
 %=======================================================
 \section{Testing \acs{MAS} with Simulation}
+\label{sec:mas:engineering:simulation}
 %=======================================================
+
+%-------------------------------------------------------
+\subsection{Decoupling Concurrency in BDI MAS}
+\label{ssec:mas:engineering:concurrency}
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+\subsection{Discrete-Event Simulation for BDI}
+%-------------------------------------------------------
+
+%=======================================================
+\section{BDI Agents in Hypermedia Environments}
+%=======================================================
+
+%--------------------------------------------------------------
+\subsection{The Gap between BDI and the Semantic Web}
+%--------------------------------------------------------------
+
+%-------------------------------------------------------
+\subsection{Embodiment for Agents on the Web}
+%-------------------------------------------------------
+
 
 %=======================================================
 \section{Explainability in \acs{BDI} Agents}
 %=======================================================
 
-%=======================================================
-\section{Embodiment in Hypermedia \acs{MAS}}
-%=======================================================
+%-------------------------------------------------------
+\subsection{Multi-Level Explainability}
+%-------------------------------------------------------
 
-%=======================================================
-\section{End-User Agent Programming}
-%=======================================================
+
+%-------------------------------------------------------
+\subsection{Inter-Agent Explainability}
+%-------------------------------------------------------

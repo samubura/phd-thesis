@@ -2,10 +2,9 @@ This chapter presents an overview of contributions in the area of engineering \a
 %
 Additionally, the chapter explores the role of \emph{explainability} in \ac{BDI} agents, to make agent behavior more transparent to users, as this is a key requirement for intelligent applications applied to critical domains such as healthcare (\Cref{sec:back:h40:explainable-ai}).
 
-
-
 %=======================================================
 \section{Tooling for \acs{BDI} Agent Programming}
+\label{sec:mas:engineering:jakta}
 %=======================================================
 
 \ac{BDI}~\cite{rao1991modeling} agents are considered
@@ -153,14 +152,7 @@ it may pose a barrier for newcomers.
 An effective way to learn a new paradigm is to start with a simple yet functional fragment,
 then incrementally expand its functionalities,
 gradually introducing new concepts and abstractions (example-based learning, see~\cite{vanGog2010}).
-%
-% Indeed, the classic first program in most programming languages is ``\emph{Hello, World},''
-% which simply prints text to the console.
-% %
-% These simple programs typically do not introduce the main abstractions of the language;
-% rather, they serve as a starting point with a \emph{working example}.
-% %
-% We believe that a more gradual and practical approach could be key to making \ac{BDI} programming more accessible.
+
 
 Based on these considerations and the analysis of existing frameworks, the following desiderata for mainstream \ac{BDI} tooling are identified:
 
@@ -495,7 +487,7 @@ must follow its movement retaining their formation around the leader.
 
 To investigate the effect of the mapping granularity on the system's behavior, experiments are conducted with the \ac{AMA}, \ac{ACLI}, and \ac{ACLP} granularities.
 %
-To do so, we use the \ac{AMA} as baseline,
+To do so, \ac{AMA} is used as baseline,
 letting the entire \ac{MAS} run a full cycle every simulated second.
 %
 Then the baseline is compared with \ac{ACLI} and \ac{ACLP},
@@ -543,13 +535,245 @@ This showcase demonstrates that selecting fine-grained granularities for mapping
 \section{BDI Agents in Hypermedia Environments}
 %=======================================================
 
+As discussed in \Cref{sec:back:mas:web}, the Web is increasingly being seen as a \emph{hypermedia environment} where autonomous agents can operate and interact with resources through \ac{REST} interactions, and by consuming semantic descriptions of resources and services.
+
+Even more recently,
+with the advent of \ac{LLM}-based \emph{Agentic AI}~\cite{Acharya_Kuppan_Divya_2025}
+the creation of \ac{LLM}-driven agents that interact with Web APIs~\cite{10.5555/3692070.3692540}
+(or directly with Websites~\cite{10.5555/3692070.3694608})
+has gained significant attention.
+%
+However,
+despite being promising,
+these approaches
+do not make structured knowledge representation obsolete~\cite{pan2024tkde},
+and often trade the controllability offered by traditional agent-programming paradigms
+for more guarantees in terms of correctness, and completeness.
+
+Arguably,
+Web-integrated agents developed with cognitive architectures,
+such as \ac{BDI} agents,
+would retain controllability and predictability:
+they could directly exploit hypermedia to discover new resources and actions,
+and use Semantic Web technologies like \ac{RDF} and \ac{OWL}
+to act intelligently without compromising on quality.
+%
+However,
+it can be argued that
+the integration of \ac{BDI} agents with the Web
+is hindered by a conceptual and technological gap,
+which limits developers in creating agents that need to interact with (Semantic) hypermedia.
+%
+More precisely:
+\begin{itemize}
+  \item\label{gap:logic}
+  \ac{BDI} agents are historically tied to \ac{LP}
+  %-- e.g., with the popular \agentspeak{} semantic~\cite{DBLP:conf/maamaw/Rao96} --
+  whereas the Semantic Web is grounded on description logic,
+  and although the two paradigms are theoretically compatible,
+  their practical implementations interoperate poorly,
+  increasing integration cost significantly;
+  % The different technological choices used to concretely implement them add cognitive load to developers working on the integration of the two worlds (e.g., converting \ac{OWL} and \ac{RDF} triples in Prolog-like formulas);
+
+  \item\label{gap:open-world}
+  \ac{BDI} agents are typically based on the \ac{PRS} architecture~\cite{georgeff1987reactive}
+  which relies on pre-defined plans and does not natively support discovering new actions at runtime,
+  a necessary feature to interact proficiently with hypermedia environments.
+\end{itemize}
+
+In \cite{burattini2025gap}, a detailed analysis of these gap is presented, reflecting on the nuances of different models and concrete syntaxes used for logic representation, query semantics and inference mechanisms.
+%
+The analysis results in the definition of a set of requirements that can guide future research on bridging the gap between \ac{BDI} agents and hypermedia environments.
+%
+For a deeper integration of \ac{BDI} agents with semantic hypermedia environments, the following requirements should be addressed:
+\begin{enumerate}[label=\textbf{(R\arabic*)}]
+  \item direct manipulation of \ac{RDF} and \ac{OWL} triples in the agent's belief base;
+  \label{req:direct}
+
+  \item ontological inference for deliberation (e.g., plan selection and execution);
+  \label{req:reasoning}
+
+  \item support for querying the belief base via \acs{SPARQL};
+  \label{req:query}
+
+  \item ability to exploit affordances discovered in the environment to dynamically adapt the agents' plans.
+  \label{req:actions}
+\end{enumerate}
+
 %--------------------------------------------------------------
-\subsection{The Gap between BDI and the Semantic Web}
+\subsection{A Generalized BDI Engine}
 %--------------------------------------------------------------
+
+Towards addressing \ref{req:direct}, \ref{req:reasoning}, and \ref{req:query}, \cite{burattini2025gap} proposed the development of a generalized \ac{BDI} engine that can be specialized to work with different belief, goal, plan representations and reasoning mechanisms. 
+%
+A similar approach has been proposed in~\cite{novak2006atal}, 
+in which authors discuss the idea of a modular \ac{BDI} architecture,
+to make it independent of the logic representation and reasoning mechanisms,
+although not in the context of hypermedia.
+%
+Sharing the core modularity idea, the proposal of a generalized \ac{BDI} interpreter encapsulating agents reasoning cycle,
+while decoupling the specific technology used for knowledge representation and manipulation would allow for tailoring the reasoning mechanisms to application-specific needs.
+%
+In this way,
+beliefs
+can flexibly support different formats depending on the domain at hand
+and be adapted to work directly with e.g., \ac{RDF} triples, to JSON, YAML, and other Web standards.
+
+Similarly, the fundamental operations performed by a \ac{BDI} agent (e.g., plan selection, belief update, goal adoption), could be implemented using customized mechanisms that leverage the specific semantics of the adopted representation.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/generalize_bdi.pdf}
+    \caption{
+        The generalized \ac{BDI} engine architecture.
+        The core \ac{BDI} reasoning cycle is decoupled from the specific implementations of beliefs, goals, plans, and reasoning mechanisms.
+        This allows for specializing the engine to work with different representations and logics.
+    }
+    \label{fig:generalized-bdi-engine}
+\end{figure}
+
+
+\Cref{fig:generalized-bdi-engine} schematically illustrates the architecture of the proposed \ac{BDI} engine showing three layers:
+\begin{itemize}
+  \item \textbf{generalized \ac{BDI} reasoning layer},
+  where the agent's deliberation process is implemented as a reasoning cycle,
+  yet agnostic to how beliefs are represented and manipulated.
+  %
+  This is where
+  agents' intentions are maintained
+  and updated as agents perceive,
+  decide what to do,
+  and finally act.
+  %
+  Any operation involving beliefs, or plan selection, should rely on some \emph{abstract} \acs{API},
+  to be implemented by the next layer.
+  %
+  \item \textbf{concrete specification layer},
+  where the aforementioned \acs{API} is implemented to provide concrete operations on the belief base and plan library.
+  %
+  This layer acts as an adapter between the generalized \ac{BDI} reasoner
+  and the specific knowledge representation technologies of choice.
+  %
+  Lastly,
+    \item \textbf{application layer},
+  where actual goals, plans, and interactions of a \ac{MAS} are defined
+  to tackle some specific use case.
+\end{itemize}
+
+This architectural blueprint is a starting point, to which the \jakta{} framework (\Cref{sec:mas:engineering:jakta}) is intended to evolve, to better support the integration of \ac{BDI} agents with other kinds of systems, including hypermedia environments. 
 
 %-------------------------------------------------------
 \subsection{Embodiment for Agents on the Web}
 %-------------------------------------------------------
+
+When considering open, dynamic, and large-scale systems where different agents may join and leave a shared environment at any time, the ability to \emph{discover information about other agents} becomes a crucial factor for enabling interaction.
+%
+One way to enable the discovery of agents in such open systems is to equip them with \emph{bodies} that are reified in the shared environment.
+Such bodies may also permit agents to communicate indirectly through reciprocal observation of their actions, facilitate contextual interaction, and support accountability mechanisms through the observability of visible agent behavior---all of which is enabled through embodiment.
+%
+The body itself becomes an indicator of an agent's presence, offering means to perceive its (observable) state and actions---and possibly even to ascribe goals to the agent~\cite{castelfranchi2012abscribingminds}.
+
+Software agents are typically defined as \emph{situated} (\Cref{chap:back:MAS}), but not necessarily \emph{embodied} as the two properties are not dependent on each other when considering virtual environments.
+%
+On the Web, being \emph{situated} implies agents can browse the Web by discovering and following links from page to page. However, the agents are not \emph{embodied}: Multiple agents browsing the same website are typically unaware of one other, as there is no representation of the other agents currently \emph{on} the same page.
+%
+This does not preclude \textit{designing} websites that support embodiment---and this can be witnessed regularly, for instance, in collaborative document editors. However, such support must be designed and implemented explicitly into the website.
+
+Following the proposal of \ac{hMAS} to make all significant entities in a \ac{MAS} represented within the hypermedia environment~\cite{Ciortea_Boissier_Ricci_2019}, it is possible to design an agent body as a Web resource that other agents can discover and interact with. 
+%
+A step in this direction is taken in~\cite{Zimmermann2023}, which motivates the need for agents' situatedness and embodiment in open hypermedia environments and illustrates a potential solution based on the Solid specifications~\cite{Solid_0.9.0:21}. The authors outline several requirements for agent embodiment in decentralized hypermedia systems, but they do not provide a conceptual model for agent bodies as first-class abstractions which can guide the design of digital embodiment in \ac{hMAS} and other kinds of virtual environments.
+
+\cartago{} (\Cref{sec:back:mas:aose}) which is an inspiration for \ac{hMAS} provides an implementation of agent bodies as \emph{artifacts} that are automatically assigned to agents when they join a \emph{workspace}~\cite{Ricci_Piunti_Viroli_Omicini_2009}.
+%
+The artifact serves as a proxy to the agent in the shared environment, enabling \cartago{} to support heterogeneous agents in the same environment.
+
+Following these ideas, \cite{embodiment2025} proposes a conceptual notion of \emph{agent body} for \ac{hMAS} based on the following set of features:
+\begin{itemize}
+    \item \textbf{Discoverability}: bodies should enable agents to discover one another in an environment and optionally identify the corresponding agent associated to it. 
+    \item \textbf{Communication Through Behavior}: bodies should enable implicit communication between agents through their observable behavior, by showing the actions being performed by the agent.
+    \item \textbf{Accountability}: bodies should support accountability mechanisms by making the agent's actions and state observable.
+    \item \textbf{Situation-Dependent Interaction}: bodies should facilitate interaction by exposing contextually relevant information about the agent as well as affordances to interact with it.
+\end{itemize}
+
+To support such desired features, the agent body is hence defined as:
+\begin{quotation}
+A body is an artifact reifying and identifying an agent in an environment. The body situates the agent, transparently mediating its actions and allowing the agent to perceive in a timely fashion.
+The body allows others to observe the owner agent and its behavior, and to perceive agent-specific affordances to interact with it.
+\end{quotation}
+
+This definition captures the fundamental properties of an agent body in virtual environments, emphasizing its role in reifying the agent (\textbf{concreteness}), identifying it (\textbf{identifiability}), implicitly mediate actions (\textbf{transparency}), routing perceptions from the environment (\textbf{timely perception}) and allowing other agents to observe the agent's behavior through it (\textbf{focusability})~\cite{embodiment2025}.
+
+\begin{code}
+\begin{minted}{turtle}
+@base <http://localhost:8080/> .
+@prefix hmas: <https://purl.org/hmas/> .
+@prefix td: <https://www.w3.org/2019/wot/td#> .
+@prefix jacamo: <https://purl.org/hmas/jacamo/> .
+
+<workspaces/production/artifacts/alice/#artifact> a td:Thing, hmas:Artifact, jacamo:Body;
+  hmas:isContainedIn <workspaces/production/#workspace>;
+  jacamo:isBodyOf <workspaces/production/agents/alice/#agent>;
+  td:hasActionAffordance [ a td:ActionAffordance, jacamo:Focus;
+    td:name "focus";
+    td:hasForm [ htv:methodName "POST";
+      hctl:hasTarget <workspaces/production/artifacts/alice/focus>;
+      hctl:forContentType "application/json";
+      hctl:hasOperationType td:invokeAction ];
+    td:hasInputSchema [ a js:ObjectSchema;
+      js:properties [ a js:StringSchema;
+        js:propertyName "callbackURI"]
+    ]].
+
+<workspaces/production/artifacts/alice/#agent> a hmas:Agent .
+<workspaces/production/#workspace> a hmas:Workspace .
+\end{minted}
+\captionof{listing}{A description of agent {\tt alice} and its body artifact.}
+\label{lst:agent-description}
+\vspace{1.2em}
+\end{code}
+
+\Cref{lst:agent-description} shows an example of implementation of an agent body as an artifact within an hypermedia environment exposed by the Yggdrasil platform~\cite{Ciortea_Boissier_Ricci_2019}.
+%
+Through \ac{RDF} triples, the agent \texttt{alice} is described as an instance of \texttt{hmas:Agent} (with the \ac{hMAS} ontology~\cite{hmas-core}), and its body is shown as currently contained in a workspace, situating the agent in the hypermedia environment.
+%
+The body artifact is also identified as an instance of \ac{WoT} \emph{Thing}~\cite{wot-td}, and exposes an action affordance \texttt{focus} that other agents can invoke to observe \texttt{alice}'s body (e.g., to monitor its behavior).
+
+The definition of agent bodies for \ac{hMAS} opens up interesting research directions towards better supporting societies of agents operating in hypermedia environments. 
+%
+\ref{req:actions} assumes particular importance in this context, as agents would not only discover actions exposed by passive \emph{artifacts} in the environment, but possibly also from other agents through their bodies. 
+
+%-------------------------------------------------------
+\subsection{Enhancing BDI Agent Adaptability}
+%-------------------------------------------------------
+
+This section briefly reports contributions in the area of enhancing the adaptability of \ac{BDI} agents towards addressing \ref{req:actions}.
+%
+Although not directly focused on hypermedia environments, the proposed approaches can be extended to such contexts to improve agent adaptability in open and dynamic environments.
+This follows the ideas presented in Section~5.4 of \cite{Boissier_Ciortea_Harth_Ricci_Vachtsevanou_2023}, which discusses the enhancement of agents through a set of reusable strategies that can support their exploration of open environments such as the Web.
+
+Along this line of research,
+\cite{Ciatto_Aguzzi_Battistini_Baiardi_Burattini_Ricci_2025} proposes an approach to leverage the generative capabilities of \acp{LLM} to generate plans on-the-fly, based on the current context and goals of the agent.
+%
+Although still in preliminary stages, this approach can significantly enhance the adaptability of \ac{BDI} agents in dynamic environments, as they can generate new plans when existing ones are not suitable for the current situation.
+%
+In hypermedia environments, where agents might be programmed to expect specific structures or resources, the ability to generate plans dynamically can help them adapt to unexpected changes.
+%
+\ac{LLM} can also be used to interpret the semantics of Web resources and map relevant information to the agent's beliefs and goals, possibly guiding the adaptation process.
+%
+The exploitation of \ac{GenAI} techniques for the design of agents is an open research direction, to which \ac{BDI} agents can contribute by providing a structured framework of cognitive abstractions that support the design and interpretation of autonomous behavior~\cite{DBLP:conf/atal/Ricci0ZBC24}.
+
+
+A different approach is taken in \cite{DBLP:journals/aamas/HubnerBRM25}, 
+where a proposal for enabling \ac{BDI} agents to forecast their behavior in a simulated environment before acting in the real deployment context is presented as a way to detect future issues and adapt accordingly by refining ordering of options.
+%
+\cite{wesaac} further explores this idea when considering multiple future-oriented \ac{BDI} agents, noticing how, without the exchange of information, agents may still end up in conflicting situations as they adapt their behavior based on their individual forecasts which may miss the effects of other agents' actions.
+
+This approach can be particularly useful in hypermedia environments,
+where the dynamics of the environment and the presence of other agents can lead to unexpected situations.
+%
+In this context, \acp{DT} can actually help agents to simulate their actions in a controlled environment, letting agents play out their plans on a simulation of the \ac{PA} first to detect potential issues and react accordingly.
+%
+This opens up interesting future research directions on the interplay of adaptable \ac{BDI} agents and \acp{DTE}~\cite{DBLP:conf/eumas/Burattini23}.
 
 
 %=======================================================
@@ -564,3 +788,9 @@ This showcase demonstrates that selecting fine-grained granularities for mapping
 %-------------------------------------------------------
 \subsection{Inter-Agent Explainability}
 %-------------------------------------------------------
+
+
+%=======================================================
+\section{Final Remarks}
+%=======================================================
+

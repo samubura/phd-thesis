@@ -70,10 +70,10 @@ Deploying the \ac{WoDT} platform and registering \acp{DT} to it further complete
 Finally, applications can now leverage both the individual \acp{DT}' uniform interface and the \ac{WoDT} platform services to implement their business logic.
 For instance, the \emph{Mission Agent} (\Cref{fig:use-case-diagram}, top) in the use case can be developed to observe the \ac{DTE} \ac{KG}, react to new missions being created and find free resources to assign with a SPARQL query like the one in \Cref{lst:ambulance-rescuer-query}.
 
-\lstinputlisting[
-    label={lst:ambulance-rescuer-query},
-    caption={SPARQL Query performed by the Mission Agent to obtain the available ambulances and rescuers with the appropriate qualification.},
-]{listings/hwodt/use-case/ambulance-rescuer-query.rq}
+% \lstinputlisting[
+%     label={lst:ambulance-rescuer-query},
+%     caption={SPARQL Query performed by the Mission Agent to obtain the available ambulances and rescuers with the appropriate qualification.},
+% ]{listings/hwodt/use-case/ambulance-rescuer-query.rq}
 
 \subsection{Benefits and Limitations}
 \label{ssec:benefits-limitations}
@@ -108,10 +108,10 @@ While this is feasible in homogeneous \acp{DTE} -- such as \azureTwin{} -- where
 This enhances the expressiveness of \acp{DTE} and allows developers to model ecosystems that more accurately reflect domain knowledge.
 %
 As an example, in our trauma management use case, we can link patients with the mission handling their trauma in the \ac{DTE} \ac{KG} despite the respective \acp{DT} being implemented with different technologies as shown in \Cref{lst:mission-dtkg}.
-\lstinputlisting[
-    caption={A fragment of the \ac{DTE} \ac{KG} showing the representation of the Mission \ac{DT} showing the relationship with the patient.},
-    label={lst:mission-dtkg},
-]{listings/hwodt/use-case/dtkg-missiondt.ttl}
+% \lstinputlisting[
+%     caption={A fragment of the \ac{DTE} \ac{KG} showing the representation of the Mission \ac{DT} showing the relationship with the patient.},
+%     label={lst:mission-dtkg},
+% ]{listings/hwodt/use-case/dtkg-missiondt.ttl}
 
 % \lstinputlisting[
 %     caption={Portion of the Ambulance \ac{DTD} that shows the relevant data for the \texttt{SetDestinationCommand} action},

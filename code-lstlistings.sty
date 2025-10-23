@@ -38,3 +38,34 @@
 	ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Unit, it},
 	sensitive=true
 }
+
+% ======================================================
+% === Minted + Listings Compatibility Layer ============
+% ======================================================
+
+% Prevent minted from redefining 'listing' environment name
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usepackage{chngcntr}
+
+% Make minted floats independent of listings
+\SetupFloatingEnvironment{listing}{name=Listing}
+\captionsetup[listing]{position=bottom}
+
+% Define separate environments for minted code (so it doesn't conflict)
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+% Configure minted styles
+\setminted[turtle]{
+  linenos=true,
+  breaklines=true,
+  fontsize=\scriptsize,
+  frame=none
+}
+\setminted[sparql]{
+  linenos=true,
+  breaklines=true,
+  fontsize=\scriptsize,
+  frame=none
+}
+

@@ -779,17 +779,118 @@ This opens up interesting future research directions on the interplay of adaptab
 \section{Explainability in \acs{BDI} Agents}
 %=======================================================
 
+Explainability emerged in recent years as an important desired property for artificial intelligence (AI) based systems~\cite{xu2019explainable}.
+%
+While the term is more prominently employed to describe the process of extracting human-understandable explanations from Machine Learning models to improve the users' level of trust or allow developers to gain insights into the learned parameters~\cite{barredoarrietaExplainable2020}, the field of AI is much broader and includes many other kinds of systems that may benefit from the ability to generate such explanations.
+
+Among these AI-based systems, \ac{MAS} play a prominent role. 
+In this context, explainability mainly concerns the ability to motivate the agents' decision-making process and enable users to validate whether the choices conform to expected behavior.
+
+As discussed in \Cref{sec:back:h40:explainable-ai}, this is an essential requirement for the development of intelligent applications in safety-critical domains such as healthcare. 
+%
+Accordingly, this section explores how explainability mechanisms can be integrated into \ac{BDI} agents, to enhance their transparency.
+
 %-------------------------------------------------------
 \subsection{Multi-Level Explainability}
 %-------------------------------------------------------
+
+High-level cognitive models and architectures such as \ac{BDI} support explainability \textit{by design}~\cite{Harbers10,Broekens10}, in principle.
+%
+% Existing approaches
+%
+This has been clearly recognized in literature by different approaches in the last two decades, including works about exploiting explainability for debugging BDI agents~\cite{10.1007/978-3-642-32729-2_3,Winikoff2017why}, and validating BDI agent's behavior~\cite{winikoff2022badcoffee}. 
+
+The approach proposed in \cite{DBLP:journals/aamas/YanBHR25} follows the intuition of these related works, recognizing that explainability in \ac{BDI} agents can be addressed at different levels of abstraction, each targeting different stakeholders and use cases.
+This range from developers working at the implementation level---i.e., using a specific agent programming language---to designers and engineers who may want to abstract from details of the specific technology and focus more on the architectural level, to finally the domain experts and end-users,  who focus on the functional and non-functional requirements of the system as a whole, viewing it as a ``black-box''.
+
+The proposed \emph{multi-level explainability framework} identifies three levels of explainability for \ac{BDI} agents:
+\begin{itemize}
+    \item \textbf{Implementation Level}: explanations at this level target \textbf{software engineers and developers}, supporting them in the phases of debugging and testing agent behavior. It focuses on the specific implementation details of the agent and is specific to the agent programming language used (in the prototype, \jason{}~\cite{Bordini_Hübner_Wooldridge_2007})
+    \item \textbf{Design Level}: explanations at this level target \textbf{designers and architects} as well as developers of the system that want to abstract from the low-level implementation details -- concerning specific e.g. agent programming languages or technologies -- and focus more on the behavior of the agents at the design level.
+    %
+    This level is a good abstraction for designers and architects who want to comprehend the current system's behavior, interact with other stakeholders and developers or formulate new requirements for improving the system.
+    \item \textbf{Domain Level}: the top level, abstracting from how the system has been designed and focusing more on what functionalities the system is meant to provide to stakeholders -- i.e. functional and non-functional requirements -- dealing with domain-specific knowledge and insights.
+    %
+    This level is meant to be useful both for \textbf{end-users}, to understand and explain the system's behavior as a whole while using it, and for \textbf{software engineers}, to validate the system given the specification and requirements defined during the analysis stage of the software engineering process.
+\end{itemize}
+
+The proposed framework relies on a process that converts system logs into natural language \emph{narratives} that can be used to derive explanations for \ac{BDI} agents at the different levels of abstraction, as illustrated in \Cref{fig:explainability-process}.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/multi-explain/process-new.pdf}
+        \caption{The explainability process converting system logs into narratives that can be used to derive explanations for \ac{BDI} agents.}
+        \label{fig:explainability-process}
+\end{figure}
+
+\cite{DBLP:journals/aamas/YanBHR25} details how the process can be implemented in practice, identifying set of events for each level, and a mapping function from one layer to the next one.
+%
+This allows to generate explanations at one level, depending on the events at the lower level, thus enabling a hierarchical approach to explainability.
+
+The resulting process is illustrated in \Cref{fig:multi-level-explainability}, showing how explanations at each level are derived from the narratives generated at the lower level, essentially reducing the complexity of the explanation as the level of abstraction increases.
+%
+This is coherent with the idea that users at different levels of abstraction require different kinds of explanations, that progressively abstract from low-level implementation details.
+%
+The middle level is implemented using high-level cognitive constructs such as goals, plans and intentions.
+%
+This ideally would make it possible to use it as a common ground for different \ac{BDI} implementations, as these constructs are shared across different \ac{BDI} agent programming languages and frameworks.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/multi-explain/agent-multi-level.pdf}
+    \caption{Graphical representation of the multi-level explainability framework for \ac{BDI} agents.}
+    \label{fig:multi-level-explainability}
+\end{figure}
+
+The framework has been prototypically implemented and evaluated in the context of a \ac{BDI} agent developed with \jason{}~\cite{Bordini_Hübner_Wooldridge_2007}. Logs of the agent's execution are collected by extending the \jason{} interpreter, and then they can be processed by an external system to generate explanations at the implementation and design level. 
+%
+The domain level remains an open research direction, as it requires the injection of additional knowledge such as functional and non-functional requirements of the system, to be able to generate explanations that are coherent with the domain at hand.
 
 
 %-------------------------------------------------------
 \subsection{Inter-Agent Explainability}
 %-------------------------------------------------------
 
+In addition to generating explanations for human stakeholders, \ac{BDI} agents may also benefit from the ability to explain their behavior to other agents in the system.
+%
+This is particularly relevant in scenarios where agents need to collaborate or coordinate their actions to achieve common goals, or possibly learn from each other. 
+
+\cite{beaumont2025engineering} explores this idea by proposing implementation strategies for building blocks that enable the support of inter-agent explainability in \ac{BDI} agents.
+%
+The base building block is to extend the agent architecture with a dedicated \emph{explanation store}: a special purpose memory in which agents can store and retrieve \emph{explanatory content} to generate explanations.
+%
+This is different from the belief base, which is typically used to store \emph{present} knowledge, extending the agent's memory with a dedicated component for storing \emph{past} knowledge and action traces.
+
+The proposed strategies are the following: 
+\begin{itemize}
+    \item \textbf{Inter-agent explanation protocol:} Define interaction protocols (following the proposal by Ciatto et al.\ \cite{ciatto2023general}) to enable agents to request and exchange explanations via messages, supporting interoperability and structured dialogue.
+    \item \textbf{Implicit and explicit addition mechanisms:} Support both automatic (implicit) and developer-driven (explicit) ways to add \emph{explanatory content} to the explanation store, allowing greater control and flexibility.
+    \item \textbf{Runtime state identifiers and inspection:} Provide language-level identifiers and inspection mechanisms for agent runtime state (e.g., plans, intentions), enabling agents to extract and relate relevant information for explanations.
+    \item \textbf{Configurable retrieval and generation:} Allow developers to configure how explanatory content is retrieved and explanations are generated (e.g., via rules, ML, or logic), adapting to different application needs.
+    \item \textbf{Uniform machine-understandable representations:} Use structured, ontology-based formats for explanations to ensure machine interpretability and interoperability among heterogeneous agents.
+\end{itemize}
+
+Exploring inter-agent explainability opens up interesting research directions for \ac{BDI} agents, especially in the context of open and dynamic environments such as hypermedia systems, where agents may need to interact with unknown agents and justify their actions to others.
+
+
 
 %=======================================================
 \section{Final Remarks}
 %=======================================================
 
+
+This chapter presents different contributions in the area of engineering \ac{BDI} agents and \ac{MAS}, 
+focusing on addressing challenges that would make agents easier to develop and integrate with external systems, with a specific focus on hypermedia-based systems, linking to the proposal of \ac{hMAS} and the \ac{HWoDT}~\Cref{chap:dte:hwodt}.
+%
+As a complementary perspective to the development of agents, the chapter also explores the role of testing through simulation and explainability mechanisms to enhance the reliability and transparency of \ac{BDI} agents, towards their adoption in real-world applications such as the automation of healthcare processes.
+
+\paragraph{\ref{rq:5} How can we make the development of \ac{BDI} agents more accessible and easier to integrate with external systems such as \ac{DT}?}
+
+\ac{BDI} agents are arguably not as accessible as other programming paradigms. 
+This is not necessarily due to the complexity of the \ac{BDI} model itself---which can be rather considered intuitive due to the cognitive abstractions it provides---but rather to the gap of current \ac{BDI} frameworks that originated in the context of \ac{AI} research rather than mainstream software engineering.
+%
+\ac{BDI} agent development can be made more accessible through the conception of new frameworks that better align with modern software engineering practices, \emph{blending} abstractions with other mainstream paradigms and decouple the \ac{BDI} reasoning cycle both from concurrency models and knowledge representation technologies, letting developers choose the most suitable ones for their application.
+%
+Improved reliability of \ac{BDI} agents can be achieved through simulation-based testing. Explainability features can further support the debugging process, and enhance user trust in autonomous systems. 
+%
+Fundamental research on extending the capabilities of \ac{BDI} agents to adapt to dynamic environments is also necessary to make them more resilient and autonomous in real-world deployment scenarios.  

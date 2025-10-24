@@ -1,0 +1,65 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@base <http://example.com/test/> .
+
+<patient/1234> a fhir:Patient .
+
+<condition/cd1234> a fhir:Condition;
+  fhir:code [
+    fhir:coding [
+      fhir:system [ fhir:v "http://snomed.info/sct" ];
+      fhir:code [ fhir:v "723301009" ];
+    ];
+    fhir:text "Squamous non-small cell lung cancer" ;
+  ];
+  fhir:subject <patient/1234> ;
+.
+
+<therapy/1234> a fhir:CarePlan;
+  fhir:status [ fhir:v "active"] ; 
+  fhir:intent [ fhir:v "order"] ; 
+  fhir:subject <patient/1234> ;
+  fhir:addresses ( [ fhir:reference <condition/cd1234> ] ) ;
+  fhir:activity (
+    [ 
+      fhir:plannedActivityReference <request/md1234>;
+      fhir:performedActivity (
+        # links to encounters and administrations performed
+		[ fhir:reference <encounter/ec1> ] 
+        [ fhir:reference <administration/adm1> ]
+      );
+    ]
+    [ 
+      fhir:plannedActivityReference <request/md1235>;
+      fhir:performedActivity (
+        # links to planned encounter
+		[ fhir:reference <encounter/ec2> ] 
+      );
+    ]
+  );
+.
+
+<request/md1234> a fhir:MedicationRequest;
+  fhir:status [ fhir:v "active"] ;  
+  fhir:intent [ fhir:v "order"] ;
+  fhir:subject <patient/1234> ;
+  # Medication resource of the drug to be administered
+  fhir:medication [ fhir:reference <medication/med345> ]; 
+  fhir:dosageInstruction ( 
+    fhir:timing [
+      fhir:bounds [  
+        fhir:start  [ fhir:v "2023-01-15"]; 
+        fhir:end  [ fhir:v "2023-12-31" ]; 
+      ];
+      fhir:repeat [
+        fhir:frequency [ fhir:v 1 ] ;
+        fhir:period [ fhir:v 3] ;
+        fhir:periodUnit [ fhir:v "mo" ];
+      ];
+    ]
+  ); #repeated once every 3 months until the end of the year.
+.
+
+<request/sp1234> a fhir:SupplyRequest;
+    fhir:status [fhir:v "active"];
+    fhir:basedOn <request/md1235>;
+.

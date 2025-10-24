@@ -1,0 +1,49 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@base <http://example.com/test/> .
+
+# a Patient resource with it's ID
+<patient/1234> a fhir:Patient .
+
+# the Therapy for a Patient
+<therapy/1234> a fhir:CarePlan;
+  fhir:status [ fhir:v "active"] ; 
+  fhir:intent [ fhir:v "order"] ; 
+  fhir:subject <patient/1234> ;
+  fhir:addresses ( [ fhir:reference <condition/cd1234> ] ) ;
+  fhir:activity ([ 
+      # the planned Treatment
+      fhir:plannedActivityReference <request/md1234>;
+      fhir:performedActivity (
+        # and links to record administrations
+		[ fhir:reference <encounter/ec1> ] 
+        [ fhir:reference <administration/adm1> ]
+      );
+    ]).
+
+# the Treatment Resource
+<request/md1234> a fhir:MedicationRequest;
+  fhir:status [ fhir:v "active"] ;  
+  fhir:intent [ fhir:v "order"] ;
+  fhir:subject <patient/1234> ;
+  # the drug to be administered
+  fhir:medication [ fhir:reference <medication/med345> ]; 
+  fhir:dosageInstruction ( 
+    fhir:timing [
+      #repeated once every three months
+      fhir:repeat [
+        fhir:frequency [ fhir:v 1 ] ;
+        fhir:period [ fhir:v 3] ;
+        fhir:periodUnit [ fhir:v "mo" ];
+      ];
+      # until the end of the year
+      fhir:bounds [  
+        fhir:start  [ fhir:v "2023-01-15"]; 
+        fhir:end  [ fhir:v "2023-12-31" ]; 
+      ];
+    ]).
+
+# the request for production and distribution
+# of the treatment
+<request/sp1234> a fhir:SupplyRequest;
+    fhir:status [fhir:v "active"];
+    fhir:basedOn <request/md1234>.

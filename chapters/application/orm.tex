@@ -212,7 +212,7 @@ Annotations and edits are stored alongside which user made them, solving the acc
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/orm/interventi.png}
+    \includegraphics[width=0.9\textwidth]{figures/orm/interventi.png}
      \caption{The expanded view of an operating room, showing the surgical procedures of that room and their steps.}
     \label{fig:orm:surgical_procedures_dashboard}
 \end{figure}
@@ -221,3 +221,31 @@ Annotations and edits are stored alongside which user made them, solving the acc
 This preliminary implementation demonstrates how a \ac{DTE} can be used to support the design of quality-of-life tools and improve the management of complex healthcare processes such as ORM.
 %
 The current implementation is simplistic and limited in scope, but it provides a demonstrator of applicability of the \ac{DT} paradigm to the domain of ORM, showcasing the potential benefits of the proposed approach including data standardization, legacy system integration, real-time monitoring, anomaly detection, and accountability.
+
+Simulation of the surgical process has been explored to test the proposed \ac{DTE} in a controlled environment.
+%
+Specifically, as shown in \Cref{fig:orm:anylogic} and \Cref{fig:orm:anylogic2}, an agent-based simulation developed in AnyLogic\footnote{\url{https://www.anylogic.com/}} has been used to model the patient flow through the operating rooms and generate synthetic data that can feed a prototype implementation of the \ac{DTE}.
+
+The simulation models the process assuming a hospital with 3 operating rooms, and a variable number of medical professionals currently on shift. 
+%
+Patients are scheduled for surgery according to a predefined plan, but random events can occur that may lead to delays in the process.
+%
+The simulation allows for key event in the patient flow to be tracked, generating traces of events that can be used to communicate with the relevant \acp{DT} in the \ac{DTE} prototype.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/orm/anylogic.png}
+    \caption{Snapshot of the 2D view of the AnyLogic simulation of surgical processes used to generate synthetic data for the DTE prototype.}
+    \label{fig:orm:anylogic}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/orm/anylogic2.png}
+    \caption{Snapshot of the 3D view of the AnyLogic simulation of surgical processes used to generate synthetic data for the DTE prototype.}
+    \label{fig:orm:anylogic2}
+\end{figure}
+
+Although in this preliminary implementation the focus has been on using the simulation as a tool to support development of the \ac{DTE} prototype, in future works the simulation model could be integrated into the \ac{DTE} itself to enhance the capabilities of the system in terms of predictive analytics and scenario evaluation.
+

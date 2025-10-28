@@ -1,8 +1,169 @@
+Motivated by the digital transformation needs of healthcare, 
+this thesis presents a collection of contributions towards the definition of \acp{DTE} as an abstraction to engineer systems based on \acp{DT} capable of offering a unified view of several physical entities. 
+%
+This holistic conceptualization offered by \acp{DTE} is seen as a key enabler to support the design of intelligent applications that can automate processes, benefiting from the decoupling that \ac{DT} offer between the physical and digital worlds.
+
+After an analysis of the state of the art (\Cref{part:background}) in research areas connected to the topics of healthcare digitalization (\Cref{chap:back:health4.0}), \aclp{DT} (\Cref{chap:back:DT}), Web and Semantic Web technologies (\Cref{chap:back:Web}) and \acp{MAS} (\Cref{chap:back:MAS}),
+the thesis provides answers to the research questions presented in the introduction through the following contributions:
+
+\begin{itemize}[leftmargin=2.3cm]
+    \item[\textbf{\Cref{chap:dte:engineering-dt}}] A reference architecture, architectural patterns, and a supporting implementation framework for the engineering of \acp{DT} with a focus on \ac{IoT} integration, heterogeneity, lifecycle management and design of augmented behavior (\ref{rq:1}).
+
+    \item[\textbf{\Cref{chap:dte:dte}}] A conceptualization of \acp{DTE} as an abstraction to engineer systems based on \acp{DT} capable of offering a unified view of several physical entities, along with an analysis of functionalities and possible architectural patterns to support their design and their trade-offs (\ref{rq:2}).
+    
+    \item[\textbf{\Cref{chap:dte:hwodt}}] A proposal, and a supporting prototype implementation for the concrete realization of \acp{DTE} based on existing \acp{DT} applying principles from the Web architecture and re-using technologies and Semantic Web standards to address the challenges of interoperability, data integration and knowledge representation (\ref{rq:2}).
+
+    \item[\textbf{\Cref{chap:dte:dtc}}] A proposal and implementation strategies for the \ac{DTC}: a middleware to support the deployment of \acp{DTE} in distributed computing environments, while supporting the interaction of different stakeholders with the \acp{DTE} through different phases of the development-to-deployment lifecycle of \acp{DT} (\ref{rq:3}). 
+
+    \item[\textbf{\Cref{chap:mas:mas-dt}}] An analysis of the complementary nature of \acp{DT} and \ac{MAS} as abstractions to encapsulate intelligent applications, with a proposal of design principles and micro-architectural patterns that can guide the implementation of intelligent \ac{IoT} systems through combinations of \acp{DT} and autonomous agents (\ref{rq:4}).
+    
+    \item[\textbf{\Cref{chap:mas:engineering}}] A collection of contributions in the area of \acp{MAS} targeting the redesign of supporting tools to lower the entry barrier, favor the use of simulation for stronger engineering guarantees of the developed \ac{MAS} behavior, support a more direct integration with open environments such as the Web and can support explainability features that are essential for real-world deployments and user trust (\ref{rq:5}).
+    
+\end{itemize}
+
+Finally, \Cref{part:applications} presents the application of the proposed contributions in three healthcare-related scenarios developed thanks to the partnership with \ausl{}: the management the oncologic pharmaceutical supply chain (\Cref{chap:app:irst}), the management of rescue operations when dealing with trauma patients (\Cref{chap:app:trauma}), and the management of operating rooms (\Cref{chap:app:orm}).
 
 %=======================================================
-\section*{Discussion}
+\section*{Discussion and Future Works}
 %=======================================================
 
-%=======================================================
-\section*{Future Works}
-%=======================================================
+
+The contribution of this thesis advances the state of the art with respect to the research questions, providing novel insights in the development of \acp{DT} and the conceptualization and practical realization of \acp{DTE} to support intelligent applications in healthcare and other domains.
+%
+The following sections present a critical discussion of the main findings of this thesis, in light of potential limitations and open challenges that remain to be addressed.
+
+%-----------------------------------------------------------------
+\subsection*{Advanced Functionalities in Digital Twins}
+%-----------------------------------------------------------------
+
+The contributions in \Cref{chap:dte:engineering-dt} support the engineering of \acp{DT} that can integrate heterogeneous data sources, manage their lifecycle and expose digital services that augment the capabilities of the physical entities they represent. 
+
+The lifecycle management features provide a structured approach to handle the synchronization between \acp{DT} and their corresponding \acp{PA}.
+%
+Measuring and assessing the quality of this synchronization remains an open challenge, as it depends on several factors such as the nature of the \ac{PA} and the specific application scenario for which the \ac{DT} is used.
+%
+These requirements could also vary over time, depending on the lifecycle of the \ac{DT}. 
+
+Future works could continue exploring strategies to monitor and adapt the \ac{DT} lifecycle to detect and react to potential issues in the synchronization with the \ac{PA}, possibly leveraging prediction capabilities to compensate for temporary disconnections or data unavailability. 
+%
+These features should be designed in order to possibly guide practitioners in selecting the appropriate synchronization strategies based on the specific requirements of their \acp{DT}, but also \ac{DT} consumers in understanding the guarantees and \emph{fidelity} of the \ac{DT} representation.
+
+The work on augmented behavior provides initial patterns to design \acp{DT} that can encapsulate intelligent behavior. 
+%
+This has currently been tested in controlled lab environments, with limited complexity of the \ac{DT} behavior.
+%
+Embedding more advances form of augmentation in \acp{DT}, possibly integrating prediction and simulation capabilities remains unexplored, and although the model proposed should be general enough to support these features, further validation is needed to assess its effectiveness in supporting more complex \ac{DT} behaviors.
+
+Finally, the exploitation of such advanced \ac{DT} functionalities at an ecosystem scale through \acp{DTE} remains an open challenge.
+%
+Especially interesting in this setting is the idea of composing simulations or chaining predictions from multiple \acp{DT} to support a forward-looking analysis of the behavior of the ecosystem, based on its current state and graph of relationships among \acp{DT}.
+%
+This would require further investigation on how to orchestrate and coordinate the execution of such advanced functionalities across multiple \acp{DT} in a coherent manner.
+
+%-----------------------------------------------------------------
+\subsection*{Semantic Interoperability in Digital Twin Ecosystems}
+%-------------------------------------------------------------------
+
+The findings highlight the feasibility of re-using Web and Semantic Web technologies to address interoperability challenges in \acp{DTE}, following a similar rationale as the ones adopted by the \ac{WoT} and \ac{hMAS} initiatives. 
+%
+In this sense, the proposal in \Cref{chap:dte:hwodt} of the \emph{\ac{HWoDT}} aims to provide a practical mapping of the \ac{WoDT} vision onto a concrete architecture and implementation based on existing standards from the Web and Semantic Web domains.
+
+In that context, the explicit semantic representation in the \ac{HWoDT} is both a tool to support easy integration of \acp{DT} and a deliberate choice to push shared semantics so that users can get more information on \ac{DT} functionalities.
+%
+The \ac{HWoDT} does not enforce the adoption of a single ontology: while \acp{DT} expose a uniform \ac{DTD}, their \ac{DTKG} content may rely on different vocabularies from diverse application domains.
+
+Semantic consistency is thus delegated either to \ac{DT} designers -- who may agree on shared representations -- or to different implementations of the \ac{WoDT} platform, which may translate and align models to a common vocabulary.
+%
+If semantic consistency were a requirement of a specific \ac{DT} ecosystem, the platform could implement validation of \ac{DT} representation through existing Semantic Web mechanisms such as SHACL shapes~\cite{DBLP:conf/rweb/Pareti021}.
+%
+In general, guaranteeing consistency is an open problem for the Semantic Web community, which introducing semantic representations does not solve on its own~\cite{guizzardi2022ao}.
+
+Of course, it must be acknowledged that this requires an additional effort spent in identifying and using the appropriate domain ontologies when developing (or mapping) \acp{DT}.
+Nevertheless, this can be considered a valuable trade-off aligned with the efforts towards \ac{DT} interoperability~\cite{Klar_Arvidsson_Angelakis_2024} and the trend to include some form of semantic representation in many \ac{DT} tools (including, for instance, the aforementioned \acl{ADT} and Ditto).
+
+The preliminary descriptions proposed in \Cref{chap:dte:hwodt} can be further extended and refined to cover additional aspects of \acp{DT}, such as the representation of \ac{DT} behaviors, the modeling of \ac{DT} lifecycle and versioning, or the inclusion of security and privacy-related metadata.
+%
+Additionally, current descriptions are limited to the representation of the \emph{present} state of a \ac{DT}, while, given the nature of \acp{DT}, it would be interesting to explore how to represent historical data, but also (possible) future \ac{DT} states, using semantic models.
+%
+Finally, the proposed metamodel allows \acp{DT} to expose their functionalities as \emph{actions}.
+%
+It might be interesting to explore how to extend this representation to include more complex \ac{DT} \emph{services}, such as requesting predictions or running simulations. 
+%
+Preliminary work in this direction has been proposed in \cite{DBLP:conf/models/BurattiniZPR24}, but further investigation is needed to define appropriate models and mechanisms to represent temporal aspects in \acp{DT}.
+
+%-----------------------------------------------------------------------
+\subsection*{Integration of Intelligent Applications and Digital Twins}
+%-----------------------------------------------------------------------
+The contribution towards the integration of intelligent applications and \acp{DT} in \ac{DTE} has been focused on the conceptual alignment and technological enablers. 
+
+Hence, despite the contributions in \Cref{part:mas} providing a solid basis to support the integration of \acp{DT} and \acp{MAS}, further work is needed to validate the proposed design principles and micro-architectural patterns with concrete implementations of intelligent applications based on \acp{DTE}. 
+
+This requires the definition and practical realization of more complex scenarios, where autonomous agents can leverage the unified view of multiple \acp{PA} offered by \acp{DTE} to implement more advanced behaviors. 
+%
+Moving on to full-scale implementations would allow to evaluate the effectiveness of the currently proposed patterns and to identify potential area of improvements.
+
+An interesting perspective for future works in this direction is the integration of autonomous agents towards the implementation of \emph{cognitive \acp{DT}}~\cite{Minerva_Crespi_Farahbakhsh_Awan_2023}.
+%
+The patterns proposed for augmented behavior in \Cref{chap:dte:engineering-dt} could be adapted to support the integration of autonomous agents as components of \acp{DT}, enabling them to model intelligent behaviors directly at the \ac{DT} level.
+
+A particularly interesting area in this direction is the integration of prediction and what-if analysis capabilities in \acp{DT} with the decision-making capabilities of autonomous agents.
+%
+Ideally, agents would be able to request predictions from \acp{DT} and use them to inform their actions and decisions, thus creating a feedback loop where \acp{DT} provide insights that guide agent behavior, and agents adapt their strategies based on the evolving state of the physical entities represented by the \acp{DT}, trying to anticipate future states and optimize outcomes.
+
+Finally, the thesis focuses on \ac{MAS} and specifically on \ac{BDI} agents, but other forms of intelligent applications could be explored in relationship to \acp{DTE} to evaluate whether the proposed conceptualization supports other forms of intelligence. 
+
+%--------------------------------------------------
+\subsection*{Addressing Physical Distribution}
+%--------------------------------------------------
+
+The \ac{DTC} middleware, proposed in \Cref{chap:dte:dtc} provides a first step towards the support of \acp{DTE} in distributed computing environments, addressing challenges related to the deployment, discovery and interaction with \acp{DT} across different networked nodes.
+%
+The \ac{DTC} is designed to be extensible and adaptable to different deployment scenarios, abstracting the complexity of managing \acp{DTE}. 
+
+However, further work is needed to evaluate the practical implications of deploying \acp{DTE} in real-world distributed infrastructures, assessing performance, guaranteeing reliability of the \ac{DT}-\ac{PA} connection and synchronization and dynamically adapting to changing functional or non-functional requirements. 
+
+The proposal of the \ac{DTC} opens up interesting perspectives on dynamically migrating \acp{DT} across different nodes to optimize resource usage, latency and reliability, which remain unexplored in this thesis.
+
+Likewise, the current design principles to distribute intelligence across \acp{DTE} and autonomous agents presented in \Cref{chap:mas:mas-dt} could be further refined to address challenges related to the physical distribution of intelligence in the edge-cloud continuum. 
+
+
+%--------------------------------------------------
+\subsection*{Evaluation on Real-World Scenarios}
+%--------------------------------------------------
+
+Despite the practical applications presented in \Cref{part:applications}
+have been analyzed thanks to the interaction with stakeholders and domain experts from \ausl{}, 
+they currently remain at a prototype level that serves only to demonstrate the feasibility and potential value of the proposed contributions. 
+%
+Real-world settings would provide a more robust validation of the proposed concepts, architectures and tools, allowing to assess their effectiveness in addressing real challenges, their usability by end-users and their performance under realistic conditions. 
+
+The preliminary performance evaluation of the \ac{HWoDT} in \Cref{chap:dte:hwodt} provides encouraging results considering the lack of optimization, but further evaluations are needed to assess scalability and robustness in larger deployments with more complex \acp{DT} and higher data volumes.
+%
+For future works, distributed approaches to the management of the \ac{DTE} \ac{KG}, caching strategies and optimization of data retrieval and update mechanisms could be explored to enhance performance, exploiting existing techniques that are being explored in the context of Web-scale knowledge graphs.
+
+Similarly, the proposed \ac{DTC} in \Cref{chap:dte:dtc} attempts to facilitate the roles of different stakeholders in the lifecycle of \acp{DT}, but further validation is needed to assess its effectiveness in real-world development and deployment processes, considering usability aspects and integration with existing tools and workflows.
+
+Finally, the design principles and micro-architectural patterns proposed in \Cref{chap:mas:mas-dt} for the integration of \acp{DT} and \acp{MAS} need to be validated through more extensive implementations of intelligent applications based on \acp{DTE} in real-world scenarios, assessing their effectiveness in supporting complex behaviors.
+
+%--------------------------------------------------
+\subsection*{Security and Governance in Digital Twin Ecosystems}
+%--------------------------------------------------
+
+The openness and Web-based nature of the \ac{HWoDT} approach requires to consider security features such as authentication, authorization, and access control which are critical in \ac{DT} settings.
+Although we do not implement this in the \ac{HWoDT} prototype yet, standard Web security mechanisms (e.g., OAuth 2.0, HTTPS) can be employed to secure interactions.
+
+Fine-grained access control policies must be enforced both at the data layer (e.g., per-property visibility) and at the hypermedia interface level to possibly restrict access to specific resources.
+For instance, \ac{WoT} \ac{TD}-based \ac{DTD} already supports the description of security policies~\cite{wot-td} to define access control of properties and actions. 
+
+Furthermore, provenance tracking and data integrity verification (e.g., using digital signatures) can enhance trust.
+%
+Guarantees of authenticity of the data needs to be established. Namely, 
+\begin{inlinelist}
+    \item a \ac{DT} cannot update the representation of another \ac{DT},
+    \item \ac{DT} updates need validation so that they conform to the expected structure (e.g. via SHACL).
+\end{inlinelist}
+
+Finally, the mapping of a \ac{DT} in its \ac{DTKG} can purposefully avoid exposing sensitive information, or a \ac{DT} could support mechanisms to expose different \acp{DTKG} depending on authorization level of the client.
+Existing efforts in the Semantic Web community such as the Solid project\footnote{\url{https://solidproject.org/}} or using access control metadata, may offer interesting solutions to integrate additional security features on the management of the \ac{DTE} \ac{KG}. 
+
+

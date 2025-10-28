@@ -133,13 +133,13 @@ Similarly, we can mirror people, namely patients and the medical staff, to track
 \end{figure}
 
 The resulting \ac{DTE} can represent the state of the operating rooms at any given time, \Cref{fig:dt-orm-ecosystem} shows an overview of the planned \ac{DTE} architecture, and its relationship with the surgical process.
-
+%
 When a doctor and a patient meet for an appointment and the need for a surgical procedure is identified \circled{1} a new \textit{Surgery DT} is created \circled{2} and linked to the \emph{Patient DT} \circled{3}. 
 %
 Then, whenever the surgery is scheduled in a specific room \circled{4} a relationship with the \emph{Operating Room DT} is added to keep track of the planned surgeries per each room \circled{5}.
-
-The patient is then usually hospitalized and transferred to the operating room\circled{6}. When the patient actually enters the room the \textit{Surgery DT} creates a new relationship with the \emph{Operating Room DT}\footnote{for any reason it could also be a different room from the planned one} \circled{7} which will report that the room is actually busy.
-
+%
+The patient is then usually hospitalized and transferred to the operating room \circled{6}. When the patient actually enters the room the \textit{Surgery DT} creates a new relationship with the \emph{Operating Room DT}\footnote{For any reason it could also be a different room from the planned one.} \circled{7} which will report that the room is busy.
+%
 Finally, when the patient leaves the room \circled{8}, the end time is registered---e.g. by scanning a barcode like in our case study---\circled{9} and the operating room can now be set back to an available state after the necessary cleaning operations.
 
 

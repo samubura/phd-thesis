@@ -49,7 +49,7 @@ Moving this towards an abstract architectural perspective, a \ac{DT} can be desc
 \end{itemize}
 
 
-\begin{table}
+\begin{table}[hp]
 \renewcommand{\arraystretch}{1.2}
 \centering
 \small
@@ -84,28 +84,9 @@ Moving this towards an abstract architectural perspective, a \ac{DT} can be desc
 
 
 \Cref{tab:evaluation} discusses how the proposed architecture supports the core properties of \acp{DT}~\cite{dt-IoT-context-Minerva-2020} compared to both existing research from the scientific literature and features offered by major production-ready platforms.
-
-\todo{MOVE THE FOLLOWING PARAGRAPH }
-
-Among these platforms, general-purpose cloud solutions such as AWS IoT TwinMaker and Microsoft Azure Digital Twins have become prominent.
-They provide an integration layer on top of existing cloud data storage and IoT services and hence mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
 %
-In such environments, the interaction with the physical world is typically managed using an IoT middleware that collects data and routes it to internal communication buses.
+Existing \ac{DT} cloud and vendor-specific platforms -- such as the ones described in \Cref{sec:back:dt:technology} -- either mostly serve as data repositories, storing data from physical assets, with pre-processing handled externally by a combination of services, or implement monolithic solutions with limited flexibility and adaptability to different application contexts.
 %
-These buses are consumed by serverless functions that implement the \ac{DT} model.
-Additionally, such cloud platforms often provide digital communication capabilities with built-in visualization, interfaces, and query support.
-%
-Data acquisition pipelines, supported protocols and data formats are often defined at the platform level, not on a per-\ac{DT} basis, leading to limitations in the shadowing process and client interactions.
-
-Beyond traditional and widely adopted cloud solutions, several industrial platforms are offered by major players like Siemens, General Electric, Bosch, and IBM.
-These platforms are often domain-specific and provide strong integration with the physical assets and systems produced by the same companies.
-These solutions are tailored to the specific needs of their respective industries, offering robust capabilities for managing and interacting with physical entities.
-They do not, though, have a common modeling approach and as such, they offer limited interoperability among the different solutions, as the competitive nature of the market tends to prefer both hardware and software lock-in instead of promoting integration.
-
-\todo{END MOVE}
-
-\todo{rivedere l'aggancio facendo riferimento alla \Cref{sec:back:dt:technology}}
-
 In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI} and \ac{DI} are responsible for capturing events from their respective domains (physical and digital) and forwarding them to the \ac{M} for processing. This allows \acp{DT} to operate as independent software entities, communicating with the external world through finely configurable interfaces.
 
 Following the proposed architecture, a \ac{DT} can be formally represented as:
@@ -743,7 +724,7 @@ This setup allows for the dynamic addition of new functionalities to the \ac{DT}
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/event_driven_augmentation.pdf}
-    \caption{Schematic Event-Driven architecture of a \ac{DT} to support Augmentation function management and execution.}
+    \caption{Schematic Event-Driven architecture of a \ac{DT} to support Augmentation function management and execution. A central event bus supports asynchronous interactions between the shadowing and augmentation functions. Functions can access the \ac{DT} models and history as needed.}
     \label{fig:event_driven_augmentation}
 \end{figure}
 
@@ -959,7 +940,7 @@ Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-m
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dt-interoperability/mf_dt_structure.pdf}
-    \caption{The \acl{DT} ecosystem architecture of the Indexed Department, alongside a schematic representation of the conveyors.}
+    \caption{The \acl{DT} ecosystem architecture of the Indexed Department, showing the different \acf{PhA} and \acf{DiA} of each \ac{DT} alongside a schematic representation of the conveyors.}
     \label{fig:indexed-department-dt-structure}
 \end{figure}
 

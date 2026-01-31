@@ -314,17 +314,30 @@ First examples of \ac{DT} development tools were developed by large industrial c
 %
 Additionally, several simulation tools such as  ANSYS Twin Builder~\cite{ansys_twinbuilder}, SimuLink~\cite{mathworks_digitaltwin} and AnyLogic~\cite{anylogic_digitaltwin} started to include features to support \ac{DT} development. 
 %
-Many of these tools, emerging from industrial domains, are tailored to specific use cases and application domains.
+Many of these tools, emerging from industrial domains, are often domain-specific and provide strong integration with the physical assets and systems produced by the same companies.
+These solutions are tailored to the specific needs of their respective industries, offering robust capabilities for managing and interacting with physical entities.
 %
-Additionally, being proprietary software, they often lack openness and interoperability becoming closed silos from a broader system engineering perspective. 
+Additionally, being proprietary software, they often lack openness and interoperability becoming closed silos from a broader system engineering perspective as the competitive nature of the market tends to prefer both hardware and software lock-in instead of promoting integration.
 
-More recently, cloud providers have started to offer so-called \emph{\ac{DT} platforms} such as Microsoft's \azureTwin{}\footnote{\url{https://azure.microsoft.com/en-us/services/digital-twin/}} and Amazon's \awsTwin{}\footnote{\url{https://aws.amazon.com/iot-twinmaker/}}.
+More recently, cloud providers have started to offer so-called \emph{\ac{DT} platforms}.
 %
-These general-purpose platforms complement the existing cloud-based \ac{IoT} middlewares with specific features to support the implementation of \acp{DT}. 
+Prominent examples are Microsoft's \azureTwin{}\footnote{\url{https://azure.microsoft.com/en-us/services/digital-twin/}} and Amazon's \awsTwin{}\footnote{\url{https://aws.amazon.com/iot-twinmaker/}}.
+%
+These general-purpose cloud platforms provide an integration layer on top of existing cloud data storage and \ac{IoT} middlewares and hence mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
+%
+They complement the existing cloud-based service ecosystem with specific features to support the modeling of \acp{DT}.
+%
 This includes the ability to model assets with defined data schemas, providing identification and tracking state properties,
 as well as tools to integrate data from various sources, and to grant access to the \ac{DT} data and functionalities through well-defined common \acp{API}.
 %
-Interestingly, these platforms put forth the idea of having multiple \acp{DT} connected together to represent a complex application domain. 
+In such environments, the interaction with the physical world is typically managed using an IoT middleware that collects data and routes it to internal communication buses.
+%
+These buses are consumed by serverless functions that implement the \ac{DT} model.
+Additionally, such cloud platforms often provide digital communication capabilities with built-in visualization, interfaces, and query support.
+%
+Data acquisition pipelines, supported protocols and data formats are often defined at the platform level, not on a per-\ac{DT} basis, leading to limitations in defining clear boundaries for the \ac{DT} digitalization process and client interactions.
+
+Interestingly, though, the broader scope of cloud platforms put forth the idea of having multiple \acp{DT} connected together to represent a complex application domain. 
 %
 As an example, \azureTwin{} is based on the concept of a \emph{digital twin graph} where multiple \acp{DT} can be connected together to represent complex systems~\cite{Meijers_2022}.
 %
@@ -450,7 +463,7 @@ In \cite{Klar_Arvidsson_Angelakis_2024} the authors propose a general maturity a
 \Cref{tab:dt-maturity} summarizes the proposed levels of maturity.
 
 
-\begin{table}[htbp]
+\begin{table}[htb]
 \centering
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{c|p{2.8cm}|p{5cm}|p{4cm}}
@@ -499,7 +512,7 @@ Accordingly, in \cite{Acharya_Khan_Päivärinta_2024}, the authors survey \ac{DT
 %
 \Cref{fig:dt-interoperability-levels} visually summarizes the identified levels of interoperability in six levels: 
 
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/interoperability-levels.jpg}
     \caption{Interoperability Levels in \acl{DT}, from \cite{Acharya_Khan_Päivärinta_2024}.}
@@ -609,7 +622,7 @@ Every strategic \acl{PA} of an organisation must have a corresponding \acl{DT}, 
 \end{quote}
 
 \todo{Refine the figure to have the layers on the same side}
-\begin{figure}[htb]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/wodt.pdf}
     \caption{Conceptual model of the \acl{WoDT}. \aclp{PA} (squares) have corresponding \aclp{DT} (circles) connected through relationships that mirror the ones in the physical world. 

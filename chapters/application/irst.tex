@@ -15,7 +15,7 @@ In this context, \acp{DTE} can be envisioned as a uniform approach to model and 
 
 
 %=======================================================
-\section{Case Study and Challenges}
+\section{Case Study Analysis}
 %=======================================================
 The diffusion of cancers and the consequent expenditure burden of cancer care, requires an effective management of the whole PSC \cite{Chen2023}.
 %
@@ -45,9 +45,9 @@ The main challenges are the following:
 \end{itemize}
 
 
-%=======================================================
-\section{Workflow Analysis}
-%=======================================================
+% %-------------------------------------------------------
+% \subsection{Workflow Analysis}
+% %-------------------------------------------------------
 
 A typical care center is organized as follows:
 \begin{itemize}
@@ -91,7 +91,7 @@ Blood test and therapy delivery facilities are considered outside the scope of l
 %
 Future extensions of the system could include these facilities as well as the medical staff involved in treatment delivery for a more comprehensive overview.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/applications/CompressedDTModel.pdf}
     \caption{Entities in the system and their relationships, blue ellipsis represent the ones selected to be reified as Digital Twins.}
@@ -128,8 +128,14 @@ This Digital Twin should provide simulation services to evaluate the impact of n
 %
 This Digital Twin can issue warnings if stocks fall below set thresholds, expiration dates approach, or required environmental conditions are not met, enabling new orders or resource redistribution to minimize waste. 
 
-\medskip
+%=======================================================
+\section{Implemented Solution}
+%=======================================================
 
+For this case study, the proposed \ac{DTE} model has not been fully implemented;
+however, parts of the system have been prototyped to demonstrate the feasibility of the approach and explore its potential.
+
+To represent the data collected by the system, a \ac{KG} has been developed to model the various entities and their relationships.
 Listing \ref{lst:kg-irst} presents the representation in Turtle syntax for RDF of the data collected by the system. 
 %
 The HL7 FHIR\footnote{\url{http://hl7.org/fhir}} standard is adopted as it provides a comprehensive vocabulary for electronic health records and facilitates interoperability of collected data.
@@ -158,3 +164,21 @@ Despite model performance not being sufficient for conclusive results (probably 
 this prototype served the purpose of demonstrating the feasibility of embedding predictive models in \acp{DT} to enhance the overall system.
 %
 Refined models could be embedded in the Patient \ac{DT} to predict treatment readiness in advance, reducing wasted tests and staff time, minimizing patient wait and transport, improving warehouse and drug-preparation efficiency, and enabling effective PSC planning.
+
+
+
+%=======================================================
+\section{Final Remarks}
+%=======================================================
+
+The analysis and prototype design presented in this chapter demonstrate the potential of \acp{DTE} to address scenarios that involve complex processes that span across multiple heterogeneous physical assets.
+%
+The scenario includes \acp{DT} that track people (patients), processes (treatments), and infrastructures (production units and warehouses), each with its own dynamics and interactions.
+%
+By modeling these entities as \acp{DT}, it is possible to create a comprehensive digital representation of the entire pharmaceutical supply chain for oncologic treatments.
+
+The case study is meant to showcase how the healthcare domain may require tackling complex business processes that go beyond the clinical aspects of patient care, involving logistics, resource management and process optimization.
+%
+In this context, \acp{DTE} can provide a uniform approach to model and manage the ecosystem of heterogeneous assets involved. The \ac{KG}-based model allows to represent the various entities and their relationships with clear, standardized semantics, enabling interoperability and data integration.
+
+Although the full implementation of the proposed \ac{DTE} model has not been realized, the design has proven feasible and useful for the administration to conceptually understand and analyze the role that digital technologies can play in optimizing the pharmaceutical supply chain for oncologic treatments.

@@ -33,6 +33,10 @@
 \usepackage{notes}
 \usepackage{shortcuts}
 
+\makeatletter
+\def\UrlBreaks{\do\/\do-}
+\makeatother
+
 \fancypagestyle{plain}{
 	\fancyhf{}
 	\fancyfoot[RE,LO]{\leftmark}
@@ -72,7 +76,11 @@
 
 \newcommand{\chapterWithoutNumber}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
 
-\newcommand{\chapterOutsidePart}[1]{\chapter*{#1}\addcontentsline{toc}{part}{#1}}
+\newcommand{\chapterOutsidePart}[1]{%
+\chapter*{\centering #1}%
+\markboth{\MakeUppercase{#1}}{\MakeUppercase{#1}}%
+\addcontentsline{toc}{part}{#1}%
+}
 
 \let\oldbibliography\bibliography
 \renewcommand{\bibliography}[1]{
@@ -91,12 +99,14 @@
 	\setstretch{\themainlinespacing}
 }
 
-\newcommand{\mypapers}[2][chapter]{
-	\begin{flushright}\tiny
-		This #1 contains contributions from the following works of ours: \cite{#2}
-	\end{flushright}
+\newcommand{\mypapers}[2][chapter]{%
+  \begin{flushright}\scriptsize
+    \parbox{0.42\textwidth}{%
+      \raggedleft
+      \emph{This #1 contains contributions from the following works I authored: #2}%
+    }
+  \end{flushright}
 }
-
 \newcommand{\frontispiece}{
 	\newgeometry{margin=0.8in}
 	\begin{titlepage}

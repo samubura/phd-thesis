@@ -179,7 +179,14 @@ The first proposed principle is named \emph{specificity}, whose spectrum is depi
 \begin{quote}
     how much a given (intelligent) functionality is \emph{specifically} serving a given application goal (at one end of a spectrum), rather than being \emph{generally} exploitable by multiple goals and potentially across application scenarios (at the other end).
 \end{quote}
-%
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.6\columnwidth]{figures/dt-mas/specificity-spectrum.pdf}
+    \caption{The spectrum of \emph{specificity}: from intelligent functionalities specific to an application goal to general-purpose services.}
+    \label{fig:specificity}
+\end{figure}
+
 This aims to help IoT systems and application designers to distinguish between
 \begin{itemize}
     \item features that are strictly tied to the achievement of a specific \emph{application goal}
@@ -187,13 +194,6 @@ This aims to help IoT systems and application designers to distinguish between
 \end{itemize}
 %
 This is especially important for designing highly modular systems that can evolve over time.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.6\columnwidth]{figures/dt-mas/specificity-spectrum.pdf}
-    \caption{The spectrum of \emph{specificity}: from intelligent functionalities specific to an application goal to general-purpose services.}
-    \label{fig:specificity}
-\end{figure}
 
 In IoT systems, for instance, a widespread general-purpose functionality concerns the digitalization of \acp{PA} to enable intelligent functionalities such as prediction of that assets' future states, and simulation of alternate states. 
 %
@@ -218,20 +218,20 @@ The second proposed principle, is named \emph{scoping}, and is defined as follow
 \begin{quote}
     to what extent a given (intelligent) functionality requires data from the whole system (at one end of a spectrum) or a single individual entity of interest (at the other end) to deliver its results
 \end{quote}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.6\columnwidth]{figures/dt-mas/scope-spectrum.pdf}
+    \caption{The spectrum of \emph{scoping}: from intelligent functionalities requiring knowledge of the whole system, to those confined to individual assets.}
+    \label{fig:scope}
+\end{figure}
+
 This aims to help IoT systems and applications designers distinguish between:
 \begin{itemize}
     \item features that require data, inputs, and interactions with multiple entities of interest in the system at hand (up to \emph{global} information, synthesized at the system level);
     \item features that require only considering a single asset (the extreme case of \emph{local} information).
 \end{itemize}
 Figure~\ref{fig:scope} depicts this spectrum. 
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.6\columnwidth]{figures/dt-mas/scope-spectrum.pdf}
-    \caption{The spectrum of \emph{scoping}: from intelligent functionalities requiring knowledge of the whole system, to those confined to individual assets.}
-    \label{fig:scope}
-    
-\end{figure}
 
 
 In any IoT system, due to its inherent connection with the physical world, there are software components whose main function 
@@ -262,7 +262,14 @@ The third (and last, for the time being) proposed principle is what named \emph{
 \begin{quote}
     how much a given functionality relies on any one notion of \emph{time} (e.g.\ physical or logical) to be either explicitly (i.e.\ \emph{time-aware}) or implicitly (i.e.\ \emph{time-situated}) available
 \end{quote}
-%
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.6\columnwidth]{figures/dt-mas/timing-spectrum.pdf}
+    \caption{The spectrum of \emph{timing}: from intelligent functionalities requiring explicit modelling of physical or logical time, to those that don't care.}
+    \label{fig:timing}
+\end{figure}
+
 The concept of ``time-aware'', is meant to convey that the functionality requires access to time-related information, either to make it directly observable to consumers of such functionality or to work properly. 
 For instance, time series forecasting (a form of prediction) needs an explicit representation of time to be available, hence it is time-aware. 
 
@@ -273,12 +280,6 @@ Simply, its existence suffices for the functionality to work properly.
 There are also some other cases where time does not matter from the designer's standpoint, as time is not an issue when implementing the functionality---e.g., sending commands to an actuator device. 
 This whole spectrum is depicted in \Cref{fig:timing}. 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=.6\columnwidth]{figures/dt-mas/timing-spectrum.pdf}
-    \caption{The spectrum of \emph{timing}: from intelligent functionalities requiring explicit modelling of physical or logical time, to those that don't care.}
-    \label{fig:timing}
-\end{figure}
 
 Of course, placing intelligent functionalities within this spectrum cannot be a precise operation, as with the other principles. 
 But some general considerations about the categories of intelligent functionalities can and should be made to aid system designers. 
@@ -295,15 +296,15 @@ Of course adaptation actions are based on some events that happened, or on some 
 \section{Matching AAs and DTs to Design Principles}
 %=======================================================
 
-The design principles introduced in the previous section are here matched against AAs and DTs, to conceptually assess which abstraction is best suited for which end of the spectrum described above for a given principle. 
-Figure~\ref{fig:principles} shows the exemplary functionalities and how they are better encapsulated by AAs or DTs according to the principles. 
-
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-mas/principles-aa-dt.pdf}
     \caption{Exemplary intelligent functionalities placed within the spectrum of the proposed design principles. AAs and DTs are clustering those functionalities that they better match with, according to such principles.}
     \label{fig:principles}
 \end{figure}
+
+The design principles introduced in the previous section are here matched against AAs and DTs, to conceptually assess which abstraction is best suited for which end of the spectrum described above for a given principle. 
+Figure~\ref{fig:principles} shows the exemplary functionalities and how they are better encapsulated by AAs or DTs according to the principles. 
 
 Considering the \emph{specificity} design principle:
 \begin{itemize}
@@ -378,7 +379,7 @@ The term micro-architecture ($\mu$-arch, for short)  is used to differentiate fr
 In contrast, this work follows a bottom-up approach, where the architecture of the overall system is the result of the composition of multiple $\mu$-arch, depicted in\Cref{fig:architecture} by making use of the following components: 
 \begin{inlinelist}
 \item 
-Physical Assets (``PA'' squares), which represent the entities in the real world (e.g. devices, objects, people, processes, organizations) that the IoT system needs to model; 
+Physical Assets (``PA'' squares),
 \item 
 DTs (``DT'' circles); 
 \item 
@@ -388,9 +389,9 @@ and the intelligent functionalities (the 3D boxes), which may be entire applicat
 \end{inlinelist}
 
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
-    \includegraphics[width=\columnwidth]{figures/dt-mas/2024-toit-si-architecture-aa-dt.pdf}
+    \includegraphics[width=0.9\columnwidth]{figures/dt-mas/2024-toit-si-architecture-aa-dt.pdf}
     \caption{Architectural perspective for the synergistic combination of AAs and DTs in distributing intelligence in IoT systems. Each letter denotes a specific \emph{micro-architecture} that may arise from the application of our principles. Such architectures can be combined to give shape to the overall system architecture, in a bottom-up way.}
     \label{fig:architecture}
 \end{figure}
@@ -460,7 +461,7 @@ The design process proceeds by first analyzing the functionalities from a domain
 %
 This analysis provides a practical interpretation of the principles when applied to real-world requirements and validates the role of AAs and DTs as complementary abstractions for designing complex distributed intelligence systems.
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-mas/smart_manufacturing_scenario.pdf}
     \caption{A reference Smart Manufacturing scenario with multiple physical entities and a set of applications interested in implementing intelligent functionalities on top of the physical deployment.}
@@ -488,7 +489,7 @@ As summarized in \Cref{fig:target_functions}, the main target of production and 
 %
 These functionalities are an exemplification of decomposition that can be performed in the design process of an IoT system. In the following, each functionality analyzed towards the definition of components that can implement the IoT system employing either DTs or AAs or a combination of the two.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-mas/target_functions.pdf}
     \caption{Three main objectives that concur to the energy optimization of a Smart Manufacturing plant: Energy Monitoring at the machine level, Intelligent Coordination between robots and operators, and overall Production Optimization based on external factors (e.g. energy cost).}
@@ -527,7 +528,7 @@ For this scenario, it is assumed that the market price of energy is provided by 
 
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
-\begin{table}
+\begin{table}[ht]
     \centering
     \footnotesize
     \renewcommand{\arraystretch}{1.3}
@@ -585,7 +586,7 @@ This behavior is specific to the monitoring application goal, operates on local 
 This analysis indicates the need for a machine DT to collect data and detect anomalies, and an AA to implement the emergency shutdown policy.
 The resulting micro-architecture corresponds to $\mu$-arch \textbf{(E)} in Figure \ref{fig:architecture}.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-mas/dt_agents_zoom.pdf}
     \caption{Three  illustrative instances showcasing the synergistic usage of AAs and DTs as guided by the principles and $\mu$-archs, within the Smart Manufacturing context.}
@@ -618,7 +619,7 @@ It is worth noting that, having already introduced the DTs of the different prod
 \subsection{Discussion of Resulting Architecture}
 %---------------------------------------------------------------
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-mas/dt_agents_smart_manufacturing.pdf}
     \caption{A layered architecture with the combination of DTs and Agents for a Smart Manufacturing reference scenario.}

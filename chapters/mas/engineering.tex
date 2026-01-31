@@ -2,6 +2,10 @@ This chapter presents an overview of contributions in the area of engineering \a
 %
 Additionally, the chapter explores the role of \emph{explainability} in \ac{BDI} agents, to make agent behavior more transparent to users, as this is a key requirement for intelligent applications applied to critical domains such as healthcare (\Cref{sec:back:h40:explainable-ai}).
 
+
+\todo{Detail here better how this chapter relates to the core contribution on Digital Twins}
+
+
 %=======================================================
 \section{Tooling for \acs{BDI} Agent Programming}
 \label{sec:mas:engineering:jakta}
@@ -236,7 +240,7 @@ The main design principles of the tool are \emph{modularity},
 Multi-paradigm interoperability is obtained by designing \jakta{} as an internal \ac{DSL} in Kotlin,
 thus leveraging Kotlin's multi-paradigm features that already support \ac{OOP}, \ac{FP}, and \ac{IP} styles.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/mas/jakta_modules.pdf}
     \caption{
@@ -455,7 +459,7 @@ must follow its movement retaining their formation around the leader.
 
 \Cref{fig:code} shows code extracts from the scenario implementation, demonstrating that agent logic is reusable across different execution platforms.
 
-\begin{figure}
+\begin{figure}[tb]
     \begin{minipage}[b]{.6\linewidth}
         \centering
         \lstinputlisting[
@@ -504,7 +508,7 @@ Every experiment is repeated $100$ times with a different random seed, changing
 the initial positions of the followers
 and the distribution in time of the events for the \ac{ACLI} and \ac{ACLP}.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\linewidth]{figures/jakta+alchemist/error_over_time_flattened.pdf}
     \caption{
@@ -623,9 +627,9 @@ and be adapted to work directly with e.g., \ac{RDF} triples, to JSON, YAML, and 
 
 Similarly, the fundamental operations performed by a \ac{BDI} agent (e.g., plan selection, belief update, goal adoption), could be implemented using customized mechanisms that leverage the specific semantics of the adopted representation.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/generalize_bdi.pdf}
+    \includegraphics[width=0.5\textwidth]{figures/generalize_bdi.pdf}
     \caption{
         The generalized \ac{BDI} engine architecture.
         The core \ac{BDI} reasoning cycle is decoupled from the specific implementations of beliefs, goals, plans, and reasoning mechanisms.
@@ -820,7 +824,7 @@ The proposed \emph{multi-level explainability framework} identifies three levels
 
 The proposed framework relies on a process that converts system logs into natural language \emph{narratives} that can be used to derive explanations for \ac{BDI} agents at the different levels of abstraction, as illustrated in \Cref{fig:explainability-process}.
 
-\begin{figure}
+\begin{figure}[tb]
         \centering
         \includegraphics[width=0.8\textwidth]{figures/multi-explain/process-new.pdf}
         \caption{The explainability process converting system logs into narratives that can be used to derive explanations for \ac{BDI} agents.}
@@ -839,7 +843,7 @@ The middle level is implemented using high-level cognitive constructs such as go
 %
 This ideally would make it possible to use it as a common ground for different \ac{BDI} implementations, as these constructs are shared across different \ac{BDI} agent programming languages and frameworks.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/multi-explain/agent-multi-level.pdf}
     \caption{Graphical representation of the multi-level explainability framework for \ac{BDI} agents.}
@@ -888,7 +892,7 @@ focusing on addressing challenges that would make agents easier to develop and i
 %
 As a complementary perspective to the development of agents, the chapter also explores the role of testing through simulation and explainability mechanisms to enhance the reliability and transparency of \ac{BDI} agents, towards their adoption in real-world applications such as the automation of healthcare processes.
 
-\paragraph{\ref{rq:5} How can we make the development of \ac{BDI} agents more accessible and easier to integrate with external systems such as \ac{DT}?}
+\paragraph{\ref{rq:5} How to make the development of \ac{BDI} agents more accessible and easier to integrate with external systems such as \ac{DT}?}
 
 \ac{BDI} agents are arguably not as accessible as other programming paradigms. 
 This is not necessarily due to the complexity of the \ac{BDI} model itself---which can be rather considered intuitive due to the cognitive abstractions it provides---but rather to the gap of current \ac{BDI} frameworks that originated in the context of \ac{AI} research rather than mainstream software engineering.

@@ -1,7 +1,7 @@
-In this thesis, we leverage web technologies and standards to build interoperability in \ac{DTE}. 
+In this thesis, Web technologies and standards are adopted to build interoperability in \ac{DTE}. 
 Accordingly, this chapter provides an overview of the principal Web technologies, standards and architectural patterns and discuss how they build interoperability in heterogeneous systems. 
 %
-Additionally, we introduce the \ac{WoT} as an example of how web technologies can be applied in the \ac{IoT} context to achieve interoperability. 
+Additionally, the \ac{WoT} is presented as an example of how Web technologies can be applied in the \ac{IoT} context to achieve interoperability. 
 
 
 %=======================================================
@@ -51,9 +51,9 @@ The \emph{Semantic Web}~\cite{berners2023semantic} represents a vision for a Web
 %
 The Semantic Web builds on the existing Web infrastructure and introduces new standards and technologies to represent, share, and reason about data in a machine-readable way. 
 
-\begin{figure}[t]
+\begin{figure}[tbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/semantic.jpg}
+    \includegraphics[width=0.67\textwidth]{figures/semantic.jpg}
     \caption{A slide showing the concept of the Semantic Web, with documents linked to real-world concepts through semantics, from \cite{bernerslee1994www94plenary}.}
     \label{fig:semantic-web-idea}
 \end{figure}
@@ -66,7 +66,7 @@ But to a computer, it looks kind of flat [...] what it sees is a bunch of docume
 }
 \end{quote}
 
-Following this original vision, in this thesis we leverage (semantic) Web technologies and standards to build interoperability in \ac{DTE}, with the goal of representing physical reality with machine-readable descriptions through networks of interconnected \acp{DT}.
+Following this original vision, this thesis leverages (semantic) Web technologies and standards to build interoperability in \ac{DTE}, with the goal of representing physical reality with machine-readable descriptions through networks of interconnected \acp{DT}.
 
 %=======================================================
 \section{The Web Architecture and Hypermedia}
@@ -129,9 +129,9 @@ The Semantic Web vision~\cite{berners2023semantic} exploits the hypermedia-based
 The Semantic Web is not ``a separate Web, but an extension of the current one''~\cite{berners2023semantic}, as such, it shares the same fundamental building blocks (e.g. \ac{URI}, \ac{HTTP}, \ac{REST}) and extends them with a set of dedicated standards and technologies to represent data in order to be processed and understood by machines.
 
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/semantic-web-stack.png}
+    \includegraphics[width=0.55\textwidth]{figures/semantic-web-stack.png}
     \caption{The Semantic Web ``cake'' showing the layers of the technological stack, from \cite{bratt2007semanticweb}.}
     \label{fig:semantic-web-stack}
 \end{figure}
@@ -235,9 +235,9 @@ Finally, integrating things into the Web, allowed using Web techniques to discov
 %
 The resulting layered architecture is illustrated in \Cref{fig:wot-layers}, showing how different technologies from the Web and \ac{IoT} domains can be combined to support the creation of applications based on \emph{mashups} of physical \emph{Things}.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.85\textwidth]{figures/wot-layers.png}
+    \includegraphics[width=0.8\textwidth]{figures/wot-layers.png}
     \caption{The main layers of the \ac{W3C} \ac{WoT} architecture, from \cite{Guinard_Trifa_2016_book}.}
     \label{fig:wot-layers}
 \end{figure}
@@ -260,7 +260,7 @@ Through this simple, yet expressive, metamodel, \ac{TD} can describe a wide rang
 %
 This supports a variety of scenarios for seamless interaction between \ac{TD}-enabled components as showcased in \Cref{fig:wot-arch}. 
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/wotarch.pdf}
     \caption{An overview of the \ac{W3C} \ac{WoT} architecture, from \cite{wot-arch}.}
@@ -295,7 +295,7 @@ The \ac{WoT} is a successful example of how the transposition of Web principles 
 
 Notably, \acp{DT} have been included as an application scenario in the \ac{W3C} \ac{WoT} architecture~\cite{wot-arch}, and there has been work on integrating \ac{DT} and \ac{WoT} technologies~\cite{Jacoby_Usländer_2020,SciulloWoTwins2022} given the close relationship between the two concepts.
 %
-In this thesis we will explore the intersection between \ac{WoT} and \ac{DT} technologies, investigating how the \ac{WoT} can be used to build interoperable \acp{DT} and \ac{DTE}.
+This thesis explores the intersection between \ac{WoT} and \ac{DT} technologies, investigating how the \ac{WoT} can be used to build interoperable \acp{DT} and \ac{DTE}.
 
 %=======================================================
 \section{Final Remarks}
@@ -314,5 +314,5 @@ The principles of the \ac{REST} architectural style, in particular the uniform i
 The Semantic Web technologies and Linked Data principles will be used to advocate for a shared and machine-readable representation of \acp{DT} and their capabilities, supporting structured knowledge representation and reasoning in \ac{DTE}. 
 %
 Finally, the \ac{WoT} architecture and \ac{TD} specification will be used as a basis to design and implement interoperable \acp{DT} and \ac{DTE}, exploring how the \ac{WoT} can be integrated with other \ac{DT} technologies to build open ecosystems of interconnected \acp{DT}.
-
-Web technologies and standards hence serves as the \emph{glue} to connect \ac{DTE} with intelligent applications based on autonomous software agents. 
+%
+Web technologies and standards hence serves, for the scope of this thesis work, as the \emph{glue} to connect \ac{DTE} with intelligent applications based on autonomous software agents. 

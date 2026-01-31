@@ -74,7 +74,7 @@ All the owners may have access to different data and model the same asset with d
 
 \paragraph{DT Development and Platform Selection}
 
-A \emph{\ac{PA} Owner} may commission the development of a \emph{DT Developer} to implement the DT for the PA. The developer will implement a DT using a target technological stack, that depends on their expertise and the availability of the computing infrastructure that is available for the deployment of the DT.
+A \emph{\ac{PA} Owner} may commission a \emph{DT Developer} to implement the DT for the PA. The developer will implement a DT using a target technological stack, that depends on their expertise and the availability of the computing infrastructure that is available for the deployment of the DT.
 %
 In this phase it is necessary to ensure that the chosen DT requirements can be effectively implemented on a specific platform.
 %
@@ -109,9 +109,9 @@ This phase is critical for maintaining an accurate and up-to-date representation
 The ability to monitor information about running \acp{DT} is essential for ensuring synchronization with physical assets, supporting advanced digitalization processes, and facilitating interoperability within complex cyber-physical systems.
 
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/dtc/dtc-requirements.pdf}
+    \includegraphics[width=0.8\textwidth]{figures/dtc/dtc-requirements.pdf}
     \caption{Phases and requirements for managing \acp{DT} in a \ac{DTC}.}
     \label{fig:dtc-requirements}
 \end{figure}
@@ -210,7 +210,7 @@ Together, these components support stakeholders to seamlessly identify and disco
 \section{Architecture of the \acl{DTC}}
 %=======================================================
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dtc/architecture_new_v2.pdf}
     \caption{Functional Architecture of the \ac{DTC} with the main components and the interactions with stakeholders.}
@@ -224,7 +224,7 @@ Second, by exploiting the advantages of a broad compute continuum of cloud and e
 %
 The architecture of the DTC is depicted in \Cref{fig:dtc-architecture} and includes DTC functional blocks (grayed boxes), infrastructure modules, DT artifacts, while highlighting the interactions of DTC stakeholders. 
 
-Other than the already introduced roles of \emph{PA Owner}, \emph{DT Developer}, and \emph{DT Operator}, we introduce the roles of \emph{DTC Manager} and \emph{DTC Consumer}.
+Other than the already introduced roles of \emph{PA Owner}, \emph{DT Developer}, and \emph{DT Operator}, the roles of \emph{DTC Manager} and \emph{DTC Consumer} are introduced.
 %
 The \emph{DTC Manager} is in charge of managing an instance of the middleware that servers the functionalities of the DTC across the available computing nodes in the target infrastructure.
 %
@@ -287,7 +287,7 @@ Finally, a DTC Consumer willing to access a DT within the DTC, contacts the DTC 
 %----------------------------------------
 
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dtc/sequence_diagram.pdf}
     \caption{The interaction flow example between DTC architectural components to enable DT registration and deployment.}
@@ -310,7 +310,7 @@ Moving forward, the registration process for the DTC User involves identifying s
 %
 Internally, the DT Orchestrator engages in the discovery process, returning a list of available nodes that match the user's specified criteria, such as the support for package deployment and the support for target hardware requirements (e.g., a GPU for the execution of specific DT's functionalities).
 %
-The selection of nodes could be automated based on predefined policies. Fort simplicity, in this example, we let the user choose the preferred node from the list of available options.
+The selection of nodes could be automated based on predefined policies. For simplicity, in this example, the user chooses the preferred node from the list of available options.
 
 Upon reviewing the list of available compute nodes matching the target package and schema, the user can proceed by sending a start request to the DTC Manager.
 %
@@ -332,39 +332,41 @@ By leveraging the descriptions introduced in \Cref{table:dtc_descriptions_requir
 %=======================================================
 
 
+\todo{Rivedere questa sezione interamente anche alla luce delle modifiche al paper originale}
+
 A preliminary analysis, implementation, and experimental evaluation of the core functionalities of the DTC have been conducted using a prototype based on Eclipse Ditto and WLDT as reference platforms.
 %
 The primary objective of this implementation is to demonstrate the feasibility of the DTC and obtain initial insights by leveraging the microservice capabilities of the White Label Digital Twin (WLDT) library.
 
-The DTC's functional modules (\Cref{fig:dtc-architecture}) are implemented in Python, featuring a \emph{master API} that orchestrates overall behavior and a set of \emph{DTC agents} that manage specific computing nodes and interface with underlying DT platforms such as WLDT and Eclipse Ditto. 
+The DTC's functional modules (\Cref{fig:dtc-architecture}) are implemented in Python, featuring a \emph{master API} that orchestrates overall behavior and a set of \emph{DTC agents} that manage specific computing nodes and interface with underlying DT platforms: namely, WLDT and Eclipse Ditto for this experimental setting. 
 %
 These components expose structured RESTful APIs, enabling standardized interaction with the DTC core services. Monitoring and performance tracking across distributed nodes are facilitated through Prometheus, serving as a centralized time-series database, while local agents collect metrics on individual machines.
 %
 Observability, visualization, and analysis are supported via Grafana dashboards. For the experimental evaluation, the supporting infrastructure—including Virtual Machines (VMs), networking, and container runtimes (Docker and Kubernetes)—was assumed to be preconfigured.
 
 
-\begin{figure*}[ht!]
+\begin{figure*}[ht]
     \centering
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[t]{0.49\textwidth}\label{fig:exp_single_dt:same_model}
         \includegraphics[width=\textwidth]{figures/dtc/wldt_ditto_end_to_end_delay_comparison.pdf}
-        \caption{Single DT deployed on both edge and cloud, showing consistent state computation with a small propagation delay between platforms.}
+        \caption{}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[t]{0.49\textwidth}\label{fig:exp_single_dt:coarse_model}
         \includegraphics[width=\textwidth]{figures/dtc/wldt_ditto_end_to_end_delay_comparison_2_dts.pdf}
-        \caption{Updated cloud DT model with coarser aggregation, illustrating the impact of model versioning and aggregation on state computation relative to the edge DT.}
+        \caption{}
     \end{subfigure}
-    \caption{Comparison of end-to-end DT state computation delays across edge (WLDT) and cloud (Ditto) platforms.}
+    \caption{Comparison of end-to-end DT state computation delays across edge (WLDT) and cloud (Ditto) platforms.(a) shows the same DT model being deployed on both edge and cloud, while (b) shows a coarser DT model being deployed on the cloud.}
     \label{fig:exp_single_dt}
 \end{figure*}
 
-The \textbf{first experiment} examines the behavior of a single DT deployed across two platforms: WLDT at the edge and Ditto in the cloud. Rather than focusing on communication delays, this experiment aims to demonstrate how the DTC orchestrates state computation and ensures synchronization across multiple DT instances operating on heterogeneous platforms. Two observers, one on the edge and one in the cloud, monitored the propagation and consistency of the DT states.
+The \textbf{first experiment} examines the behavior of two \acp{DT} deployed across two platforms: WLDT at the edge and Ditto in the cloud. Rather than focusing on communication delays, this experiment aims to demonstrate how the DTC orchestrates state computation and ensures synchronization across multiple DT instances operating on heterogeneous platforms. Two observers, one on the edge and one in the cloud, monitored the propagation and consistency of the DT states.
 
-In the first configuration (Figure \ref{fig:exp_single_dt} left), both DTs run the same model version. The results confirm that the DTC effectively coordinates the two instances, maintaining consistent state computation across edge and cloud, with only minor propagation differences that do not affect overall correctness.
+In the first configuration (\Cref{fig:exp_single_dt:same_model}), both DTs run the same model version. The results confirm that the DTC effectively coordinates the two instances, maintaining consistent state computation across edge and cloud, with only minor propagation differences that do not affect overall correctness.
 
-In the second configuration (Figure \ref{fig:exp_single_dt} right), the cloud-based DT is switched to a different, coarser, DT schema (V2) that employs a longer time window for state aggregation (receiving updates from the PA every seconds and computing the state every 5 samples), while the edge DT continues operating with the original high-granularity schema. The DTC seamlessly manages this update, ensuring the cloud DT is correctly deployed and integrated without disrupting the ongoing edge operations. This illustrates the DTC's capability to orchestrate heterogeneous model versions, maintaining consistent, system-wide behavior across distributed DT instances versions and reconcile differences between distributed DT instances.
+In the second configuration (\Cref{fig:exp_single_dt:coarse_model}), the cloud-based DT is switched to a different, coarser, DT schema (V2) that employs a longer time window for state aggregation (receiving updates from the PA every seconds and computing the state every 5 samples), while the edge DT continues operating with the original high-granularity schema. The DTC seamlessly manages this update, ensuring the cloud DT is correctly deployed and integrated without disrupting the ongoing edge operations. This illustrates the DTC's capability to orchestrate heterogeneous model versions, maintaining consistent, system-wide behavior across distributed DT instances versions and reconcile differences between distributed DT instances.
 
 %%%
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dtc/edge_cloud_experiment.pdf}
     \caption{Scalability assessment of the DTC prototype in the Microfactory deployment. The figure shows two rows of graphs corresponding to edge (WLDT) and cloud (Ditto) deployments respectively on Edge and Cloud, reporting the evolution of CPU usage, memory consumption, inbound network traffic, and outbound network traffic as the number of active Digital Twin instances increases.}
@@ -393,7 +395,7 @@ The \ac{DTC} addresses key challenges that emerge when dealing with the deployme
 
 The proposal in this chapter contributes to answering the research question:
 
-\paragraph{\ref{rq:3} How can we support the operational management of DTEs?}
+\paragraph{\ref{rq:3} How to support the operational management of DTEs?}
 
 By using structured descriptions that capture the essential characteristics of physical assets, digital twins, and runtime platforms, the DTC enables stakeholders to effectively discover, deploy, and manage DT instances across a distributed infrastructure.
 %

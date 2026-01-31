@@ -127,7 +127,7 @@ This makes \ac{DT} implementations often tailored to the specific target platfor
 \label{sec:dte:dte:architecture}
 %======================================================
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
@@ -150,7 +150,7 @@ This makes \ac{DT} implementations often tailored to the specific target platfor
         \label{fig:ecosystem-heterogeneous}
     \end{subfigure}
 
-    \caption{Three architectural approaches for \acp{DTE}: in \ref{fig:ecosystem-monolithic} a single \ac{DT} models the whole scenario; in \ref{fig:ecosystem-homogeneous} a single platform is used to build and deploy all the \acp{DT} in the ecosystem; in \ref{fig:ecosystem-heterogeneous} maximum flexibility is allowed, possibly reusing existing \acp{DT} under a common interface.}
+    \caption{Three architectural approaches for \acp{DTE}: in \ref{fig:ecosystem-monolithic} a single \ac{DT} models the whole scenario; in \ref{fig:ecosystem-homogeneous} a single platform is used to build and deploy all the \acp{DT} in the ecosystem; in \ref{fig:ecosystem-heterogeneous} maximum flexibility is allowed, possibly reusing existing \acp{DT} under a common interface. Squares represent \acp{PA}, circles represetn \acp{DT} and colored shapes define boundaries between different organizations that may adopt different technological stacks.}
     \label{fig:ecosystem-types}
 \end{figure}
 
@@ -187,15 +187,15 @@ Relying on a single \ac{DT} limits technological diversity, forcing the creation
 \subsubsection{Homogeneous \ac{DTE}}
 \label{sssec:homogeneous}
 
-A \ac{DTE} can be considered a \emph{Homogeneous} \acp{DTE} when the approach relies on a general-purpose platform that natively supports the definition of multiple \acp{DT} (\Cref{fig:ecosystem-homogeneous}).
+A \ac{DTE} can be considered a \emph{Homogeneous} \acp{DTE} when the approach relies on a general-purpose platform that supports the definition of multiple \acp{DT} (\Cref{fig:ecosystem-homogeneous}).
 %
-The \acp{DT} are hence homogeneous in their modeling and implementing technology as they are created within the same platform.
+The \acp{DT} are hence homogeneous in their modeling and implementing technology as they are created on the same platform.
 %
 The native support for \acp{DTE} enhances adaptability to the evolving physical world as it is simple to add and remove \acp{DT} or update models.
 %
-Furthermore, the modeling and technological homogeneity make implementing ecosystem services relatively easy, as in the \emph{monolithic} approach.
+Furthermore, the modeling and technological homogeneity make implementing ecosystem services relatively easy, similarly to the \emph{monolithic} approach.
 %
-Differently, though, it is possible to highlight the individuality of the involved entities and their corresponding \acp{DT}, which may independently process the relative data flows, offering better decomposition and separation of concerns.
+Differently, though, it is possible to highlight the individuality of the involved entities and their corresponding \acp{DT}, which may independently process the relative data flows, achieving better separation of concerns.
 
 The dependency on a single platform, however, may introduce vendor lock-in, modeling and organizational constraints.
 %

@@ -1,0 +1,428 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xargs}
+\usepackage{xparse}
+\usepackage{amsmath}
+\usepackage[english]{cleveref}
+\usepackage{geometry}
+\usepackage{titling}
+\usepackage[inline]{enumitem}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+
+\usepackage{adjustbox}
+
+\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{threeparttable}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage{amssymb}
+
+% \usepackage[subtle]{savetrees}
+
+
+
+\usepackage{my-acronyms}
+\usepackage{shortcuts}
+
+\geometry{margin=1.6cm}
+
+
+\newenvironment{inlinelist}{\begin{enumerate*}[label=\emph{(\roman{*})}]}{\end{enumerate*}}
+
+
+\title{Digital Twins Ecosystems for Intelligent Applications in Healthcare}
+\author{Samuele Burattini\\PhD in Computer Science and Engineering\\University of Bologna}
+\date{\vspace{-2em}}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+The digitalization of healthcare is essential to improve efficiency, traceability, and decision-making. \aclp{DT} offer virtual representations of physical assets, yet healthcare involves many heterogeneous and interconnected elements, posing challenges for integrated systems.
+%
+This thesis, a collaboration with \ausl{}, proposes architectural and engineering solutions that promote modularity, interoperability, and semantic descriptions of \acl{DT} to support their integration and management within \emph{\acl{DTE}}.
+%
+Inspired by the Web, it introduces a \emph{\acl{HWoDT}} prototype enabling the development of heterogeneous \aclp{DTE} reusing Web standards and principles. 
+%
+Finally, the thesis investigates the use of \aclp{MAS} to implement trustworthy intelligent applications in \aclp{DTE}, clarifying their relationship with \aclp{DT}. The approach is validated through healthcare application scenarios.
+
+\end{abstract}
+
+
+\section{Introduction}
+
+
+In the last decade, we have assisted to a significant transformation driven by the integration of advanced digital technologies such as the \ac{IoT}, \ac{AI} and \ac{ML} to improve the efficiency and automation of processes across manufacturing and service industries.
+This digital transformation, often referred to as the \emph{Fourth Industrial Revolution} or \emph{Industry 4.0}, 
+is now becoming a pervasive trend impacting even less technology-driven sectors such as agriculture and healthcare~\cite{Tortorella_Fogliatto_Mac_Cawley_Vergara_Vassolo_Sawhney_2020}.
+%
+In the healthcare sector, the integration of digital technologies is reshaping the way care is delivered, with a focus on improving patient outcomes, enhancing operational efficiency, and enabling personalized medicine~\cite{Kraus_Schiavone_Pluzhnikova_Invernizzi_2021}.
+% %
+% Some see this transformation as a way to address the challenges of an aging population, rising healthcare costs, and the need for more efficient and effective care delivery towards accomplishing the United Nations' \ac{SDG} 3 aiming to ensure healthy lives and promote well-being for all at all ages.
+
+In this context, the concept of \ac{DT}~\cite{Grieves_2023} has emerged as a powerful abstraction to model and represent physical assets by creating a software replica which is continuously updated with data from the physical world.
+%
+Complex domains such as healthcare, however, are characterized by a variety of heterogeneous assets whose interrelations are crucial to provide a complete and accurate representation of the physical context~\cite{Alazab_Khan_Koppu_Ramu_M_Boobalan_Baker_Maddikunta_Gadekallu_Aljuhani_2023}.
+%
+This thesis explores the engineering challenges in the development of \emph{\acp{DTE}} integrating heterogeneous \acp{DT} connected by dynamic relationships.
+The work further propose the \ac{DTE} as a layer of abstraction to support the development of intelligent applications which can exploit its capabilities to acquire a comprehensive view of the physical world and automate processes~\cite{web-of-dt-ricci-2022}.
+%
+To address these challenges, this work proposes architectural and engineering solutions for the development of \acp{DT} focusing on modularity and interoperability.
+%
+This approach is complemented by the introduction of (semantic) descriptions for \acp{DT} that can support both the operational management and integration challenges in \acp{DTE}.
+%
+Through an approach inspired by the hypermedia nature of the Web~\cite{fielding2000architectural} and the \acl{WoT}~\cite{wot-arch} a prototype for a \emph{\ac{HWoDT}} which can be used to implement heterogeneous \acp{DTE} is developed~\cite{giulianelli2025fgcs}.
+%
+Finally, the thesis investigates the use of \acp{MAS}~\cite{2009wooldridge} as a way to implement trustworthy intelligent applications in \ac{DTE}, defining their relationship with \acp{DT} and contributing to the engineering of \ac{MAS} based on the \acl{BDI} model~\cite{Bratman1987-BRAIPA}.
+%
+The proposed approach is validated through the analysis and development of application scenarios in the healthcare domain.
+
+\section{Digital Twin Engineering}
+
+Recalling the definition of \ac{DT} from \cite{dt-IoT-context-Minerva-2020}:
+\begin{quote}
+\emph{
+A \acf{DT} is a comprehensive software representation of an individual \acl{PA}.
+It includes the properties, conditions, and behavior(s) of the real-life asset through models and data.
+A \ac{DT} is a set of realistic models that can simulate an asset's behavior in the deployed environment.
+The \ac{DT} represents and reflects its physical twin and remains its virtual counterpart across the asset's entire lifecycle.
+}
+\end{quote}
+This thesis contributes to the engineering of such \acp{DT}, focusing on the ability to:
+\begin{inlinelist}
+    \item integrate with heterogeneous data sources and services;
+    \item manage the synchronization lifecycle effectively;
+    \item encapsulate augmented features that enhance the capabilities of the mirrored \acp{PA}
+\end{inlinelist}
+
+Starting from the principles outlined by the 5D model~\cite{dt-driven-prognostics-tao-2018},
+and incorporating insights from both recent academic research~\cite{web-of-dt-ricci-2022,Bellavista_Bicocchi_Fogli_Giannelli_Mamei_Picone_2023} this thesis proposes an abstract \ac{DT} architecture
+composed of (\Cref{fig:event_driven_augmentation}): 
+\begin{itemize}
+    \item \textit{\ac{PI}:} tasked with both the digitalization process and the ongoing synchronization of the \ac{DT} and \ac{PA} throughout their lifecycle based on its characteristic cyber-physical nature and the supported protocols and data formats (e.g., HTTP and JSON, MQTT and binary);
+    \item \textit{\ac{DI}:} complementing the \ac{PI}, it manages the routing of \ac{DT}'s internal variations and events directed towards external digital entities and consumers ensuring the \ac{DT}'s interaction, interoperability and observability;
+    \item  \textit{\ac{M}:} Defines the \ac{DT}'s behavior through the digitalization process together with augmented functionalities.
+    The \textit{shadowing} process is responsible for handling events from both the \ac{PI} and \ac{DI} to model and replicate the state of the asset,
+    while \textit{augmentation}~\cite{dt-IoT-context-Minerva-2020} functions extends functionalities of the \ac{PA} through additional features and capabilities supported by the software nature of the twin (e.g., simulation, machine learning inference models).
+\end{itemize}
+
+General-purpose \ac{DT} cloud platforms serve primarily as data repositories, integrating with cloud storage and IoT services, where data acquisition and pre-processing are managed externally, and platform-level protocols constrain the shadowing process and client interactions. Industrial \ac{DT} platforms from companies such as Siemens, GE, Bosch, and IBM are typically domain-specific, tightly integrated with their own assets, and favor proprietary solutions, resulting in limited interoperability due to a lack of common modeling standards.
+%
+In contrast, the proposed event-driven approach enables both the \ac{PI} and \ac{DI} to capture and forward events from physical and digital domains to the \ac{M}, allowing \acp{DT} to function as independent software entities with configurable interfaces for flexible integration and interaction.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/event_driven_augmentation.pdf}
+    \caption{Event-Driven architecture of a DT to support and enable effective Augmentation function management and execution.}
+    \label{fig:event_driven_augmentation}
+\end{figure}
+
+
+The architectural proposal has been implemented in an open-source software framework: the \ac{WLDT}~\cite{PICONE2021100661} library\footnote{\url{https://wldt.github.io/}}.
+
+
+\subsection{Modular Interoperability in Digital Twin Interfaces}
+\label{sec:dte:engineering-dt:interoperability}
+
+\acp{DT} must connect to diverse \acp{PA} using a variety of protocols and legacy infrastructures, while also serving multiple digital consumers that may require different data representations or interaction paradigms\cite{etsi-dt-comm-requirements-2024}.
+Achieving this requires both support for existing standards and architectural flexibility when uniformity cannot be imposed.
+
+We address this problem through a modular interface design that decouples the \ac{DT} core from communication concerns.
+On the physical side, \emph{\acp{PhA}} interface with the \ac{PA}, producing \emph{\acp{PAD}} that describe properties, actions, and events independently of protocol-specific constraints.
+Thus, protocol or payload changes do not affect the internal \ac{DT} model.
+
+On the digital side, \emph{\acp{DiA}} expose the \ac{DT} state and services to different classes of applications.
+This enables adaptation to legacy systems or domain-specific platforms without modifying the physical integration.
+To assist discovery and automation in distributed \acp{DTE}, the capabilities offered through \acp{DiA} can be described using a \emph{\ac{DTD}}, intended for consumption by external systems.
+
+% The \ac{WoT}~\cite{wot-arch} aligns well with this approach by offering uniform interaction patterns and machine-readable interface descriptions.
+% Where available, \acp{TD} may be translated into \acp{PAD}, simplifying \ac{DT} deployment.
+% Conversely, \acp{TD} may be published as \acp{DTD}, enabling integration with \ac{WoT}-compatible applications.
+
+\subsection{Managing the Digital Twin Lifecycle}
+\label{sec:dte:engineering-dt:dt-lifecycle}
+
+The lifecycle of a \acs{DT} is crucial to ensure continuous and trustworthy alignment with its \acs{PA}, particularly regarding reflection and entanglement~\cite{dt-IoT-context-Minerva-2020,web-of-dt-ricci-2022}. 
+Although recent studies recognize this importance~\cite{ferko2022architecting}, existing lifecycle proposals are mostly domain-specific and lack concrete guidance on how internal \acs{DT} components maintain a consistent state~\cite{Lpez2021}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/dt-lifecycle/dt_lifecycle_pt_sync.pdf}
+    \caption{Schematic representation of the \ac{DT} lifecycle.}
+    \label{fig:dt_lifecycle_pt_sync}
+\end{figure}
+
+
+To address this, we adopt a structured lifecycle that explicitly models synchronization between the \acs{DT} and the \acs{PA} (\Cref{fig:dt_lifecycle_pt_sync}). After initialization (\texttt{Started}), the \acs{DT} prepares for communication in \texttt{Unbound}. Once the necessary information from the \acs{PA} is confirmed, it transitions to \texttt{Bound}. The \texttt{Synchronized} phase is reached only when communication quality and completeness allow accurate computation of the \acs{DT} state. If these conditions degrade, the \acs{DT} enters \texttt{OutOfSync}. When the \acs{DT} is no longer needed, it moves to \texttt{Done} and can finally be \texttt{Stopped}. Corrective actions may return it to \texttt{Unbound} at any time.
+
+A major challenge emerges from the variability in \acs{PA} operational behavior. Communication delays or temporary data unavailability may be intentional (e.g., \texttt{Idle}, \texttt{Rebooting}, \texttt{Overloaded}) rather than failures. Therefore, synchronization expectations must adjust dynamically to avoid false anomaly detection and preserve cyber-physical consistency.
+
+This structured lifecycle improves:
+\begin{itemize}
+    \item \textit{Cyber-physical awareness} through explicit tracking of synchronization status;
+    \item \textit{Decision-making} by ensuring state updates accurately reflect physical conditions;
+    \item \textit{Adaptability} across heterogeneous domains and operational dynamics.
+\end{itemize}
+
+Open challenges remain, particularly in reliably identifying the \acs{PA} operational context and defining tolerances for synchronization failure. However, this lifecycle model provides a robust foundation for engineering reliable and maintainable \acs{DT} software in dynamic environments.
+
+%=======================================================
+\subsection{Modeling Augmentation Functionalities}
+\label{sec:dte:engineering-dt:dt-augmentation}
+%=======================================================
+
+\acp{PA} are constrained by their physical nature, while \acp{DT} can be enhanced and updated through software to introduce new capabilities over time
+This property, known as \emph{augmentation}~\cite{dt-IoT-context-Minerva-2020}, enables \acp{DT} to support advanced features such as interoperability improvements, security enhancements, higher-level actions, and intelligent behaviors powered by data-driven models and \ac{AI}.
+However, augmentation is often described conceptually, with implementations largely domain-specific and without a clear reference model, which may compromise \emph{fidelity} to the \ac{PA}~\cite{Bellavista_Bicocchi_Fogli_Giannelli_Mamei_Picone_2023}.
+
+The proposal is to model such features that the \ac{DT} can expose through service interfaces relying on internal models to analyze the \ac{DT} state and history (e.g., anomaly detection or predictive capabilities) as \emph{augmentation functions}.
+%
+Such functions can differ along two main dimensions.
+First, its \textbf{triggering mechanism} defines whether the function responds to changes in the \ac{DT} state, the output of other augmentation processes, or scheduled temporal conditions.
+Second, its \textbf{state management} determines whether the function is stateless or maintains an internal state that evolves in parallel with the \ac{DT} lifecycle, enabling continuous or long-running processing.
+
+Augmentation functions hence operate in an event-driven manner and may generate new internal events that feed back into the core synchronization logic. When relevant, their results also become externally accessible through the \ac{DI}. This approach avoids direct coupling with the physical world: all augmentation is mediated by the \ac{DT} internal model, ensuring alignment with the cyber-physical representation.
+
+Depending on deployment needs and performance constraints, augmentation may be:
+\begin{itemize}
+    \item \textbf{Internal}: functions executed within the \ac{DT} process, ensuring low latency and tight integration;
+    \item \textbf{External}: functions executed by independent services, supporting distribution and access to specialized resources;
+    \item \textbf{Hybrid}: a combination of both, offering flexible scaling across heterogeneous workloads.
+\end{itemize}
+
+Internal augmentation is suitable for real-time processing tied to current physical conditions. External augmentation is preferred when leveraging advanced analytics or computational offloading. Hybrid architectures blend these strengths—combining responsiveness with scalable and resource-intensive functionalities.
+%
+This unified architectural view makes augmentation a first-class element of \ac{DT} engineering, clarifying its role in enhancing capabilities while preserving fidelity and ensuring transparent integration with the core synchronization mechanisms of the \ac{DT}.
+
+
+\section{Digital Twin Ecosystems}
+
+
+\acp{DTE} emerge as a natural evolution of the \ac{DT} concept, driven by the need of breaking out of the silos of individual \acp{DT} to better represent the interactions that occur in the physical world among different \acp{PA} which can rarely be considered completely in isolation. 
+%
+This is particularly relevant when taking the perspective of using \acp{DT} as system-wide abstractions to design \ac{CPS}~\cite{Acharya_Khan_Päivärinta_2024}. 
+%
+For the scope of this thesis, the following definition of \acl{DTE} is adopted:
+%
+\begin{quote}
+\emph{
+A \acl{DTE} is a dynamic set of \aclp{DT}, each modeling a \acl{PA}, whose meaningful relationships within a target context make it valuable to consider their collective evolution to accurately represent the mirrored portion of the physical world.
+}
+\end{quote}
+%
+This definition highlights three key aspects of \aclp{DTE}:
+\begin{itemize}
+    \item \textbf{Dynamic set of \aclp{DT}}: \acp{DTE} are not static constructs; they can evolve over time as new \acp{DT} are added or removed, reflecting changes in the physical environment or system requirements.
+    
+    \item \textbf{Meaningful relationships}: The interactions and dependencies among the constituent \acp{DT} are crucial. These relationships can be functional, spatial, temporal, or based on data exchange, and they define how the \acp{DT} influence each other within the ecosystem.
+    
+    \item \textbf{Collective evolution}: The value of a \ac{DTE} lies in its ability to represent the collective behavior of its constituent \acp{DT}. This holistic view enables new forms of interactions that support processes that consider the interdependencies among multiple \acp{PA}.
+\end{itemize}
+
+% From a functional perspective, there are two roles that \acp{DTE} users can assume: 
+% \paragraph{\ac{DTE} Managers} oversee the creation and evolution of the ecosystem, handling the dynamic addition and removal of \acp{DT} as physical assets change or application criteria evolve. \acp{DTE} should support operations to manage membership, maintain an up-to-date index of registered \acp{DT} with unique identifiers and metadata, and enable updates to reflect changes in the ecosystem.
+
+% \paragraph{\ac{DTE} Consumers} include users, applications, or agents interested in accessing and utilizing \acp{DT} and ecosystem-wide services. They require functionalities to retrieve and query the state and relationships of \acp{DT}, observe updates, and navigate through the ecosystem, including across boundaries to related \acp{DTE}.
+
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[t]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hwodt/ecosystems_types-monolithic.pdf}
+        \caption{\textbf{Monolithic} Ecosystem}
+        \label{fig:ecosystem-monolithic}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hwodt/ecosystems_types-homogeneous.pdf}
+        \caption{\textbf{Homogeneous} \ac{DTE}}
+        \label{fig:ecosystem-homogeneous}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hwodt/ecosystems_types-heterogeneous.pdf}
+        \caption{\textbf{Heterogeneous} \ac{DTE}}
+        \label{fig:ecosystem-heterogeneous}
+    \end{subfigure}
+
+    \caption{Three architectural approaches for \acp{DTE}: in \ref{fig:ecosystem-monolithic} a single \ac{DT} models the whole scenario; in \ref{fig:ecosystem-homogeneous} a single platform is used to build and deploy all the \acp{DT} in the ecosystem; in \ref{fig:ecosystem-heterogeneous} maximum flexibility is allowed, possibly reusing existing \acp{DT} under a common interface.}
+    \label{fig:ecosystem-types}
+\end{figure}
+
+
+The characteristics and functional requirements identified for \acp{DTE} lead to different trade-offs concerning
+\begin{inlinelist}
+    \item the ability to evolve to accommodate changes in the domain of interest,
+    \item loose coupling of the member \acp{DT}, 
+    and
+    \item implementation of the ecosystem functionalities (query, discovery, observation of \acp{DT} in the ecosystem).
+\end{inlinelist}
+%
+This can lead to different architectural approaches emerging from the state of the art of \ac{DTE} research and technologies (\Cref{fig:ecosystem-types}).
+
+\paragraph{Monolithic Ecosystem}
+\label{sssec:monolithic}
+%
+A straightforward approach is to model the entire context as a single, monolithic \ac{DT}. Even complex entities (e.g., a city) can be represented as one \ac{DT}, with internal components modeled explicitly~\cite{Peng_Zhang_Yu_Xu_Gao_2020}. 
+%
+The main advantage is architectural simplicity: all data flows into a single system built with a consistent stack (\Cref{fig:ecosystem-monolithic}), enabling unified simulations and management. However, updating or extending the model can be challenging, as even minor changes may require modifying the whole \ac{DT}. This approach is less suitable for dynamic, heterogeneous, or multi-stakeholder scenarios and limits technological diversity.
+
+\paragraph{Homogeneous \ac{DTE}}
+\label{sssec:homogeneous}
+%
+A \emph{Homogeneous} \ac{DTE} uses a general-purpose platform supporting multiple \acp{DT} (\Cref{fig:ecosystem-homogeneous}). All \acp{DT} share the same modeling and implementation technology, simplifying ecosystem services and updates. This approach highlights the individuality of entities while maintaining ease of management.
+%
+However, reliance on a single platform can introduce vendor lock-in and modeling constraints. An example is \azureTwin{}, which uses a \emph{Twin Graph}\footnote{\url{https://learn.microsoft.com/en-us/azure/digital-twins/concepts-twins-graph}} to represent relationships among \acp{DT} modeled with a uniform \ac{DTDL}.
+
+\paragraph{Heterogeneous \ac{DTE}}
+\label{sssec:heterogeneous}
+%
+This approach introduces a common interoperability layer over technologically diverse \acp{DT}, enabling reuse and uniform access (\Cref{fig:ecosystem-heterogeneous}). \acp{DT} are standalone components with specific models and technologies, accessed directly or via aggregators.
+%
+It suits dynamic, open ecosystems with loosely coupled components and multiple stakeholders. \acp{DT} can belong to multiple ecosystems, increasing flexibility. However, each \ac{DT} must be mapped to a shared metamodel and interface, which may reduce expressivity. Direct access to original \acp{DT} remains possible for specialized needs.
+%
+Implementing ecosystem services is more complex than in previous approaches and may require distributed techniques (e.g., polystores, federated or link-traversal queries) or middleware to aggregate and manage \acp{DT}.
+
+\subsection{Proposing the \acl{HWoDT}}
+The proposed approach aims to enable seamless integration of existing \acp{DT}, regardless of their underlying technologies, by hiding heterogeneity behind a \emph{uniform interface} based on Web protocols and standards. An explicit semantic layer allows \acp{DT} to uniformly describe their state, features, and services. The term \emph{\acf{HWoDT}} highlights the hypermedia-driven nature of the approach, following the \ac{HATEOAS} principle of \ac{REST}~\cite{fielding2000architectural}.
+
+This interoperability layer enables navigation and interaction with heterogeneous \acp{DT}. To provide ecosystem-level functionalities, a \emph{WoDT Platform} is introduced as both a scope boundary for ecosystem membership and an aggregation layer for querying, observing, and exploiting services across distributed \acp{DT}.
+
+As illustrated in \Cref{fig:ecosystem-heterogeneous}, the resulting architecture is composed of \acp{DT}:
+\begin{inlinelist}
+    \item created using heterogeneous technologies,
+    \item implementing the uniform interface through \emph{adapters},
+    \item connected by relationships that reflect the physical ones,
+    \item and that are aggregated into \acp{DTE} by being registered to one or multiple WoDT Platforms.
+\end{inlinelist}    
+
+To integrate heterogeneous \acp{DT}, each \ac{DT} must expose a uniform interface aligned with \ac{HWoDT} requirements. Achieving standard semantic representations remains an open challenge. This work adopts a pragmatic approach, showing that uniform semantic representations enable interoperability: each \ac{DT} should provide both \emph{data} and \emph{affordances} (i.e., possible actions) via hypermedia representations, following the \ac{HATEOAS} principle.
+This leads to distinguish two logically different representations:
+\begin{itemize}
+    \item \emph{\acf{DTD}}: Inspired by the \ac{WoT} \acl{TD}, the \ac{DTD} holds metadata and affordances, enabling consumers to understand the \ac{DT} model, as well as which services the \ac{DT} exposes and how to access them. It provides management metadata, including persistent, globally unique \ac{URI} identifiers for both the \ac{DT} and its associated \ac{PA}, links to the ecosystem (\ac{DTE}) it belongs to, and describes the available properties, relationships, events, and actions. The \ac{DTD} also specifies the API and protocol bindings for interaction, using hypermedia controls in line with \ac{REST} principles. While it may evolve with updates, it remains mostly static as it describes identity and interface, not real-time state.
+    \item \emph{\acf{DTKG}}: The \ac{DTKG} represents the live state of the \ac{DT} using a \ac{KG} based on \ac{RDF} triples. It semantically encodes domain knowledge, supporting state observation, querying, and discovery of relationships between \acp{DT}. The \ac{DTKG} includes current property values, relationships with other \acp{DT}, and context-dependent available actions, but excludes transient events. By leveraging domain-specific ontologies and Linked Data principles, the \ac{DTKG} enables distributed navigation and a common interpretation of \ac{DT} data across the ecosystem.
+\end{itemize}
+
+
+A prototype for the \ac{HWoDT} has been implemented and is available as open source\footnote{\url{https://web-of-digital-twins.github.io/}}, supporting the integration of three different \ac{DT} platforms through configurable, reusable \emph{adapters}, to facilitate onboarding.
+%
+Preliminary performance evaluations show promising results and confirm that the decoupling from different platforms can reduce complexity in the interaction with multiple \acp{DT}~\cite{GIULIANELLI2025102275}.
+
+The \ac{HWoDT} approach distinguishes itself from existing \ac{DT} interoperability frameworks by leveraging REST principles and Semantic Web technologies to enable integration of heterogeneous DTs within open ecosystems. Unlike industrial standards (such as OPC-UA, AAS, AML, and W3C WoT) wich often target specific domains, enforce homogeneous technology stacks, or limit expressiveness in querying and relationship modeling, the \ac{HWoDT} provides a uniform, hypermedia-driven interface and semantic layer that supports advanced queries, reasoning, and cross-domain knowledge representation.
+%
+This approach complements rather than competes with existing standards, allowing integration atop established DT implementations and bridging gaps in interoperability, especially outside industrial contexts. Compared to closed DT platforms like Azure Digital Twins or open-source solutions such as Eclipse Ditto, \ac{HWoDT} avoids vendor lock-in, supports dynamic relationships, and enables direct, up-to-date access to DT state via the DTKG.
+%
+While sharing some motivations with other web-based DT initiatives and WoT mashups, \ac{HWoDT} uniquely combines semantic descriptions, live state representation, and open standards to facilitate scalable, flexible, and expressive DT ecosystems across diverse domains.
+
+
+\section{Intelligent Applications with Multi-Agent Systems}
+
+\ac{AI} is increasingly driving Healthcare 4.0, supporting both clinical and administrative processes. Early applications focused on rule-based decision support, while advances in \ac{ML}, \ac{DL}, and the availability of large datasets have enabled data-driven approaches for image-based diagnosis, genome interpretation, biomarker discovery, risk prediction, and \ac{IoT}-based patient monitoring~\cite{Yu_Beam_Kohane_2018}. 
+%
+Emerging technologies such as \acp{LLM} and \ac{GenAI} further expand applications, including clinical documentation automation, patient interaction, data augmentation, and literature summarization~\cite{Sai_Gaur_Sai_Chamola_Guizani_Rodrigues_2024}. 
+\ac{AI} applications in healthcare can be clustered into predictive models, decision support systems, and big data analytics~\cite{Secinaro_Calandra_Secinaro_Muthurangu_Biancone_2021}.
+%
+Given the critical nature of healthcare, ethical considerations, explainability, and transparency become essential~\cite{Bharati_Mondal_Podder_2024,Alonso_Astobiza_Ortega_Lozano_2025}.
+
+Given the complexity of healthcare, the integration of \acp{MAS} provides a natural framework to encapsulate intelligent autonomous behavior to support the automation of healthcare processes.
+%
+Autonomous agents can model complex processes, where behavior can be programmed, learned, (or \emph{generated} with new approaches~\cite{Acharya_Kuppan_Divya_2025}).
+%
+In this work, we focus on programmed agents, particularly \ac{BDI} agents~\cite{Bratman1987-BRAIPA}, which can encode domain and procedural knowledge, making them well-suited for reliable and explainable applications in \ac{DT}-based healthcare systems.
+
+
+%=======================================================
+\subsection{Complementarity of Digital Twins and Multi-Agent Systems}
+%=======================================================
+
+Autonomous Agents (AAs) and Digital Twins (DTs) are increasingly adopted in IoT systems to implement intelligent applications in cyber-physical environments.
+%
+AAs encapsulate goal-driven reasoning and decision-making, closing perception-action loops, and excel at logic inference, adaptive control, learning of control policies, and simulation of complex systems, while DTs digitalize physical entities and can augment their behavior through physics simulation, prediction, and inference.
+
+Across these approaches, several high-level intelligent functionalities emerge -- \emph{prediction, simulation, planning, inference, adaptation, and learning} -- which can be distributed across AAs and DTs to enhance the capabilities of IoT systems. 
+%
+To clarify the complementary roles of \acp{DT} and \acp{MAS} in engineering intelligent \ac{IoT} systems, a set of design principles is proposed to guide functional analysis of intelligent functionalities. 
+These principles are derived from the software engineering concept of \emph{separation of concerns}~\cite{Mariani_Picone_Ricci_2022} and refined along three dimensions: 
+
+\begin{itemize}
+    \item \textbf{Specificity:} Measures whether a functionality serves a particular application goal or is generally reusable across multiple goals and applications. 
+    General-purpose functionalities, such as predicting asset states or simulating alternate scenarios, are well suited to \acp{DT}. 
+    Application-specific functionalities, like adaptive control policies or fault diagnosis, are better encapsulated by \acp{MAS} due to their goal-driven nature.
+
+    \item \textbf{Scoping:} Considers whether a functionality requires information from a single \ac{PA} or multiple entities across the system. 
+    \acp{DT} are naturally localized, tied to the assets they digitalize, while \acp{MAS} can perceive and act across the entire system, supporting global coordination and interaction.
+
+    \item \textbf{Timing:} Evaluates the dependency of a functionality on explicit or implicit notions of time. 
+    \acp{DT} are typically \emph{time-aware}, maintaining up-to-date representations of their physical twins, whereas \acp{MAS} are \emph{time-situated}, interacting with the system without necessarily modeling time explicitly.
+\end{itemize}
+
+\medskip
+Using these principles: \textbf{\acp{MAS}} encapsulate application-specific goals, coordinate globally, and operate in a time-situated manner; \textbf{\acp{DT}} model assets, provide general-purpose services, operate locally, and are inherently time-aware. 
+
+This framework provides clear criteria for distributing intelligent functionalities in IoT systems while maintaining flexibility and modularity.
+%
+The combination of AAs and DTs can give rise to several ``micro-architectures'' ($\mu$-archs) for integrating AAs and DTs, arising from the application of these principles. The term $\mu$-arch distinguishes these focused integration patterns from traditional top-down reference architectures, adopting a bottom-up approach instead (\Cref{fig:architecture}).
+%
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figures/dt-mas/2024-toit-si-architecture-aa-dt.pdf}
+    \caption{Micro-architectures for the synergistic combination of AAs and DTs. Such architectures can be combined to give shape to the overall system architecture, in a bottom-up way.}
+    \label{fig:architecture}
+\end{figure}
+%
+\textbf{(A)} is the most common~\cite{Mariani_Picone_Ricci_2022}, splitting functionalities between DTs (asset-specific, time-aware) and AAs (application-specific, goal-driven).
+\textbf{(B)} is a DT-only case for low-specificity, local-scope, time-aware functionalities.
+\textbf{(C)} follows the agentification paradigm~\cite{PicoValencia2018}, wrapping assets as agents for localized goals.
+\textbf{(D)} is an antipattern~\cite{Wan_David_Derigent_2021}, where agents replace functionalities of \acp{DT}.
+Finally, \textbf{(E)} augments DTs with internal agents for decision-making or planning, supporting \emph{cognitive} DT architectures~\cite{Minerva_Crespi_Farahbakhsh_Awan_2023}.
+
+
+\section{Applications in Healthcare}
+
+This thesis investigates the application of \acp{DTE} in three distinct healthcare domains, demonstrating the versatility and benefits of the proposed framework.
+
+\paragraph{Oncological Pharmaceutical Supply Chain Management}
+Pharmaceutical supply chain (PSC) management is critical in oncology due to the high degree of therapy personalization and the severe impact of delays on patient outcomes. The process involves sourcing raw materials, preparing drugs in loco, and administering therapies according to patient-specific schedules. 
+%
+A \ac{DTE} was proposed to track patients, treatments, production units, and warehouses in real time. By integrating predictive models and monitoring resources, the system may enable optimized warehouse management, right-time logistics, and traceability, supporting the timely preparation and delivery of therapies while improving resource utilization~\cite{DBLP:conf/percom/BurattiniMGGVZCR24}.
+
+\paragraph{Operating Room Management}
+Effective management of operating rooms is essential to optimize surgery schedules, improve patient care, and reduce costs. Current practice often relies on manual scheduling and paper-based tracking, which can lead to inefficiencies and lack of accountability. 
+%
+A \ac{DTE}-based system was implemented to monitor surgeries, patients, operating rooms, and medical staff in real time. The framework collects and standardizes data, detects anomalies, supports dashboard visualization, and integrates simulation models to evaluate scheduling strategies, ultimately enhancing planning, monitoring, and process efficiency~\cite{DBLP:conf/cbms/BurattiniMCGRLPT23}.
+
+\paragraph{Major Trauma Management}
+Major trauma management is highly time-sensitive, involving emergency call handling, pre-hospital care, and trauma center treatment. Timely coordination of ambulances, rescuers, and trauma teams is crucial for patient outcomes. 
+%
+A \ac{DTE} ecosystem prototype was developed using heterogeneous \ac{DT} technologies, integrated through the \ac{HWoDT} framework. The system tracks missions, ambulances, rescuers, patients, and trauma processes, supports resource allocation, real-time monitoring, and automated documentation, demonstrating interoperability and advanced querying capabilities across heterogeneous \acp{DT}.
+
+
+
+\section{Conclusion}
+
+This thesis addressed the engineering challenges of \ac{DT}s and their integration into \ac{DTE}s for intelligent healthcare applications. By proposing modular, interoperable architectures and introducing semantic descriptions, the work enables flexible integration and management of heterogeneous \ac{DT}s. The \ac{HWoDT} prototype demonstrates how Web standards and semantic technologies can unify diverse \ac{DT} platforms, supporting scalable and expressive ecosystems. Furthermore, the analysis of \ac{MAS} clarifies their complementary role with \ac{DT}s in implementing trustworthy, intelligent applications. The proposed approaches have been validated in healthcare scenarios, highlighting their potential to improve efficiency, interoperability, and decision-making in complex domains. Future work will further explore large-scale deployments, advanced semantic integration, and more complex augmentation functionalities at the ecosystem level, combining the capabilities of multiple \acp{DT}. 
+
+
+\bibliographystyle{ieeetr}
+\bibliography{phd-thesis, mybib}
+
+\end{document}
+

@@ -23,16 +23,16 @@ and incorporating insights from both recent academic research~\cite{web-of-dt-ri
 This section presents a proposal aiming to generalize an abstract architecture that captures the core software requirements for \ac{DT} development.
 
 %%%
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/mapping-Tao-WLDT.pdf}
-    \caption{A side-by-side mapping between 5D DT modelling and the abstract \ac{DT} architecture.}
+    \caption{A side-by-side mapping between 5D DT modelling (left) and the abstract \ac{DT} architecture presented in this section (right). The architecture is presented with named boxes that highlight the main components of a \ac{DT} and its interaction with the \ac{PA} and external applications.}
     \label{fig:tao_mapping_dt_modelling}
 \end{figure}
 %%%
 
 In the 5D model (Figure \ref{fig:tao_mapping_dt_modelling}, left), 
-the first dimension, Physical Entities (PE), represents the actual physical object or system being modeled as a \ac{DT}.
+the first dimension, Physical Entitiy (PE), represents the actual physical object or system being modeled as a \ac{DT}.
 The second dimension, Virtual Entity (VE), is the digital representation of the physical entity, replicating its characteristics and behaviors.
 The third dimension, Connection (C), ensures linkage between the physical and virtual entities, including communication technologies, data transmission protocols, and synchronization mechanisms for real-time interaction and data exchange.
 The fourth dimension, Data (D), covers data management aspects, ensuring accurate and timely data for simulation, prediction, and optimization.
@@ -47,45 +47,6 @@ Moving this towards an abstract architectural perspective, a \ac{DT} can be desc
     The \textit{shadowing} process is responsible for handling events from both the \ac{PI} and \ac{DI} to model and replicate the state of the asset,
     while \textit{augmentation}~\cite{dt-IoT-context-Minerva-2020} functions extends functionalities of the \ac{PA} through additional features and capabilities supported by the software nature of the twin (e.g., simulation, machine learning inference models).
 \end{itemize}
-
-
-Table~\ref{tab:evaluation} discusses how the proposed architecture supports the core properties of \acp{DT}~\cite{dt-IoT-context-Minerva-2020} compared to both existing research from the scientific literature and features offered by major production-ready platforms.
-
-Among these platforms, general-purpose cloud solutions such as AWS IoT TwinMaker and Microsoft Azure Digital Twins have become prominent.
-They provide an integration layer on top of existing cloud data storage and IoT services and hence mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
-%
-In such environments, the interaction with the physical world is typically managed using an IoT middleware that collects data and routes it to internal communication buses.
-%
-These buses are consumed by serverless functions that implement the \ac{DT} model.
-Additionally, such cloud platforms often provide digital communication capabilities with built-in visualization, interfaces, and query support.
-%
-Data acquisition pipelines, supported protocols and data formats are often defined at the platform level, not on a per-\ac{DT} basis, leading to limitations in the shadowing process and client interactions.
-
-Beyond traditional and widely adopted cloud solutions, several industrial platforms are offered by major players like Siemens, General Electric, Bosch, and IBM.
-These platforms are often domain-specific and provide strong integration with the physical assets and systems produced by the same companies.
-These solutions are tailored to the specific needs of their respective industries, offering robust capabilities for managing and interacting with physical entities.
-They do not, though, have a common modeling approach and as such, they offer limited interoperability among the different solutions, as the competitive nature of the market tends to prefer both hardware and software lock-in instead of promoting integration.
-
-In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI} and \ac{DI} are responsible for capturing events from their respective domains (physical and digital) and forwarding them to the \ac{M} for processing. This allows \acp{DT} to operate as independent software entities, communicating with the external world through finely configurable interfaces.
-
-Following the proposed architecture, a \ac{DT} can be formally represented as:
-
-\begin{equation} 
-\label{eq:dt_basic_model}
-        DT = \langle PI, M, DI \rangle\\
-\end{equation}
-
-Where the \ac{PI} captures data from the \acf{PA}, represented as a stream of time ordered \emph{physical} events $e_{PA}$, and controls physical actuation on the object through time ordered actions $a_{PA}$, 
-%
-the model \ac{M} encapsulates the \ac{PA} behavior, processes physical events $e_{PA}$, and generates time ordered \emph{digital} events $e_{DT}$,
-%
-and, finally, the \ac{DI} consumes digital events $e_{DT}$, exposes them to external consumers, and supports the invocation of \emph{digital} actions $a_{DT}$ to modify the behavior of the \ac{PA} through the \ac{DT}.
-
-To better align with multimodel perspectives of \acp{DT}, the model \ac{M} can be actually interpreted as a set of models:
-
-\begin{equation}\label{eq:multi_model}
-        M = \{ m_{1}, m_{2}, \dots, m_{n} \} \\
-\end{equation}
 
 
 \begin{table}
@@ -121,6 +82,52 @@ To better align with multimodel perspectives of \acp{DT}, the model \ac{M} can b
 \label{tab:evaluation}
 \end{table}
 
+
+\Cref{tab:evaluation} discusses how the proposed architecture supports the core properties of \acp{DT}~\cite{dt-IoT-context-Minerva-2020} compared to both existing research from the scientific literature and features offered by major production-ready platforms.
+
+\todo{MOVE THE FOLLOWING PARAGRAPH }
+
+Among these platforms, general-purpose cloud solutions such as AWS IoT TwinMaker and Microsoft Azure Digital Twins have become prominent.
+They provide an integration layer on top of existing cloud data storage and IoT services and hence mainly function as data repositories, storing data from physical assets, with pre-processing handled externally.
+%
+In such environments, the interaction with the physical world is typically managed using an IoT middleware that collects data and routes it to internal communication buses.
+%
+These buses are consumed by serverless functions that implement the \ac{DT} model.
+Additionally, such cloud platforms often provide digital communication capabilities with built-in visualization, interfaces, and query support.
+%
+Data acquisition pipelines, supported protocols and data formats are often defined at the platform level, not on a per-\ac{DT} basis, leading to limitations in the shadowing process and client interactions.
+
+Beyond traditional and widely adopted cloud solutions, several industrial platforms are offered by major players like Siemens, General Electric, Bosch, and IBM.
+These platforms are often domain-specific and provide strong integration with the physical assets and systems produced by the same companies.
+These solutions are tailored to the specific needs of their respective industries, offering robust capabilities for managing and interacting with physical entities.
+They do not, though, have a common modeling approach and as such, they offer limited interoperability among the different solutions, as the competitive nature of the market tends to prefer both hardware and software lock-in instead of promoting integration.
+
+\todo{END MOVE}
+
+\todo{rivedere l'aggancio facendo riferimento alla \Cref{sec:back:dt:technology}}
+
+In contrast, the proposed approach is \emph{event-driven}, where both the \ac{PI} and \ac{DI} are responsible for capturing events from their respective domains (physical and digital) and forwarding them to the \ac{M} for processing. This allows \acp{DT} to operate as independent software entities, communicating with the external world through finely configurable interfaces.
+
+Following the proposed architecture, a \ac{DT} can be formally represented as:
+
+\begin{equation} 
+\label{eq:dt_basic_model}
+        DT = \langle PI, M, DI \rangle\\
+\end{equation}
+
+Where the \ac{PI} captures data from the \acf{PA}, represented as a stream of time ordered \emph{physical} events $e_{PA}$, and controls physical actuation on the object through time ordered actions $a_{PA}$, 
+%
+the model \ac{M} encapsulates the \ac{PA} behavior, processes physical events $e_{PA}$, and generates time ordered \emph{digital} events $e_{DT}$,
+%
+and, finally, the \ac{DI} consumes digital events $e_{DT}$, exposes them to external consumers, and supports the invocation of \emph{digital} actions $a_{DT}$ to modify the behavior of the \ac{PA} through the \ac{DT}.
+
+To better align with multimodel perspectives of \acp{DT}, the model \ac{M} can be actually interpreted as a set of models:
+
+\begin{equation}\label{eq:multi_model}
+        M = \{ m_{1}, m_{2}, \dots, m_{n} \} \\
+\end{equation}
+
+
 In the proposed approach, the core functionality of the \ac{DT} is the shadowing process, which handles the transformation of data received from the \ac{PI}, feeding the models that characterize the \ac{DT}.
 %
 The result of the shadowing process is to compute the state of the \ac{DT} $S_{DT}$, which---following the \ac{WoDT} metamodel~\cite{web-of-dt-ricci-2022}---can be represented through sets of: 
@@ -133,7 +140,7 @@ The result of the shadowing process is to compute the state of the \ac{DT} $S_{D
 
 At any given time $t$, the state of the \ac{DT} can hence be represented as: 
 
-\begin{equation}
+\begin{equation}\label{eq:dt_state}
     S_{DT} = \langle P, R, E, A, t \rangle \\
 \end{equation}
 
@@ -165,7 +172,7 @@ This abstract architectural model addresses the main functional requirements of 
 It provides a clear separation of concerns between different components focusing on the \emph{shadowing} process as the core responsibility of the \ac{DT} encapsulating the complexity of physical and digital interactions through the \ac{PI} and \ac{DI}. 
 
 
-Finally, considering these additional specifications, the resulting \ac{DT} model enhances (\ref{eq:dt_basic_model}) to include also the shadowing $Shad$ and the history of states $H$ in the \ac{DT} definition:
+Finally, considering these additional specifications, the resulting \ac{DT} model enhances (Eq.~\ref{eq:dt_basic_model}) to include also the shadowing $Shad$ and the history of states $H$ in the \ac{DT} definition:
 
 \begin{equation}\label{eq:5D_dt_model}
     DT = \langle PI, M, Shad, H, DI \rangle
@@ -205,10 +212,10 @@ As for the physical realm, the \ac{DT} might need to \emph{adapt} to the require
 Additionally, the modeling of complex \ac{CPS} can be tackled through the idea of \acp{DTE}~\cite{web-of-dt-ricci-2022} which envision multiple connected \acp{DT}, each modeling individual entities of the same domain. 
 Such \acp{DTE} can benefit from standardized interactions between \acp{DT} and with higher-level services.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt_application_example.pdf}
-    \caption{Example of a DT in an application scenario interacting with a physical asset and digital applications through its PI and DI.}
+    \caption{Example of a \ac{DT} in an application scenario interacting with a physical asset and digital applications through its \ac{PI} and \ac{DI}. The example showcases the presence of multiple communication channels on both sides to highlight the heterogeneity of physical and digital interactions.}
     \label{fig:dt_application_example}
 \end{figure}
 
@@ -241,10 +248,10 @@ The remainder of this section describes a proposal for the design the \ac{DT}'s 
 \label{ssec:dte:dt-engineering:physical_interoperability}
 %..........................................................
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\columnwidth]{figures/dt-interoperability/dt_interoperability_physical.pdf}
-    \caption{PI design with modular physical adapters each producing the corresponding \acl{PAD} that is processed by the \ac{DT} Model.}
+    \caption{\acl{PI} design with modular physical adapters each producing the corresponding \acl{PAD} that is processed by the \ac{DT} Model.}
     \label{fig:physical_interoperability}
 \end{figure}
 
@@ -289,10 +296,10 @@ For example, to create the \ac{DT} of a temperature sensor streaming binary data
 \label{sec:digital_interoperability}
 
 %%
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=\columnwidth]{figures/dt-interoperability/dt_interoperability_digital.pdf}
-    \caption{Digital Interface design with modular adapters and DT description.}
+    \includegraphics[width=0.9\columnwidth]{figures/dt-interoperability/dt_interoperability_digital.pdf}
+    \caption{\acl{DI} design with modular adapters. Each adapter publishes a description of the state, events and actions it supports so that consumers can dynamically understand and interact with the \ac{DT}.}
     \label{fig:digital_interoperability}
 \end{figure}
 %%
@@ -327,7 +334,7 @@ Through this mechanism, \acp{DT} effectively achieve their bridging role, shield
 \subsubsection{Describing \aclp{DI}}
 
 A further level of interoperability is possible when allowing \acp{DT} to describe their \ac{DI}, advertising capabilities and available communication channels that applications can exploit.
-
+%
 This is especially relevant in contexts where applications are not bound to a specific interface but can instead process machine-readable descriptions of \acp{DT} and choose to interact with specific assets.
 %
 A \ac{DT} could then use a \emph{\ac{DTD}}, which, similarly to the \ac{PAD}, can represent the features of the \ac{DT} to its observers.
@@ -384,8 +391,7 @@ Despite its flexibility,
 and broad applicability, 
 using of \ac{TD} for \acp{DT} presents several limitations in capturing the specific characteristics of \acp{DT} that distinguish them from \emph{Things}.
 %
-A path to address these limitations could be extending \acp{TD} or supporting additional descriptions specifically for \acp{DT} in \acp{DTE} as explored in \Cref{chap:dte:hwodt}.
-
+A path to address these limitations could be extending \acp{TD} or supporting custom descriptions for \acp{DT} in \acp{DTE} as explored in \Cref{chap:dte:hwodt}.
 
 
 %=======================================================
@@ -409,10 +415,10 @@ This gap leads to potential inconsistencies between the \ac{DT} and \ac{PA}, as 
 
 
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=\columnwidth]{figures/wldt_lifecycle_simple.pdf}
-    \caption{DT Life Cycle with its phases and transitions.}
+    \includegraphics[width=0.75\columnwidth]{figures/wldt_lifecycle_simple.pdf}
+    \caption{DT Life Cycle with its phases and transitions. Circles represent phases, rounded squares represent terminal phases, and arrows represented transitions. Phases are grouped in three major operating states of the \ac{DT} which are \texttt{Starting}, \texttt{Working} and \texttt{Stopping}.}
     \label{fig:dt_life_cycle}
 \end{figure}
 
@@ -431,31 +437,31 @@ Since a \ac{DT} is fundamentally a software entity, it is vital to track the evo
 Proper observation and modeling of this lifecycle are essential to ensure that the \ac{DT} representation can be trusted to reflect the physical counterpart's state consistently when the \ac{DT} is \texttt{Synchronized} and can instead be considered to be outdated in the other phases.
 
 The execution lifecycle of a \ac{DT} can be modeled as follows.
-Upon creation (from the \texttt{Started} phase),
-the \ac{DT} enters the \texttt{Unbound} phase, where all internal modules are initialized and prepared for the binding process with the \ac{PA}.
+Upon creation (from the \texttt{Started} phase \circled{1}),
+the \ac{DT} enters the \texttt{Unbound} phase \circled{2}, where all internal modules are initialized and prepared for the binding process with the \ac{PA}.
 %
 Once the \ac{DT} successfully binds to its \ac{PA},
 meaning the \ac{PA} meets the necessary requirements (expected functionalities and properties)
 and the \ac{DT} can communicate with it,
-the \ac{DT} enters the \texttt{Bound} phase.
+the \ac{DT} enters the \texttt{Bound} phase \circled{3}.
 %
 During this phase, the \ac{DT} is connected to the \ac{PA} and is ready to begin the shadowing process.
 
-The next phase is the \texttt{Synchronized} phase, 
+The next phase is the \texttt{Synchronized} phase \circled{4}, 
 this is different from simply having established a connection with the \ac{PA}, 
 but rather indicates that the \ac{DT} is complying with application-specific requirements
 and is receiving the necessary and correct amount of information to be fully aligned with its \ac{PA}.
 %
 During the synchronization phase the \ac{DT} can compute the \ac{DT} state ($S_{DT}$), ensuring that it is able to accurately reflects the status of its physical counterpart.
 
-If any issues arise, such as network failures, and the \ac{DT} synchronization performance falls under the expected requirements, the \ac{DT} enters the \texttt{Out of Sync} phase.
+If any issues arise, such as network failures, and the \ac{DT} synchronization performance falls under the expected requirements, the \ac{DT} enters the \texttt{Out of Sync} phase \circled{5}.
 In this state, the \ac{DT}---while still operational---is unable to update its state reliably. 
 %
 Eventually, the \ac{DT} may return to the \texttt{Synchronized} phase.
 
-Finally, when the \ac{DT} is no longer required or has completed its function, it transitions to the \texttt{Done} phase.
-In this phase, the \ac{DT} remains accessible to external consumers and retains its memory, but it is no longer bound to the \ac{PA} or in sync with it. At the end of the lifecycle, the \ac{DT} can be dismissed and moved to the \texttt{Stopped} phase.
-Throughout its lifecycle, the \ac{DT} may also return to the \texttt{Unbound} phase if errors are detected during the binding process or if it is rebooted or restarted.
+Finally, when the \ac{DT} is no longer required or has completed its function, it transitions to the \texttt{Done} phase \circled{6}.
+In this phase, the \ac{DT} remains accessible to external consumers and retains its memory, but it is no longer bound to the \ac{PA} or in sync with it. At the end of the lifecycle, the \ac{DT} can be dismissed and moved to the \texttt{Stop} phase \circled{7}.
+The \ac{DT} may also return to the \texttt{Unbound} phase if errors are detected during the binding process or if it is rebooted or restarted.
 
 
 %-------------------------------------------------------
@@ -500,10 +506,10 @@ Similarly, resource constraints on the \ac{PA}, such as \textit{CPU overload} or
 In other cases, the \ac{PA} may not entirely cease communication but instead alter its update frequency in response to operational changes. For example, an industrial robotic arm might increase its data transmission frequency during a high-precision assembly task to provide real-time feedback, while it could reduce the update rate to conserve energy and network bandwidth when in an idle or maintenance mode.
 
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dt-lifecycle/dt_lifecycle_pt_sync.pdf}
-    \caption{Schematic representation of the \ac{DT} lifecycle with a structured example of the Synchronized phase.}
+    \caption{Schematic representation of the \ac{DT} lifecycle with a structured example of the \texttt{Synchronized} phase. The images shows that within the \texttt{Synchronized} phase, the \ac{DT} reflects the \ac{PA}'s operational phases, such as \texttt{Ready}, \texttt{Working}, \texttt{Busy}.}
     \label{fig:dt_lifecycle_pt_sync}
 \end{figure}
 
@@ -531,7 +537,15 @@ LP_{DT}(t) = \langle  LP_{PA}(t), LP_{Soft.}(t)\rangle
 \label{eq:lpdt_definition}
 \end{equation}
 
-The \ac{DT} representation of the asset $R_{DT}$ can hence be characterized at any given time instant $t_i$ by its lifecycle phase $LP_{DT}(t_i)$, its current state $S_{DT}(t_i)$, and its history $H(t_a, t_b)$ over a specific time interval $(t_a, t_b)$, as shown in Eq.~\ref{eq:dt-definition}.
+Here the focus is on representing an asset in terms of its present (and past) state, hence the \ac{DT} representation $R_{DT}$ is considered as a function of time.
+%
+Recalling Eq.~\ref{eq:dt_state} the state includes all relevant properties, actions, events and relationships of the \ac{DT} at a given time instant $t_i$.
+%
+Other relevant aspects such as \ac{DT} models and interfaces are not considered here for the sake of simplicity, but they can be easily included in the representation if needed, and they may evolve over time as well, depending on the lifecycle phase.
+%
+For instance, actions in the \ac{DT} state might be enabled or disabled depending on the lifecycle phase (e.g., in the \texttt{Done} phase, no actions can be executed), and with those, also the \ac{DT} interface may change to expose only the available functionalities.
+
+The \ac{DT} representation of the asset $R_{DT}$ can hence be composed by the \ac{DT}'s lifecycle phase $LP_{DT}(t_i)$, its current state $S_{DT}(t_i)$, and its history $H(t_a, t_b)$ over a specific time interval $(t_a, t_b)$, as shown in Eq.~\ref{eq:dt-definition}.
 
 \begin{equation}
 R_{DT}(t_i) = \langle LP_{DT}(t_i), S_{DT}(t_i), H(t_a, t_b)\rangle \quad \text{and} \quad  t_a, t_b \leq t_i
@@ -567,6 +581,8 @@ However, the history $H$ retains information about events recorded from the firs
 %
 The same happens when the \ac{DT} is \texttt{Bound}, as the state has not been computed yet, 
 or if the \ac{DT} is \texttt{Out of Sync}, as the state can no longer be updated.
+%
+Note that, since the \ac{DT} history is computed only when the \ac{DT} is synchronized, there might be cases in which the state at time $t_i$ shows only a partial history and hence in Eq.~\ref{eq:dt-definition} $t_b$ may be different from $t_i$.
 
 When $LP_{Soft.}$  is \texttt{Synchronized}, the \ac{DT} is fully synchronized with the \ac{PA}.
 In this state, $LP_{PA}$ corresponds to the lifecycle phase of the PA (e.g., in the example of Fig.~\ref{fig:dt_lifecycle_pt_sync}, this could be the \texttt{Working} phase) at the time $t_i$.
@@ -724,10 +740,10 @@ software architectural patterns that can be practically applied to implement the
 Depending on the implementation, it is possible to define \emph{internal} and \emph{external} augmentation.  
 This setup allows for the dynamic addition of new functionalities to the \ac{DT}, either through external or internal processing.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/event_driven_augmentation.pdf}
-    \caption{Event-Driven architecture of a DT to support and enable effective Augmentation function management and execution.}
+    \caption{Schematic Event-Driven architecture of a \ac{DT} to support Augmentation function management and execution.}
     \label{fig:event_driven_augmentation}
 \end{figure}
 
@@ -740,7 +756,7 @@ The interaction between the \( Shad \) and the \( Augm_{i} \) is entirely event-
 These results are then sent to the \( Shad \) for further state computation and to the \texttt{Digital Interface} (\( DI \)) to respond to requests for \( Augm_{i} \) from external services and applications.
 The \( DI \), mirroring the \ac{PI}, handles outgoing events of the \ac{DT} (e.g., \( e_{DT} \) carrying the new \( S_{DT} \) or its variations) or \( e_{Augm} \) with the results of an augmentation function, and manages incoming actions and requests from digital entities as digital actions \( a_{DT} \).
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/augmentation_patterns.pdf}
     \caption{Patterns for augmentation functions execution: internally (left), externally (center), or through a hybrid solution (right).}
@@ -793,11 +809,11 @@ Meanwhile, external augmentation functions can process long-term traffic pattern
 Such hybrid model provides the flexibility to optimize for both real-time and complex, resource-intensive tasks, ensuring that the \ac{DT} remains efficient and scalable.
 
 %=======================================================
-\section{The \acl{WLDT} Framework}
+\section{Extending the \acl{WLDT} Framework}
 \label{sec:dte:engineering-dt:wldt-framework}
 %=======================================================
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/wldt_architecture.pdf}
     \caption{WLDT Framework's Software Architecture.}
@@ -870,7 +886,7 @@ The production line is realized through the \emph{Fischertechnik Training Factor
 The schematic representation of the microfactory production line is shown in \Cref{fig:microfactory-production-line}.
 This microfactory setup provides a controlled yet dynamic environment for testing and refining DT technologies in a realistic industrial context.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.8\columnwidth]{figures/mf_highlevel_schema.pdf}
     \caption{A schematic view of the microfactory production line, with the two departments.}
@@ -916,7 +932,7 @@ The production efficiency is computed at the machine level using the \ac{OEE} me
 At the department level, \acp{DT} representing the Indexed Departments assess performance by computing Weighted \ac{OEE}~\cite{OEE-manufacturing-cell-Gamberini-2017,Introduction-to-TPM-total-productive-maintenance-Nakajima-1995}, derived from individual machine \acp{DT}, and track throughput, defined as processed pieces per unit time.
 Throughput is determined by monitoring entry and exit events within the department, utilizing relationships captured by the associated \acp{DT}.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/dt-lifecycle/mps_dt_structure_2.pdf}
     \caption{Multiprocess Station Digital Twin architecture overview.}
@@ -929,7 +945,7 @@ Each machine of the station is represented by a dedicated \ac{DT} which connects
 %
 At the department level, the \ac{DT} of the \textit{Multiprocess Station with Oven} aggregates data from the machine-level \acp{DT}, computing overall performance metrics and exposing department-level actions.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/engineering-wldt/Fischer-relationships.pdf}
     \caption{Relationships between \acp{DT} in the Multiprocess Station serve the purpose of tracking the physical relationships between different machines at the digital level.}
@@ -938,9 +954,9 @@ At the department level, the \ac{DT} of the \textit{Multiprocess Station with Ov
 
 \Cref{fig:dt-assets-relationships-overview} illustrates the relationships among the various \acp{DT} in the Multiprocess Station.
 %
-Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are statically defined in this setting, but are used by department-level \acp{DT} do track the flow of pieces and compute throughput and total pieces processed.
+Relationships between machines and DTs (e.g., \emph{previous}, \emph{following-machines}, \emph{is-part-of}) are statically defined in this setting and used by department-level \acp{DT} to track and compute throughput and total pieces processed.
 %
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dt-interoperability/mf_dt_structure.pdf}
     \caption{The \acl{DT} ecosystem architecture of the Indexed Department, alongside a schematic representation of the conveyors.}
@@ -971,7 +987,7 @@ These adapters, through configurable parameters, enable effective communication 
 Upon startup, each \ac{DT} connects to its data source, publishes the \ac{PAD} of the physical asset, and interacts with the PLC or Arduino to collect and send data, enabling digitalization and interoperability among heterogeneous equipment. 
 
 %%%
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dt-interoperability/dt_interoperability-pad_dt_wot.pdf}
     \caption{The transition from physical to digital representation via the \ac{PAD}, the \ac{DT} State, and the \ac{DTD} for external consumers.}
@@ -1017,27 +1033,27 @@ Medium importance ($CIF=2$) was given to protocol diversity ($p$) and interactio
 Low importance ($CIF=1$) was assigned to multiple communication patterns ($c$), as their concurrent use is standard in distributed applications.
 
 
-\begin{figure}
+\begin{figure}[tb]
   \centering
-  \begin{subfigure}[t]{0.32\linewidth}
+  \begin{subfigure}[t]{0.42\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/machine_complexity_index.pdf}
       \caption{Machine Digital Twin}
       \label{fig:machine_complexity_index}
   \end{subfigure}
-  \begin{subfigure}[t]{0.32\linewidth}
+  \begin{subfigure}[t]{0.42\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/station_complexity_index.pdf}
-      \caption{Station (Indexed-Line) Digital Twin}
+      \caption{Indexed-Line Digital Twin}
       \label{fig:station_complexity_index}
   \end{subfigure}
-  \begin{subfigure}[t]{0.32\linewidth}
+  \begin{subfigure}[t]{0.42\linewidth}
       \centering
       \includegraphics[width=\linewidth]{figures/dt-interoperability/factory_complexity_index.pdf}
       \caption{Factory Digital Twin}
       \label{fig:factory_complexity_index}
   \end{subfigure}
-  \caption{Schematic representation of cyber-physical complexity and its impact on various components.}
+  \caption{Cyber-physical complexity computed on different levels of the hierarchical \ac{DT} system implemented for the microfactory, showing reduced complexity compared to an approach without modular \acp{DT} interfaces.}
   \label{fig:dt_complexity_index}
 \end{figure}
 
@@ -1077,7 +1093,7 @@ Furthermore, an anomaly detection algorithm runs within each \ac{DT}, enabling i
 
 The department-level \ac{DT} of the Multiprocess Station incorporates coordination logic that adjusts machine behavior based on their current phases, ensuring seamless station management.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/dt-lifecycle/graph_machine_logic.pdf}
     \caption{Lifecycle of a \ac{PA} in the target industrial scenario, highlighting the different phases that the \ac{DT} needs to account for when synchronized.}
@@ -1139,7 +1155,7 @@ The composite DT leverages the PA lifecycle phases of individual machines to def
 %-------------------------------------
 
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \begin{subfigure}{0.75\textwidth}
         \centering
@@ -1182,16 +1198,17 @@ These results validate the potential of the \ac{WLDT} framework for practical DT
 \subsection{Implementing Augmented Digital Twins}
 %-------------------------------------------------
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/experimental_evaluation_scheme_new_industry.pdf}
-    \caption{Experimental setup for evaluating the design of augmented digital twins for a pose estimation task.}
-    \label{fig:augmentation-experimental-setup}
-\end{figure}
-
 A different experimental evaluation was conducted to validate the benefits of the modular design of augmentation proposed in \Cref{sec:dte:engineering-dt:dt-augmentation}.
 %
 The reference scenario involves the real-time monitoring of an industrial operator's movements within a manufacturing environment through a \ac{DT} whose state is augmented with pose estimation capabilities computed from inertial sensor data.
+
+
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/experimental_evaluation_scheme_new_industry.pdf}
+    \caption{Experimental setup for evaluating the design of augmentation functions for a pose-estimation task in a \ac{DT} of a human operator.}
+    \label{fig:augmentation-experimental-setup}
+\end{figure}
 
 \Cref{fig:augmentation-experimental-setup} illustrates the experimental setup designed to evaluate the proposed augmentation function patterns within a \ac{DT}.
 %
@@ -1294,7 +1311,7 @@ The architecture successfully supports augmentation of DT functionalities, provi
 
 \subsubsection{Pose Estimation with External Augmentation}
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \begin{subfigure}{0.49\textwidth}
     \centering
@@ -1348,7 +1365,7 @@ Indeed, the \ac{WLDT} framework, implementing the functionalities described in t
 
 The chapter addresses the research question:
 
-\paragraph{\ref{rq:1} How can we engineer \acp{DT} to integrate heterogeneous data sources and provide an up-to-date uniform representation of the mirrored assets?}
+\paragraph{\ref{rq:1} How to engineer \acp{DT} which integrate heterogeneous data sources and provide an up-to-date uniform representation of the mirrored assets?}
 %
 The modular architecture grounded on the concept of \acp{PhA} and \acp{DiA} effectively decouples the complexities of physical and digital environments from the core responsibilities of the \ac{DT}.
 %

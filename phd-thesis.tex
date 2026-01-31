@@ -2,14 +2,26 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{phd-thesis}
+\usepackage{pdfpages}
 
 
 
 \mainlinespacing{1.241} % line spacing in mainmatter, comment to default (1)
 
 \begin{document}
-	
+
+\includepdf[
+  pages=1,
+  pagecommand={\thispagestyle{empty}}
+]{frontespizio.pdf}
+
+\let\origcleardoublepage\cleardoublepage
+\let\cleardoublepage\clearpage
+
 \frontmatter
+
+\let\cleardoublepage\origcleardoublepage
+
 \input{front}
 
 \begin{abstract}	
@@ -32,7 +44,7 @@ Per affrontare tali sfide, il lavoro introduce soluzioni architetturali per lo s
 %
 L’approccio è completato dall'introduzione di descrizioni (semantiche) per \ac{DT}, volte a supportare sia la gestione operativa che l'integrazione nei \acs{DTE}.
 %
-Ispirandoci alla natura basata su hypermedia del Web e al \acl{WoT}, è stato sviluppato un prototipo di \emph{\ac{HWoDT}} per l'implementazione di \acs{DTE}.
+Ispirandosi alla natura basata su hypermedia del Web e al \acl{WoT}, è stato sviluppato un prototipo di \emph{\ac{HWoDT}} per l'implementazione di \acs{DTE}.
 %
 Infine, viene esplorato l'uso dei Sistemi Multi-Agente (MAS) come mezzo per realizzare applicazioni intelligenti e affidabili nei \acs{DTE}, chiarendo la relazione con i \ac{DT} e contribuendo all'ingegneria dei \acs{MAS} basati sul modello \acl{BDI}.
 %
@@ -51,25 +63,22 @@ Digital Twin, Internet of Things, Web of Things, Cyber-Physical Systems, Artific
 
 The digitalization of healthcare is envisioned as a necessary development to improve the efficiency and quality of healthcare systems worldwide by improving traceability and supporting decision-making.
 %
-% The application of \acl{IoT} technologies to healthcare further leads to the emergence of new paradigms for live monitoring and management of patients' conditions.
-%
 In this context, the concept of \ac{DT} has emerged as a powerful abstraction to model and represent physical assets by creating a software replica which is continuously updated with data from the physical world.
 
 Complex domains such as healthcare, however, are characterized by a variety of heterogeneous assets whose interrelations are crucial to provide a complete and accurate representation of the physical context.
 %
 This thesis explores the engineering challenges in the development of \emph{\acp{DTE}} integrating heterogeneous \acp{DT} connected by dynamic relationships.
-We further propose the \ac{DTE} as a layer of abstraction to support the development of intelligent applications which can exploit its capabilities to acquire a comprehensive view of the physical world and automate processes.
+The work further propose the \ac{DTE} as a layer of abstraction to support the development of intelligent applications which can exploit its capabilities to acquire a comprehensive view of the physical world and automate processes.
 %
 To address these challenges, this work proposes architectural and engineering solutions for the development of \acp{DT} focusing on modularity and interoperability.
 %
 This approach is complemented by the introduction of (semantic) descriptions for \acp{DT} that can support both the operational management and integration challenges in \acp{DTE}.
 %
-Through an approach inspired by the hypermedia nature of the Web and the \acl{WoT} we develop a prototype for a \emph{\ac{HWoDT}} which can be used to implement \acp{DTE}.
+Through an approach inspired by the hypermedia nature of the Web and the \acl{WoT} a prototype for a \emph{\ac{HWoDT}} which can be used to implement heterogeneous \acp{DTE} is developed.
 %
-Finally, we investigate the use of \acp{MAS} as a way to implement trustworthy intelligent applications in \ac{DTE}, defining their relationship with \acp{DT} and contributing to the engineering of \ac{MAS} based on the \acl{BDI} model. 
+Finally, the thesis investigates the use of \acp{MAS} as a way to implement trustworthy intelligent applications in \ac{DTE}, defining their relationship with \acp{DT} and contributing to the engineering of \ac{MAS} based on the \acl{BDI} model.
 %
 The proposed approach is validated through the analysis and development of application scenarios in the healthcare domain.
-
 
 \paragraph{Keywords:} Digital Twin, Internet of Things, Web of Things, Cyber-Physical Systems, Artificial Intelligence, Multi-Agent Systems, Software Engineering
 
@@ -156,28 +165,28 @@ until they are indistinguishable from it.
 \chapter{Engineering \aclp{DT}}
 \label{chap:dte:engineering-dt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{11096247,11096178,DBLP:conf/icsa/PiconeMBBFBGR25}}
 \input{chapters/dte/engineering-dt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{\aclp{DTE}}
 \label{chap:dte:dte}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{DBLP:conf/models/GiulianelliBCR24,giulianelli2025fgcs}}
 \input{chapters/dte/dte}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Interoperable \aclp{DTE}}
 \label{chap:dte:hwodt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{DBLP:conf/models/GiulianelliBCR24,giulianelli2025fgcs,GIULIANELLI2025102275}}
 \input{chapters/dte/hwodt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Operational Management of \aclp{DTE}}
 \label{chap:dte:dtc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{DBLP:conf/icccn/BarboneBMPRV24}}
 \input{chapters/dte/dtc}
 
 %****************************************************************************************
@@ -192,6 +201,7 @@ until they are indistinguishable from it.
 \chapter{\aclp{MAS} and \aclp{DT}}
 \label{chap:mas:mas-dt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mypapers{\cite{DBLP:journals/iot/BurattiniMMPR25}}
 
 \input{chapters/mas/mas-dt}
 
@@ -199,7 +209,17 @@ until they are indistinguishable from it.
 \chapter{Engineering \acs{BDI} \aclp{MAS}}
 \label{chap:mas:engineering}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{
+  DBLP:conf/eumas/Burattini23,
+  DBLP:journals/sncs/BaiardiBCP24,
+  DBLP:conf/emas/BaiardiBCPRO24,
+  baiardi2025jaktasim,
+  burattini2025gap,
+  embodiment2025,
+  Ciatto_Aguzzi_Battistini_Baiardi_Burattini_Ricci_2025,
+  DBLP:journals/aamas/HubnerBRM25,
+  DBLP:conf/woa/YanBHR23,
+  beaumont2025engineering}} 
 \input{chapters/mas/engineering}
 
 
@@ -214,28 +234,27 @@ until they are indistinguishable from it.
 \chapter{Pharmaceutical Supply Chain}
 \label{chap:app:irst}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{DBLP:conf/percom/BurattiniMGGVZCR24}}
 \input{chapters/application/irst}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Trauma Management}
 \label{chap:app:trauma}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{giulianelli2025fgcs}}
 \input{chapters/application/trauma}
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \chapter{Personnel Shifts Management}
 % \label{chap:val:ER}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/application/ER}
+% \input{chapters/application/ER}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{\acl{ORM}}
 \label{chap:app:orm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\mypapers{\cite{DBLP:conf/cbms/BurattiniMCGRLPT23}}
 \input{chapters/application/orm}
 
 \glsresetall
@@ -246,6 +265,18 @@ until they are indistinguishable from it.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{chapters/conclusion}
+
+\chapterOutsidePart{Funding}
+
+This work has been funded by the European Union - NextGenerationEU and Azienda Unità Sanitaria Locale (AUSL) della Romagna through the Italian "National Recovery and Resilience Plan" (PNRR) Mission 4, Component 2, Investment 3.3 (DM 352/2022) - CUP J33C22001400009
+
+
+\begin{figure*}[h!]
+  \centering
+  \centerline{
+    \includegraphics[width=1.1\textwidth]{figures/logo-pnrr.png}
+  }
+\end{figure*}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

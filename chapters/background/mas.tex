@@ -4,11 +4,11 @@ This chapter provides an overview of \acp{MAS}, as a mean to engineer intelligen
 %
 Autonomous agents are used as the main abstraction to model and implement complex software systems. The behavior of such agents can be either programmed, learned or, more recently, generated through the use of \ac{GenAI} techniques. 
 
-In this thesis, we mainly consider programmed agents, as we are interested in using agents to encapsulate business logic that can automate processes and activities in the context of \ac{DT}-based systems. 
+This thesis mainly considers \emph{programmed} agents, as the goal is using agents to encapsulate business logic that can automate processes and activities in the context of \ac{DT}-based systems. 
 %
 Accordingly, the chapter introduces the research area which follows under the broad umbrella of \ac{AOSE} and more specifically \ac{AOP} as a paradigm to engineer and program \acp{MAS}. 
 %
-We specifically focus on \ac{BDI} agents, as they are amongst the most widely adopted agent model for programmed agents, capable of encoding domain and procedural knowledge through the cognitive abstractions they provide, thus making \ac{BDI} agents excellent candidates for reliable and explainable intelligent applications. 
+\ac{BDI} agents are the central focus of the chapter, as they are amongst the most widely adopted agent model for programmed agents, capable of encoding domain and procedural knowledge through the cognitive abstractions they provide, thus making \ac{BDI} agents excellent candidates for reliable and explainable intelligent applications. 
 
 %=======================================================
 \section{History and Definitions}
@@ -28,7 +28,7 @@ Despite the term being widely used in different contexts~\cite{wooldridge1995ker
 
 The definition highlights the key characteristics of an agent. 
 %
-Namely, an agent is \emph{situated} in an environment which can be either physical (e.g., for a robotic system) or virtual (e.g., for a fully software agent).
+Namely, an agent is \emph{situated} in an environment which can be either physical (e.g., for a robotic system) or virtual (e.g., for a software agent).
 %
 The environment provides the agent with an external context that can be perceived, influencing the behavior of the agent, and affected by the agent actions to reach its objectives.
 %
@@ -38,9 +38,9 @@ The agent is also \emph{autonomous}, meaning that it can operate without direct 
 %
 Finally, the agent is \emph{goal-oriented}, as it is designed to achieve specific objectives, which can be explicitly defined or learned over time.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/agent-environment-original.pdf}
+    \includegraphics[width=0.7\textwidth]{figures/agent-environment-original.pdf}
     \caption{Classic schematic representation of an agent and its interaction with the environment, from \cite{1995russell-norvig}.}
     \label{fig:agent-environment}
 \end{figure}
@@ -68,7 +68,7 @@ The taxonomy of agent models proposed by Russell and Norvig~\cite{1995russell-no
 
 Implementing an agent essentially boils down to specify its behavior in response to its perceptions of the environment, with different degrees of complexity. 
 %
-How this is achieved depends on the agent architecture and model adopted, but we can generally  distinguish two main categories: \emph{programmed} or \emph{learning} agents, depending on whether their behavior is explicitly defined by a developer or learned from data and experience. 
+How this is achieved depends on the agent architecture and model adopted, but it is possible to generally distinguish two main categories: \emph{programmed} or \emph{learning} agents, depending on whether their behavior is explicitly defined by a developer or learned from data and experience. 
 %
 Although the boundary between the two categories is not always clear-cut, as learning techniques can be used to complement programmed behavior~\cite{Bordini_El_Fallah_Seghrouchni_Hindriks_Logan_Ricci_2020,Bosello_Ricci_2020}, they provide a useful distinction to understand the different approaches to implement agents.
 %
@@ -96,7 +96,7 @@ In the case of learning agents, \ac{MARL} techniques tackle the problem of train
 
 Due to their versatility, \ac{MAS} have been adopted in various domains, including robotics~\cite{Vicente-Diaz_2012}, (social) simulation~\cite{Uhrmacher_Weyns_2018,Davidsson_2001}, and distributed control systems for smart grids~\cite{Merabet_Essaaidi_Talei_Abid_Khalil_Madkour_Benhaddou_2014}, \ac{IoT}~\cite{Singh_Chopra_2017}, or traffic management~\cite{Torabi_Wenkstern_Saylor_2020}.
 
-Considering this very broad landscape, in this thesis, when referencing to agents,  we refer to \emph{programmed} agents and specifically on \ac{BDI} agents as an example of systems with a \emph{strong} notion of agency.
+Considering this very broad landscape, for the scope of this thesis the term \emph{agent} is used to implicitly refer to \emph{programmed agents} and specifically on \ac{BDI} agents as an example of systems with a \emph{strong} notion of agency.
 %
 The goal is to leverage the cognitive abstractions provided by \ac{BDI} agents to model and implement predictable, reliable and explainable intelligent behavior in \ac{DT}-based systems, encoding domain knowledge and business logic in the agents' mental state and plans.
 
@@ -141,7 +141,7 @@ and the \emph{organization} dimension~\cite{Boissier_Hübner_Sichman_2007} which
 %
 Focusing on different dimensions, allows to address the same problem in different ways, as each dimension provides different abstractions and mechanisms to model and implement the behavior of a \ac{MAS}~\cite{Boissier_Bordini_Hübner_Ricci_2019}.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/mas-dimensions-overview.pdf}
     \caption{High-level overview of the main programming dimensions of a \ac{MAS}, the \emph{interaction} dimension, not shown, focuses on interaction between agents, from \cite{Boissier_Bordini_Hübner_Ricci_Santi_2013}.}
@@ -173,7 +173,7 @@ The organization programming dimension~\cite{Boissier_Hübner_Sichman_2007} focu
 %
 Organization programming targets those kinds of \ac{MAS} where the strcture and roles within an organization are explicitly defined and managed in a top-down fashion, as opposed to emergent organizations where the structure arises from the interactions of individual agents in a bottom-up fashion~\cite{Boissier_Hübner_Sichman_2007}.
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{figures/mas-dimensions-schema.pdf}
     \caption{Schematic representation of the main abstractions of \ac{MAOP} and their relationships, from \cite{Boissier_Bordini_Hübner_Ricci_Santi_2013}.}
@@ -192,10 +192,10 @@ The paradigm has been supported by the development of the \jacamo{}~\cite{Boissi
 \ac{MAOP} and the \jacamo{} framework have been widely influential in the \ac{AOSE} community, providing an integrated foundation for the engineering of complex \acp{MAS}~\cite{Boissier_Bordini_Hubner_Ricci_2020}.
 %
 \Cref{fig:mas-dimensions-schema} provides a representation of how the different programming dimensions of a \ac{MAS} are integrated in the \ac{MAOP} paradigm, showing the main abstractions and their interrelations.
-
-In this thesis, when we discuss the engineering of \ac{MAS} we follow a \ac{MAOP}-inspired approach, focusing on the agent and the environment dimensions (and the A\&A metamodel in particular), as they are the most relevant for the integration of \acp{MAS} with \ac{DT}-based systems.
 %
-Although the organization dimension is also relevant, we do not specifically address it in this thesis, as we focus on relatively small-scale \acp{MAS} where the organization is implicit.
+When discussing the engineering of \acp{MAS} in this thesis, a \ac{MAOP}-inspired approach is adopted, with a focus on the agent and environment dimensions (and the A\&A metamodel in particular), as these are most relevant for the integration of \acp{MAS} with \ac{DT}-based systems.
+%
+While the organization dimension is also of interest, it is not specifically addressed here, as the focus is on relatively small-scale \acp{MAS} where the organization remains implicit.
 
 %=======================================================
 \section{\acl{BDI} Agents}
@@ -224,9 +224,9 @@ Computational \ac{BDI} agents are characterized by the following main abstractio
 \end{description}
 
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/bdi-agent-schema.png}
+    \includegraphics[width=0.7\textwidth]{figures/bdi-agent-schema.png}
     \caption{Schematic, high-level representation of a \ac{BDI} agent, from \cite{Bordini_El_Fallah_Seghrouchni_Hindriks_Logan_Ricci_2020}.}
     \label{fig:bdi-model}
 \end{figure}
@@ -269,11 +269,11 @@ This has the benefit of allowing developers to focus on the agent's behavior, ra
 
 % \todo{reference other languages}
 
-% \todo{explain why we consider agentspeak and jason here}
+% \todo{explain why consider agentspeak and jason here}
 
-\todo{description of agentspeak?}
+% \todo{description of agentspeak?}
 
-\todo{code examples??}
+% \todo{code examples??}
 
 %=======================================================
 \section{Web-based and Hypermedia \acs{MAS}}
@@ -304,7 +304,7 @@ Motivated by more recent trends in Web development such as the pervasive adoptio
 %
 This has led to a community effort to revisit the integration between \acp{MAS} and the Web~\cite{Boissier_Ciortea_Harth_Ricci_2021,Boissier_Ciortea_Harth_Ricci_Vachtsevanou_2023} and the creation of the \emph{Autonomous Agents on the Web} \ac{W3C} Community Group\footnote{\url{https://www.w3.org/community/webagents/}} to tackle the challenges of engineering Web-based \acp{MAS}. 
 
-\begin{figure}[t]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/hmas-schema.pdf}
     \caption{Schematic representation of the concept of \acl{hMAS} showing how elements of a \ac{MAS} can be integrated and represented in a hypermedia environment for agents to discover, from \cite{Ciortea_Mayer_Gandon_Boissier_Ricci_Zimmermann_2019}.}
@@ -365,10 +365,10 @@ The integration between \ac{MAS} and \acp{DT} is envisioned through the environm
 %
 In this perspective, \acp{DT} can be seen as artifacts, digitally representing physical entities in the \ac{MAS} environment.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/agent-dt-overview.pdf}
-    \caption{Schematic representation of the integration between \acp{MAS} and \acp{DT} through the environment dimension, from \cite{Mariani_Picone_Ricci_2022}.}
+    \includegraphics[width=\textwidth]{figures/agent-dt-overview.pdf}
+    \caption{Schematic representation of the integration between \acp{MAS} and \acp{DT} through the environment dimension. \acp{DT} can be seen as artifacts which the agents interact with, from \cite{Mariani_Picone_Ricci_2022}.}
     \label{fig:mas-dt-integration}
 \end{figure}
 
@@ -378,10 +378,9 @@ On an \emph{individual} perspective each \ac{DT} can be paired with an agent kee
 %
 Additionally, this opens up a \emph{system} perspective, in which agents can instead reason on top of an environment composed of multiple \acp{DT}, coordinating their behavior to achieve system-level goals, a vision also shared by the idea of \ac{WoDT}~\cite{web-of-dt-ricci-2022} (\Cref{sec:back:dt:dte}).
 
-Both perspective are relevant for this thesis, as we explore how to engineer intelligent applications that rely on \acp{DTE} to interact with the physical world. 
+Both perspectives are relevant for this thesis, as the goal is to explore how to engineer intelligent applications that rely on \acp{DTE} to interact with the physical world. 
 %
 Understanding the role of \ac{MAS} in the \ac{DTE} context and proposing structured means to integrate them is one of the open challenges that this thesis contributes to address.
-
 
 %=======================================================
 \section{Final Remarks}

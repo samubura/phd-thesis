@@ -3,8 +3,94 @@ This chapter presents an overview of contributions in the area of engineering \a
 Additionally, the chapter explores the role of \emph{explainability} in \ac{BDI} agents, to make agent behavior more transparent to users, as this is a key requirement for intelligent applications applied to critical domains such as healthcare (\Cref{sec:back:h40:explainable-ai}).
 
 
-\todo{Detail here better how this chapter relates to the core contribution on Digital Twins}
+%=======================================================
+\section{\acs{BDI} Agents in \aclp{DTE}}
+\label{sec:mas:engineering:bdi-dt}
+%=======================================================
 
+The previous chapter presented a general alignment between the abstractions of autonomous agents and \acp{DT},
+highlighting the complementary nature of the two paradigms, and the potential benefits of their integration.
+%
+This section explores how \ac{BDI} agents,
+as a specific subset of autonomous agents,
+can be relevant in the context of \acp{DT} in general,
+and specifically in relationship with the proposal of this thesis of \acp{DTE} and their implementation as hypermedia systems.
+
+The specific application of \ac{BDI} agents is considered in this thesis alongside three main aspects: 
+\begin{itemize}
+    
+    \item \textbf{Controllability of Autonomous Behavior}:
+    \ac{BDI} agents belong to the class of \emph{programmed} agents
+    and have been historically tied to the design of programming languages and frameworks,
+    that allow developers to specify and implement agent behavior which could exhibit a degree of autonomy,
+    interpreted as ability to adapt such behavior depending on contextual information.
+    This makes \ac{BDI} agents particularly suitable for scenarios where
+    developers need to encode business processes and domain logic 
+    in a clear and controllable manner. 
+    
+    \item \textbf{Expressiveness of Cognitive Abstractions}:
+    \ac{BDI} agents provide high-level cognitive abstractions to encode autonomous behavior.
+    The declarative nature of \ac{BDI} specifications allows developers to focus on defining system-level goals
+    and strategies to achieve them explicitly, rather than detailing low-level control flows.
+    \ac{BDI} agents further reason on an explicit semantic model in form of beliefs, that can encode knowledge about a specific domain
+    and encapsulate contextual information relevant to the agent's operation.
+    
+    \item \textbf{Explainability of Agent Behavior}:
+    \ac{BDI} agents offer inherent explainability features,
+    as their internal state and decision-making processes are explicitly represented through beliefs, desires, and intentions
+    which can be inspected and queried.
+    This transparency is crucial in applications where understanding the rationale behind agent actions is important for user trust and system validation.
+
+\end{itemize}
+
+These features make \ac{BDI} agents a compelling choice for implementing autonomous components within the context of \acp{DTE}.
+%
+Namely, this thesis studies and contributes to the engineering of \ac{BDI} \ac{MAS} envisioning their application in two main scenarios, outlined in the following.
+
+\paragraph{\ac{BDI} Agents for \emph{Cognitive} \aclp{DT}:}
+\Cref{sec:back:dt:ai} introduced the concept of \emph{cognitive} \acp{DT} as a specific class of \acp{DT} that leverage \ac{AI} techniques to enhance their ability to autonomously and proactively adapt to changes in the physical counterpart in a goal-driven fashion.
+%
+This thesis envisions \ac{BDI} agents as a suitable technology to implement such autonomous components within cognitive \acp{DT}, through the mechanism of \emph{augmentation} outlined in \Cref{sec:dte:engineering-dt:dt-augmentation}.
+%
+This would effectively implement the micro-architecture \textbf{(E)} presented in \Cref{sec:mas+dt:patterns}.
+%
+In this context, \ac{BDI} agents can encapsulate the cognitive capabilities of the \ac{DT}, and be encapsulated as an asynchronous augmentation function within a \ac{DT}, that can access the \ac{DT} state, observe its evolution over time, and suggest actions to adapt the \ac{DT} behavior. 
+%
+To this end, the features of \ac{BDI} agents outlined above, are particularly relevant:
+\begin{inlinelist}
+\item \emph{controllability} is necessary to ensure that the autonomous behavior is aligned with the domain requirements and constraints;
+\item \emph{cognitive abstractions} can be an effective way to interact with the structured and semantic-rich model of the \ac{DT} digital representation;
+\item \emph{explainability} is crucial to audit and understand the decisions made by the autonomous components within the \ac{DT}.
+\end{inlinelist}
+
+\paragraph{\ac{BDI} Agents as consumers of the \acl{HWoDT}:}
+In the original vision of the \ac{WoDT}, software agents were considered as primary consumers of the \ac{WoDT} digital representation, leveraging its structured and semantic-rich model to reason about the physical counterpart and make decisions accordingly~\cite{web-of-dt-ricci-2022}
+%
+This aligns with the \ac{HWoDT} proposed in this thesis, that can serve as a shared hypermedia environment for \ac{MAS} that follow the vision of \ac{hMAS} introduced in \Cref{sec:back:mas:web}.
+%
+\acp{DT} can serve the purpose of simplifying the interaction of agents with the physical world, and enhance the reasoning capabilities of agents by providing rich models of the \ac{PA} that can be used also to simulate possible future states hence allowing an agent to perform \emph{what-if} analysis of its actions~\cite{DBLP:conf/eumas/Burattini23}.
+%
+Micro-architecture \textbf{(A)} presented in \Cref{sec:mas+dt:patterns} envisions agents interacting with \acp{DT} following this pattern.
+%
+When scaling to ecosystems, the \ac{HWoDT} provides a set of high-level interaction mechanisms that can be exploited by agents to interact with the whole set of \acp{DT} in a uniform manner.
+%
+\ac{BDI} agents can be particularly suitable for this scenario to encode business logic that spans multiple \acp{DT}, such as coordinating the behavior of different \acp{DT}, or implementing complex workflows that involve interactions among multiple \acp{DT}.
+%
+In this context, the features of \ac{BDI} agents outlined above are again particularly relevant:
+\begin{inlinelist}
+\item \emph{controllability} is necessary as the interactions of multiple \acp{DT} must be predictable; 
+\item \emph{cognitive abstractions} can help in reasoning about complex interactions among multiple \acp{DT} and express clear system-level goals;
+\item \emph{explainability} is crucial to audit and understand the decisions made by agents, especially when they interact with multiple \acp{DT} and potentially affect critical operations.
+\end{inlinelist}
+
+\medskip
+
+The integration of \ac{BDI} agents within \acp{DTE} with the goals and strategy outlined above is a long-term research direction of this thesis, especially relevant for the domain of healthcare, in which the automation of complex processes involving autonomous agents is seen as a major opportunity to enhance the quality of care and reduce costs~\cite{Croatti_Gabellini_Montagna_Ricci_2020}.
+%
+Accordingly, the rest of this chapter focuses on short-term actions aimed at enhancing the engineering of \ac{BDI} \ac{MAS} in general, 
+with actions tailored to achieve a more robust engineering process, as well as facilitate their integration with external systems such as \acp{DTE} in the future.
+%
+The potential integration of \ac{BDI} agents with \acp{DTE} further opens up interesting perspectives on how to better align the knowledge representation of \ac{BDI} agents with the semantic models used in \acp{DT}, how to enhance adaptability in dynamic environments such as the \ac{HWoDT}, including enhancing \ac{BDI} agents with future-oriented reasoning capabilities that may leverage the simulation capabilities of \acp{DT}, and, finally, how to enhance the explainability of \ac{BDI} agents so that the autonomous behavior is transparent to both system developers and end-users.
 
 %=======================================================
 \section{Tooling for \acs{BDI} Agent Programming}
@@ -888,9 +974,11 @@ Exploring inter-agent explainability opens up interesting research directions fo
 
 
 This chapter presents different contributions in the area of engineering \ac{BDI} agents and \ac{MAS}, 
-focusing on addressing challenges that would make agents easier to develop and integrate with external systems, with a specific focus on hypermedia-based systems, linking to the proposal of \ac{hMAS} and the \ac{HWoDT}~\Cref{chap:dte:hwodt}.
+focusing on addressing challenges that would make agents easier to develop and integrate with external systems, with a specific focus on hypermedia-based systems, linking to the research activities on \ac{hMAS}~\cite{Ciortea_Boissier_Ricci_2019} and the \ac{HWoDT} proposed in \Cref{chap:dte:hwodt}.
 %
 As a complementary perspective to the development of agents, the chapter also explores the role of testing through simulation and explainability mechanisms to enhance the reliability and transparency of \ac{BDI} agents, towards their adoption in real-world applications such as the automation of healthcare processes.
+%
+These contributions go towards the long-term vision of combining \ac{BDI} agents with \acp{DTE} to create intelligent, adaptive, and explainable systems that can operate in complex environments, leveraging the rich semantic models and the separation of concerns in the interaction with the physical environment provided by \acp{DT} to support the agents' reasoning and decision-making processes.
 
 \paragraph{\ref{rq:5} How to make the development of \ac{BDI} agents more accessible and easier to integrate with external systems such as \ac{DT}?}
 

@@ -794,59 +794,72 @@ Such hybrid model provides the flexibility to optimize for both real-time and co
 \label{sec:dte:engineering-dt:wldt-framework}
 %=======================================================
 
+The concepts introduced in the previous sections have been realized through a substantial extension and architectural refactoring of the \acf{WLDT} framework, originally introduced in \cite{PICONE2021100661}.
+%
+Rather than presenting WLDT as a new contribution, this section documents how the framework has been redesigned and evolved the \ac{DT} engineering principles and lifecycle requirements introduced above.
+
+WLDT is an open-source Java framework available on GitHub\footnote{\url{https://wldt.github.io}}, conceived to support the development of \acp{DT} with a focus on \ac{IoT}-enabled applications.
+%
+The work presented here extends its features by introducing explicit support for \ac{DT} lifecycle management, separation of shadowing and augmentation concerns, and modular interfaces aligned with distributed and microservice-oriented deployments.
+%
+The extensions are designed to use \ac{WLDT} as a concrete implementation of the abstract DT architecture and lifecycle model proposed in this thesis, serving as a building block for the development of \acp{DTE}.
+
 \begin{figure}[tb]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/wldt_architecture.pdf}
-    \caption{WLDT Framework's Software Architecture.}
+    \caption{Extended WLDT software architecture aligned with the DT engineering model proposed in this thesis.}
     \label{fig:wldt_architecture}
 \end{figure}
 
-The concepts introduced in the previous sections have been implemented in an extended and evolved version of the \acf{WLDT} framework (originally introduced in \cite{PICONE2021100661}) offering a modular DT software architecture designed to maximize flexibility, promote portability, and enable seamless integration across diverse physical assets in diverse application domains.
-%
-\ac{WLDT} is an open-source Java framework available on GitHub\footnote{\url{https://wldt.github.io}}.
-
-The \ac{WLDT} framework has been re-designed and extended with key requirements:
+The redesign of WLDT has been guided by three main requirements derived from the thesis contributions:
 \begin{itemize}
-    \item \textbf{Simplicity}: to facilitate the creation of \ac{DT} instances using existing modules or custom behaviors for specific scenarios;
-    \item \textbf{Extensibility}: to allow easy extension of the \ac{DT} \ac{API}, enabling customization and addition of new features through concurrent module execution;
-    \item \textbf{Portability \& Microservice Readiness}: to ensure that \ac{DT}s can run on any platform without modifications, supporting deployment as independent microservices.
+    \item \textbf{Simplicity}, to support the rapid engineering of \acp{DT} through reusable modules and configuration-based customization;
+    \item \textbf{Extensibility}, to enable the concurrent execution of multiple behaviors and the incremental evolution of \ac{DT} capabilities;
+    \item \textbf{Portability and microservice readiness}, to allow \acp{DT} to be deployed as independent computational entities across heterogeneous infrastructures.
 \end{itemize}
 
-The main components of the \ac{WLDT} architecture are illustrated in \Cref{fig:wldt_architecture}, which outlines the three architectural levels: the core library, the DT model, and the implementation of physical and digital interfaces through \ac{PhA} and \ac{DiA} (\Cref{sec:dte:engineering-dt:physical-digital-adapters}).
-
-The \textit{Metrics Manager} provides the functionalities for managing and tracking various metrics within DT instances, combining both internal and custom metrics through a flexible and extensible approach.
-The \textit{Logger} is designed to facilitate efficient and customizable logging within implemented and deployed DTs, with configurable log levels and versatile output options.
-The \textit{Utils \& Commons} component contains a collection of utility classes and common functionalities that can be readily employed across DT implementations, ranging from handling common data structures to providing helpful tools for string manipulation.
-
-The \textit{Event Communication Bus} represents the internal Event Bus, designed to support communication between the different components of the \ac{DT} instance (\ac{PI}, \ac{M} and \ac{DI}).
+\paragraph{Architectural refactoring.}
+The extended WLDT architecture, shown in \Cref{fig:wldt_architecture}, is organized around four conceptual layers: a core execution library, a modular DT model, a core shared adapter logic, and a set of community-developed physical and digital adapters.
 %
-It allows for the definition of customized events to model both physical and digital inputs and outputs. Each \ac{WLDT} component can publish on the shared Event Bus and define a filter to specify which types of events it is interested in managing, associating a specific callback to process different messages.
+This structure directly reflects the abstract DT architecture introduced in \Cref{sec:dte:engineering-dt:abstract-architecture}, providing a concrete realization of its main concepts.
+%
+The core library provides execution control, lifecycle coordination, and internal event-driven communication mechanisms.
+%
+Supporting services such as logging, metrics, and common utilities improve observability and robustness of \ac{DT} instances. 
 
-The \textit{Digital Twin Engine} defines the multi-threaded engine of the library, allowing the execution and monitoring of multiple \acp{DT} and their core components simultaneously.
-It orchestrates the different internal modules of the architecture while keeping track of each one, and it serves as the core of the platform, enabling the execution and control of deployed \acp{DT}.
-Currently, it supports the execution of multiple twins within the same Java process, but the same engine abstraction could extend the framework to support distributed execution through different processes or microservices.
+\paragraph{Digital Twin core and lifecycle support.}
+A key contribution of this work is the refactoring of the DT core into an explicit \emph{Model} component that governs the evolution of the DT over time.
+%
+This model controls both the \emph{Shadowing Function} and one or more \emph{Augmentation Functions}, making their roles explicit and separable.
+%
+The Shadowing Function is responsible for maintaining alignment between the physical asset and its digital counterpart by processing data received from physical adapters and action requests issued through digital adapters.
+%
+It manages the DT \emph{state} in terms of properties, events, actions, and relationships, and drives the transitions between lifecycle phases as introduced in \Cref{sec:dte:engineering-dt:dt-lifecycle}.
+%
+The state management component is designed to support transactional updates and maintain a history of state changes, enabling both real-time synchronization and retrospective analysis.
+%
+The shadowing function determines when a DT can be considered \texttt{Bound} and when it reaches a \texttt{Synchronized} state suitable for higher-level reasoning and interaction.
+%
+Augmentation Functions encapsulate additional behaviors that go beyond pure mirroring, such as data aggregation, anomaly detection, or domain-specific processing.
+%
+This separation enables the incremental enrichment of DT capabilities while preserving a clear boundary between physical synchronization and added intelligence.
 
-The DT component consists of a modular structure within \ac{WLDT}, combining core functionalities and capabilities of physical and digital adapters.
+\paragraph{Adapters as interaction boundaries.}
+WLDT adopts a modular adapter-based approach to interface \acp{DT} with both the physical and digital worlds.
 %
-Each DT's core module is its \textit{Model}, which is responsible for implementing the twin's behavior over time. This model controls both the \textit{Shadowing Function} and \textit{Augmentation Function(s)}.
+Physical Adapters handle the ingestion of data and commands from heterogeneous physical assets, while Digital Adapters expose DT state and capabilities to external consumers through application-specific protocols.
 %
-The Shadowing Function manages the digitalization process by integrating data from physical adapters and action requests from digital adapters.
-It maintains the DT's \textit{State}, organizing properties, events, actions, and relationships as introduced in \Cref{sec:dte:engineering-dt:abstract-architecture}.
+Adapters are managed as first-class components with dedicated lifecycles and unique identifiers, allowing multiple adapters to coexist and be coordinated within the same DT instance.
 %
-Augmentation Functions enhance physical capabilities by introducing new properties and actions through intelligent functionalities or dedicated processing (e.g., anomaly detection or data aggregation).
-The DT's core is managed by the library to ensure consistency and lifecycle management, adapting to computational phases and interactions with physical and digital realms via adapters. 
+Digital Adapters can access both the current DT state and its history, enabling the exposure of richer digital services without embedding protocol-specific logic into the DT core.
 
-\ac{WLDT} implements functionalities to manage the \ac{DT} synchronization lifecycle as described in \Cref{sec:dte:engineering-dt:dt-lifecycle}, ensuring proper transitions between phases and maintaining alignment with the physical asset's lifecycle.
+\paragraph{Execution and scalability considerations.}
+The extended WLDT framework includes a multi-threaded execution engine capable of managing multiple DT instances within the same runtime.
 %
-Within the \ac{DT} core, the \emph{Shadowing Function} is responsible for receiving \acp{PAD} from \acp{PhA} and processing them to define when the \ac{DT} can be considered correctly \texttt{Bound} and when the \ac{DT} can be considered \texttt{Synchronized}, starting the \ac{DT} state computation. 
+While the current implementation targets single-process execution, the abstraction is intentionally aligned with distributed and microservice-based deployments, paving the way for future extensions where DTs may be deployed across multiple processes or nodes within a \ac{DTE}.
 
-Developers can either leverage existing adapters---customized through configuration for context-specific reuse---or create new ones tailored to their specific requirements.
-Each adapter has an internal dedicated lifecycle within the DT to ensure it can start, setup the necessary resources and respond to incoming events appropriately.
-%
-Adapters are identified by unique IDs, enabling the library to coordinate multiple adapters, adjust logs, and execute functions upon receiving new events. 
-%
-\ac{DiA} have direct access to the \ac{DT}'s state as well as the \ac{DT} history through callbacks or synchronous access, allowing it to retrieve information and expose it to digital consumers through various protocols according to the application context.
-
+\medskip
+Overall, the extensions presented in this section transform WLDT from a framework primarily aimed at individual \ac{IoT}-focused \acp{DT} into a more comprehensive framework that explicitly supports the engineering principles and lifecycle management strategies that separate responsibilities of a \ac{DT} across modular and reusable components.
 
 %========================================================
 \section{Evaluation of the Proposed Approach}

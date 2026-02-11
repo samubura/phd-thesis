@@ -412,8 +412,6 @@ In the prototype, all observers receive the whole \ac{KG} whenever there is an u
 \label{sec:dte:hwodt:related}
 %=======================================
 
-\todo{work on this section to include further related works}
-
 This section compares the \ac{HWoDT} proposal with related approaches that target the integration of \acp{DT} in ecosystems. 
 %
 The aim of this comparison is to highlight the similarities and differences with existing solutions, discussing advantages and limitations of existing approaches with respect to the \ac{HWoDT}.
@@ -424,26 +422,20 @@ The main principle of the \ac{HWoDT} is to promote interoperability through the 
 
 
 %----------------------------------------------------
-\subsection{HWoDT vs. Industrial Standards}
+\subsection{HWoDT and Digital Twin Standards}
 %----------------------------------------------------
 
 The \ac{HWoDT} tackles the relevant issue of enabling \ac{DT} interoperability targeting the creation of \emph{heterogeneous \acp{DTE}}.
 %
 This is an open challenge in the \ac{DT} research community (see \Cref{sec:back:dt:interoperability}), and several interoperability frameworks are being proposed to streamline the integration of \acp{DT}~\cite{Barnard_2024}.
 %
-Among the most relevant standards some of the most relevants are \ac{OPC-UA}, \ac{AAS}, \ac{AML} and the \ac{W3C} \ac{WoT}. \Cref{tab:interop_comparison} summarizes a comparison of these standards across selected aspects.
-
-Given the different nature of these standards, they can be viewed as complementary rather than competing against each other.
-%
-There have been integration efforts in order to leverage their different strengths. For instance, \ac{OPC-UA} has been integrated with web technologies~\cite{DBLP:journals/csi/CavalieriSS19} to support direct integration with web clients, operations in \ac{AAS}~\cite{platform_i40_aas_part1_v2} and affordances in \ac{WoT}\footnote{\url{https://profiles.opcfoundation.org/workinggroup/97}} can have an \ac{OPC-UA} protocol bindings, and \ac{AML} specifications can be linked to \ac{AAS} to have a coherent view of the involved assets~\cite{DBLP:conf/etfa/DrathRH19,DBLP:conf/indin/WengerZ018}.
-%
-In this view, the Semantic Web technologies adopted in the \ac{HWoDT} approach can be integrated on top of existing standards and complement their features.
+Among the most relevant standards are \ac{OPC-UA}, \ac{AAS}, \ac{AML}, and the \ac{W3C} \ac{WoT}. \Cref{tab:interop_comparison} summarizes a comparison of these standards across selected aspects.
 
 \begin{table*}
     \centering
     \small
-    \setlength{\tabcolsep}{3pt} % reduce inter-column spacing
-    \renewcommand{\arraystretch}{1.3} % slightly tighter rows
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.3}
    \begin{tabular}{>{\raggedright\arraybackslash}p{2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.2cm}}
     \toprule
     \midrule
@@ -484,122 +476,305 @@ In this view, the Semantic Web technologies adopted in the \ac{HWoDT} approach c
     \label{tab:interop_comparison}
 \end{table*}
 
-
-The Semantic Web excels at general-purpose knowledge representation, and integration of such heterogeneous knowledge under a uniform interface (\Cref{sec:back:web:semantic-web-technologies}).
+The comparison highlights how existing interoperability frameworks address complementary layers of \ac{DT} integration. 
+\ac{AAS} focuses on structured digital representations of assets through modular submodels,
+\ac{OPC-UA} provides a secure communication infrastructure centered on hierarchical address spaces for device-level data exchange,
+and \ac{AML} supports interoperability among engineering tools via structured XML-based hierarchies. 
 %
-Additionally, it enables reasoning through ontological inference and expressive queries across concepts, supporting use cases that have limited support when using the aforementioned standards alone (see \cref{tab:interop_comparison}, Querying and Data access).
+The \ac{W3C} \ac{WoT} promotes Web-scale integration by describing devices through \acp{TD},
+while Semantic Web technologies provide a general-purpose, ontology-driven approach to cross-domain knowledge representation based on graph models and query languages such as SPARQL. 
+Together, these standards span different scopes, data models, semantic mechanisms, and data access paradigms, reflecting the multi-layered nature of \ac{DT} interoperability.
+
+Given their different nature, these standards are better viewed as complementary rather than competing. 
+Integration efforts already aim to leverage their respective strengths:
+\ac{OPC-UA} has been integrated with Web technologies~\cite{DBLP:journals/csi/CavalieriSS19},
+operations in \ac{AAS}~\cite{platform_i40_aas_part1_v2} and affordances in \ac{WoT}\footnote{\url{https://profiles.opcfoundation.org/workinggroup/97}} can have \ac{OPC-UA} protocol bindings,
+and \ac{AML} specifications can be linked to \ac{AAS} for a coherent view of assets across engineering and operational layers~\cite{DBLP:conf/etfa/DrathRH19,DBLP:conf/indin/WengerZ018}. 
+In this landscape, Semantic Web technologies -- as adopted in the \ac{HWoDT} -- can be layered on top of existing standards to complement their capabilities.
+
+The Semantic Web excels at heterogeneous knowledge integration under a uniform interface (\Cref{sec:back:web:semantic-web-technologies}),
+enabling expressive queries and ontological reasoning across domains. 
+Alignments between Semantic Web technologies and industrial standards have therefore been investigated,
+highlighting similarities between, e.g., \ac{OPC-UA}~\cite{DBLP:conf/etfa/MajumderWD19,DBLP:conf/etfa/PerzyloP0K19}
+and \ac{AAS}~\cite{DBLP:conf/icphys/BedenCB21, platform_i40_aas_part1_v2} data models,
+in order to benefit from graph-based semantics and reasoning capabilities.
+
+Following this trend, the \ac{HWoDT} proposes a hypermedia layer that integrates existing \acp{DT}, regardless of whether they are implemented using industrial standards. 
+Since most interoperability standards emerged from the Industry~4.0 movement and primarily target industrial domains,
+they leave a gap when modeling entities and concepts across heterogeneous domains. 
+The \ac{HWoDT} addresses this limitation by relying on Web ontologies that span a wide variety of application areas and can be seamlessly combined within a unified \ac{KG}.
+
+Providing a synchronized representation of the asset state is a defining feature of \acp{DT}. 
+The \ac{HWoDT}, designed from a \ac{DT}-centric perspective, requires each \ac{DT} to continuously produce and update a representation of its observable state in the \ac{DTKG}. 
+This enables consumers to query an up-to-date view of the entire ecosystem and observe state changes. 
+Although similar synchronization can be implemented by \ac{AAS} servers (e.g., Eclipse BaSyx\footnote{\url{https://eclipse.dev/basyx/}}) retrieving data from \ac{OPC-UA} endpoints,
+such approaches remain limited by the expressiveness of the underlying APIs and the lack of hypermedia-driven navigation.
 %
-It is then not surprising that alignment between Semantic Web technologies and industrial standards are being investigated, highlighting similarities between e.g., \ac{OPC-UA}~\cite{DBLP:conf/etfa/MajumderWD19,DBLP:conf/etfa/PerzyloP0K19} and \ac{AAS}~\cite{DBLP:conf/icphys/BedenCB21, platform_i40_aas_part1_v2} data models, to benefit from these features.
-
-The \ac{HWoDT} proposal, follows this trend, suggesting that the hypermedia layer can serve as an integration on top of existing \acp{DT}, which may already have an implementation based on industrial standards.
+Trends in the \ac{DT} engineering community show that service-oriented and micro-service architectures are becoming increasingly common in \ac{DT} implementations~\cite{ferko2022architecting},
+making the \ac{HWoDT} a natural fit for these modern architectural patterns.
 %
-Additionally, since the described interoperability standards emerged from the Industry 4.0 movement, they generally target only industrial domains. This poses a significant gap when needing to map concepts and represent entities from different domains.
-%
-The \ac{HWoDT} approach, addresses this gap through the use of Web ontologies which have been developed for a high variety of application domains and can be seamlessly integrated within the same \ac{KG}.
+Web-based approaches describing \acp{API} with ontologies are emerging,
+but they are often limited to specific domains and use cases (e.g. \cite{Liu_Jiang_Jiang_2020}),
+and not yet adopted as a general solution for \ac{DT} interoperability as proposed in this thesis.
 
-Finally, providing a synchronized representation is a key feature of \acp{DT}.
-The \ac{HWoDT} approach, designed with a \ac{DT}-centric perspective, requires each \ac{DT} to produce and update such representation of its current state through the \ac{DTKG}. This supports consumers in both querying an up-to-date view of the whole ecosystem and observing changes on the \ac{DT} state.
-%
-Similar behavior can be implemented by \ac{AAS} servers (e.g. Eclipse BaSyx\footnote{\url{https://eclipse.dev/basyx/}}) that automatically retrieve data from \ac{OPC-UA} endpoints, but is limited by the expressiveness of queries on the \ac{AAS} model typically relying on Web APIs with no hypermedia support.
-
-Overall, the comparison shows that the \ac{HWoDT} approach is compatible and complementary to existing \ac{DT} interoperability efforts and follows existing research directions aimed at bridging the Semantic Web on top of industrial standards.
-The approach can be used as an additional layer integrating \acp{DT} implemented with (or without) other standards to support:
-\begin{itemize}
-    \item integration with \acp{DT} outside the industrial domain,
-    \item advanced query with reasoning on semantic structures,
-    \item simple Web-based navigation and direct access to the up-to-date representation of the mirrored asset,
-    and 
-    \item subscription to changes in the \ac{DT} state.
-\end{itemize}
-
-%-------------------------------------
-\subsection{HWoDT vs. WoT mashups}
-%-------------------------------------
-
-Leveraging the \ac{HWoDT}, developers can focus only on application logic, abstracting away the complexity of heterogeneous \ac{DT} integration.  
-This yields two important advantages that are shared with the \ac{WoT} approach:  
+Leveraging the \ac{HWoDT}, developers can focus on application logic while abstracting away the complexity of heterogeneous \ac{DT} integration. 
+This yields advantages similar to those promoted by the \ac{WoT} approach:
 \begin{inlinelist}
-    \item the application layer is more stable as it remains unaffected by the introduction of new \acp{DT};
-    and  
-    \item the \ac{DT} layer can evolve or replace underlying implementations without affecting upper layers as long as the exposed interface is not changed.
+    \item the application layer remains stable and unaffected by the introduction of new \acp{DT};
+    and
+    \item the \ac{DT} layer can evolve or replace underlying implementations without impacting upper layers, as long as the exposed interface is preserved.
 \end{inlinelist}
 
-Still, a fundamental difference between the \ac{HWoDT} and the (semantic) \ac{WoT} is the ability to seamlessly browse a \ac{KG} of the \ac{DTE} that captures explicitly the \acp{DT}' observable state. 
+The \ac{WoT} is a source of inspiration for the \ac{HWoDT} and the proposal in this thesis aims to extend the \ac{WoT} principles to the specific requirements of \acp{DT} and their ecosystems.
 %
-In a W3C \ac{WoT} application, even if \acp{TD} were to be semantically annotated and stored in a \ac{KG}, selecting \emph{things} based on their state properties would require sending the necessary requests to retrieve the current value of each property of each thing.
+Related approaches also exploit the \ac{WoT} in the context of \acp{DT} with similar goals. 
 %
-This is because the W3C \ac{WoT} is not tailored to the requirements of \acp{DT}, which, instead, are by definition capable of shadowing---and thus to always show the current state of the asset they represent.
+A semantic extension of the \ac{WoT} ontology is presented in \cite{González-Gerpe_Cimmino_Bernardos_Poveda-Villalón_García-Castro} proposing to use \acp{TD} to integrate \acp{DT} in the construction domain,
+extending it to capture the five-dimensional model of \acp{DT}~\cite{qi2021enablingtechdt}.
 %
-Furthermore, the W3C \ac{WoT} does not specify how to handle dynamic relationships between things, limiting the possibility of expressing powerful queries on the state of interrelated assets.
+The \ac{WoT} is also the foundation of WoTwins~\cite{SciulloWoTwins2022} a framework to generate automatically \acp{DT} starting from existing \ac{WoT} things, modeling their behavior and enabling prediction features.
 %
-The \ac{HWoDT} proposal, leverages this \ac{DT}-specific feature through the \ac{DTKG} component, simplifying the interaction. 
+These works highlight the relevance of the \ac{WoT} as a standard for the future of \ac{DT} applications, despite its limitations in capturing fully the nature of a \ac{DT} in its entirety which may require extensions and development of custom ontologies aligned with the \ac{WoT} model.
+
+A fundamental difference with the (semantic) \ac{WoT} compared to \ac{DTE} that this thesis exposes, however, lies in the seamless browsing of the \ac{DTE} through a \ac{KG} that explicitly captures the observable state of \acp{DT}.
 %
-Similarly, even when dealing with a set of heterogeneous \acp{DT}, without the unifying abstraction of the \ac{HWoDT}, consumers would need to retrieve the \ac{DT} state representation from each individual \ac{DT}, interpret them and merge the data to resolve the query (\Cref{fig:comparison-custom-vs-hwodt}).
+In a W3C \ac{WoT} application, even if \acp{TD} were semantically annotated and stored in a \ac{KG},
+selecting \emph{things} based on their current state would require issuing requests to retrieve the value of each property of each thing. 
+The \ac{WoT} does not natively address the \ac{DT}-specific requirement of continuously shadowing the asset state,
+nor does it specify how to manage dynamic relationships among things,
+limiting the expressiveness of cross-asset queries.
+
+The \ac{HWoDT} leverages the intrinsic synchronization capability of \acp{DT} through the \ac{DTKG},
+simplifying interaction and enabling direct, state-aware navigation. 
+Without such a unifying abstraction, consumers interacting with heterogeneous \acp{DT} would need to individually retrieve, interpret, and merge their state representations to resolve a query (\Cref{fig:comparison-custom-vs-hwodt}). 
 
 \begin{figure}[tb]
   \centering
   \includegraphics[width=\columnwidth]{figures/hwodt/comparison_custom_hwodt.pdf}
-  \caption{Comparison of the steps required to perform a ``query'' across heteregenous \acp{DT} versus with the \ac{HWoDT} approach, which abstracts heterogeneity through a uniform interface.}
+  \caption{Comparison of the steps required to perform a ``query'' across heterogeneous \acp{DT} versus with the \ac{HWoDT} approach, which abstracts heterogeneity through a uniform interface.}
   \label{fig:comparison-custom-vs-hwodt}
 \end{figure}
 
-%-------------------------------------------------------
-\subsection{HWoDT vs. Closed DT Platforms}
-%-------------------------------------------------------
-
-The \ac{HWoDT} approach, offers a solution to implement open \acp{DTE} on top of heterogeneous \ac{DT} technologies.
-%
-This contrasts with the vision of other \ac{DT} platforms which, instead, support homogeneous \acp{DTE} and offer support for the definition of multiple \acp{DT} within the same instance, but constraining all of them to adhere to specific technological choices.
-
-The most recognized technology for building \acp{DTE} is the off-the-shelf solution offered by \acl{ADT}.
-The graph-based rationale within the platform has been an inspiration for the \ac{HWoDT}, as a way to connect multiple \acp{DT} and obtain a cohesive view of the physical reality.
-
-Still, \acl{ADT} is a Platform-as-a-Service solution, only available through the Azure cloud, strongly limiting its application in different scenarios where the \acp{DTE} might be constructed on a private infrastructure.
-%
-The technological stack is completely custom, creating a vendor lock-in on the developed \acp{DT} models.
-% 
-Azure requires \acp{DT} to be defined using its own custom \ac{DTDL}, supports only custom ontologies (or requires converting existing ones form \ac{OWL} to \ac{DTDL}) and supports queries on the \emph{twin graph} only through a custom SQL-like query language.
-%
-Furthermore, in closed approaches, it would not be possible to create relationships with entities that are outside of the supporting platform. For instance, the relationship model of \azureTwin{} requires to define possible relationships between \ac{DTDL} models.
-%
-The \ac{HWoDT} addresses this limitation by enabling the definition of cross-platform \ac{DT} relationships using Linked Data principles.   
-This enhances the expressiveness of \acp{DTE} and allows developers to model ecosystems that more accurately reflect domain knowledge.
-
-The \ac{HWoDT} reclaims the vision of open \acp{DTE} that can be enabled by a stack of open standards and technologies. 
-%
-This offers an alternative to closed platforms, allowing the development of \acp{DTE} in a variety of different settings tailored to the specific use case needs.
-
-Although open-source \ac{DT} platforms like the aforementioned Eclipse Ditto exist, they have not being designed with an ecosystem perspective in mind. 
-Differently from the \ac{HWoDT}, platforms like Ditto merely support having multiple instances of \acp{DT} hosted on the same platform and exposing similar \ac{API}. 
-%
-This constraints the \ac{DT} implementation to adhere to Ditto models, protocols and \ac{API}, does not offer native support for tracking meaningful dynamic relationships between assets and has very limited query capabilities\footnote{Ditto supports queries through a search \ac{API} based on the Resource Query Language \url{https://eclipse.dev/ditto/basic-search.html}}
+Overall, the \ac{HWoDT} is compatible with and complementary to existing \ac{DT} interoperability efforts, positioning itself as an additional semantic and hypermedia layer that integrates \acp{DT} implemented with—or without—industrial standards, supporting:
+\begin{itemize}
+    \item integration with \acp{DT} beyond the industrial domain,
+    \item advanced semantic querying with reasoning,
+    \item Web-based navigation and direct access to up-to-date asset representations,
+    and
+    \item subscription to changes in the \ac{DT} state.
+\end{itemize}
 
 
-%-------------------------------------------------------
-\subsection{HWoDT vs. Other Web-based DTs}
-%-------------------------------------------------------
+
+%----------------------------------------------------
+\subsection{HWoDT in the Landscape of DT Platforms}
+%----------------------------------------------------
+
+The \ac{HWoDT} approach offers a solution to implement open \acp{DTE} on top of heterogeneous \ac{DT} technologies.
+This contrasts with other \ac{DT} platforms, which typically support homogeneous \acp{DTE} and allow multiple \acp{DT} to be defined within the same instance, but constrain all of them to specific technological choices.
+
+To frame the positioning of \ac{HWoDT} within the broader \ac{DT} ecosystem, \Cref{tab:dt-platform-comparison} compares a selection of representative platforms among refernece \ac{DT} technologies (\Cref{sec:back:dt:technology}) that support the construction of \acp{DTE} along key dimensions.
 
 
-The \ac{HWoDT} is not the first attempt to leverage Web features in \acp{DT} implementations. Service-oriented and micro-service architectures are among the most prominent architectural patterns when it comes to implementing \acp{DT} according to a recent survey~\cite{ferko2022architecting}, making a strong parallel with Web services.
+%\begin{landscape}
+%\begin{table}[bp]
+\begin{sidewaystable}[p]
+\centering
+\caption{Comparison of Digital Twin Ecosystem Platforms Along Key Architectural Dimensions}
+\label{tab:dt-platform-comparison}
+\renewcommand{\arraystretch}{1.3}
+\footnotesize
+\begin{tabularx}{\linewidth}{
+    >{\raggedright\arraybackslash}p{3cm}|
+    >{\raggedright\arraybackslash}X|
+    >{\raggedright\arraybackslash}X|
+    >{\raggedright\arraybackslash}X|
+    >{\raggedright\arraybackslash}X|
+    >{\raggedright\arraybackslash}X||
+    >{\raggedright\arraybackslash}X
+    }
+\toprule
+\midrule
+\textbf{Comparison Dimension} &
+\textbf{Azure Digital Twins} &
+\textbf{Eclipse Ditto} &
+\textbf{WLDT} \cite{PICONE2021100661}&
+\textbf{DT-as-a-Service} \cite{Talasila_Gomes_Mikkelsen_Arboleda_Kamburjan_Larsen_2023}&
+\textbf{TwinBase} \cite{Autiosalo_Siegel_Tammi_2021} &
+\textbf{HWoDT Platform} \\
 
-In \cite{Liu_Jiang_Jiang_2020} the authors propose a Web-based approach for the development of \acp{DT} of a production system.
-They leverage a multi-layer architecture with the uppermost layer exposing \ac{REST} \acp{API} and ontologies to describe the components of a \ac{CPS} using the abstraction of production nodes.
-%
-Although the approach shares some similarities with the \ac{HWoDT} proposal in enabling a uniform interface to organize modules of a \ac{CPS}, it is heavily restricted to the manufacturing domain and, crucially, it relies on all the production nodes to use the same technological stack and does not include heterogeneous \acp{DT}.
+\hline
+\hline
 
-In \cite{Autiosalo_Siegel_Tammi_2021} the authors propose an approach for a \emph{Digital Twin Web} and an open-source implementation of a Web server to host \ac{DT} description documents called Twinbase through Git-based workflows.
-%
-The approach shares the main motivations that are behind the \ac{HWoDT} proposal, leveraging Web standards to promote interoperability and connect \acp{DT} in a network that any consumer can access with a Web browser. The main goal is to provide a meta-level registry of \acp{DT} so that consumers can discover them and also shares the idea of having relationships between \ac{DT} instances.
-%
-Despite these similarities, the approach differs for several reasons. First, the proposed description is not using any semantics, enforcing a very basic model for representing the \acp{DT} using Yaml files. Second, the represented \acp{DT} are mostly static, and do not share their state in a uniform way but only link to other resources or \acp{API} to interact with the \ac{DT} state under a set of generic \emph{features} the \ac{DT} can expose. Third, the proposed architecture based on Git workflows is limiting to a very specific subset of applications that can deal with that kind of interface to publish updates.
+\textbf{Primary Role} &
+Registry &
+Registry &
+Runtime &
+Runtime &
+Registry &
+Registry \\
+\hline
 
-Finally, other approaches exploit the \ac{WoT} in the context of \acp{DT}. In this work, the \ac{WoT} \acp{TD} is semantically extended to implement a preliminary \ac{DTD}. 
+\textbf{Deployment} &
+Cloud (PaaS) &
+Microservices &
+Containerized &
+Microservices &
+Git-based &
+Containerized\\
+\hline
+
+\textbf{Governance} &
+Centralized &
+Centralized &
+Centralized &
+Centralized &
+Decentralized &
+Both \\
+\hline
+
+\textbf{DT Distribution} &
+Distributed &
+Distributed &
+Instance &
+Instance &
+Distributed &
+Distributed \\
+\hline
+
+\textbf{Platform Coupling} &
+Aware &
+Aware &
+Bound &
+Bound &
+Aware &
+Independent \\
+\hline
+
+\textbf{DT Representation} &
+Custom (DTDL) &
+Standard (WoT) &
+Any  &
+Any (Service-defined)&
+Custom (DT Document) &
+RDF (DTD + DTKG) \\
+\hline
+
+\textbf{Synchronization Management} &
+External (Azure Services)&
+External (IoT middleware)&
+Internal (Shadowing) &
+Internal (Service Orchestration)&
+External (Git) &
+Internal (DTKG Observation) \\
+\hline
+
+\textbf{DT Relationships} &
+Explicit  &
+Implicit (Attributes)&
+Explicit &
+Explicit &
+Explicit &
+Explicit \\
+\hline
+
+\textbf{Data Retrieval} &
+Query (Custom Language) &
+Query (Resource Query Language) &
+Any (Adapters) &
+Any (Service-defined)&
+API &
+Query (SPARQL) \\
+\hline
+
+\bottomrule
+\end{tabularx}
+\end{sidewaystable}
+%\end{table}
+%\end{landscape}
+
+
+These comparison dimensions adopted are chosen to highlight differences between the different approaches, both in terms of design purpose, structural and operational characteristics, which are critical for analyzing how platforms support the construction of \acp{DTE}. The main comparison dimensions are:
 %
-A similar extension is presented in \cite{González-Gerpe_Cimmino_Bernardos_Poveda-Villalón_García-Castro} which proposes to use the \ac{TD} ontology in the construction domain, extending it to capture the five-dimensional model of \acp{DT}~\cite{qi2021enablingtechdt}.
+\begin{itemize}
+    \item \textbf{Primary Role}: indicates whether the platform functions primarily as a \emph{registry} or a \emph{runtime} for \acp{DT}.
+    \item \textbf{Deployment}: the technological and operational model used to deploy the platform itself.
+    \item \textbf{Governance}: whether the platform adopts a centralized or decentralized management of \acp{DT}. Centralized governance typically implies that \acp{DT} are created and managed within the platform, while decentralized governance allows for independently created \acp{DT} to be registered and integrated.
+    \item \textbf{DT Distribution}: the approach used to deploy \ac{DT} instances across the system. Namely, this dimension distinguishes between platforms that require \ac{DT} instances to be deployed within the platform itself (instance-based) and platforms that allow \ac{DT} instances to be distributed and managed independently, with the platform serving as an integration layer.
+    \item \textbf{Platform Coupling}: whether \acp{DT} exist only within the scope of the platform (bound), must be aware of being part of the platform (aware) or can be completely platform independent, regardless of the deployment model. This dimension is critical to understand the level of openness and flexibility in integrating \acp{DT} from different sources.
+    \item \textbf{DT Representation}: the supported representation format used to describe and catalog \acp{DT} within the scope of a platform.
+    \item \textbf{Synchronization Management}: whether and how \ac{DT} state management is handled by the platform or must be implemented externally. 
+    \item \textbf{DT Relationships}: whether relationships between \acp{DT} are explicitly modeled or implicit.
+    \item \textbf{Data Retrieval}: the mechanisms provided for querying or accessing \ac{DT} data.
+\end{itemize}
+
+
+
+The selection is not meant to be an exhaustive collection of \ac{DT} development platforms for which we refer to other surveys~\cite{gil2024spe,9640612,Mihai_survey_enabling_2022},
+but rather a representative sample of the state of the art,
+focusing on platforms that may support the construction and management of multiple \acp{DT}.
 %
-The \ac{WoT} is also the foundation of WoTwins~\cite{SciulloWoTwins2022} a framework to generate automatically \acp{DT} starting from existing \ac{WoT} things, modeling their behavior and enabling prediction features. 
+Accordingly, the comparison includes the following platforms analyzed as follows: 
+
+\paragraph{Azure Digital Twins\protect\footnote{\url{https://azure.microsoft.com/en-us/services/digital-twins/}}} is a cloud-based PaaS solution that supports the definition of multiple interconnected \acp{DT} instances with an explicit notion of relationships between them. \azureTwin{} is selected as a representative of commercial cloud platforms. A similar general-purpose platform is AWS IoT TwinMaker\footnote{\url{https://aws.amazon.com/iot-twinmaker/}}, or other industry-specific platforms such as Siemens Insights Hub\footnote{\url{https://plm.sw.siemens.com/en-US/insights-hub/}}, Bentley iTwin\footnote{\url{https://www.bentley.com/en/products/brands/itwin}}, and PTC ThingWorx\footnote{\url{https://www.ptc.com/en/products/thingworx}}. 
 %
-These works highlight the relevance of the \ac{WoT} as a standard for the future of \ac{DT} applications, despite its limitations in capturing fully the nature of a \ac{DT} in its entirety which may require extensions and development of custom ontologies aligned with the \ac{WoT} model.
+Azure Digital Twins functions primarily as a registry of \acp{DT}, which explains its strong support for cataloging multiple \acp{DT} and managing explicit relationships.
+Its cloud PaaS deployment ensures distributed availability,
+while centralized governance guarantees full control over \ac{DT} creation and lifecycle. 
+\ac{DT} instances are platform-aware, meaning they rely on Azure-specific constructs,
+and Azure's custom \acf{DTDL} is used for representation to support complex modeling, though at the cost of cross-platform interoperability.
+Synchronization generally relies on external Azure services, and data retrieval uses a dedicated query language optimized for the platform.
+
+\paragraph{Eclipse Ditto\protect\footnote{\url{https://www.eclipse.org/ditto/}}} is an open-source microservices-based registry for \ac{IoT} \acp{DT}. Ditto is selected as a representative of open-source platforms that integrate with existing \ac{IoT} ecosystems. FIWARE~\cite{8950963} is another similar platform that has been used in the \ac{DT} context~\cite{9346030}, although more focused on data management and integration rather than \ac{DT} modeling and lifecycle management.
+%
+Ditto's role as a registry reflects its focus on managing \ac{DT} metadata rather than executing their behavior.
+Ditto is implemented as a microservice application that can be deployed in various environments, allowing integration into diverse \ac{IoT} infrastructures.
+Governance is centralized within the Ditto instance, while \acp{DT} can be deployed as distributed components implementing the  platform-aware synchronization process through \ac{IoT} middlewares.
+Representations use the custom  \emph{Ditto thing} model, but can also expose \ac{WoT} \acp{TD} for standard compliance, \ac{DT} relationships are implicit, inferred from attribute structures.
+Data retrieval is supported through the Resource Query Language~\footnote{Resource Query Language Project: \url{https://github.com/persvr/rql}}.
+
+
+\paragraph{\acl{WLDT}}~\cite{PICONE2021100661} is a research-oriented framework for developing \acp{DT} as standalone software components. \ac{WLDT} is selected as a representative of research prototypes which explores the ability to deploy \acp{DT} in a variety of infrastructures and here is considered in its ability to run multiple \acp{DT} instances within its multi-threaded runtime (see \Cref{sec:dte:engineering-dt:wldt-framework}). Here it is compared to the \ac{HWoDT} to highlight the complementarity of two contributions of this thesis, with \ac{WLDT} providing a flexible runtime for \ac{DT} execution and \ac{HWoDT} offering a unifying layer for heterogeneous \ac{DT} integration and ecosystem management.
+%
+WLDT serves primarily as a runtime for executing \acp{DT},
+deployed in containerized environments for flexible infrastructure support.
+Governance is centralized, as \ac{DT} instances are bound to the runtime, unable to operate independently.
+The framework allows any representation format, facilitating experimental setups through the modular digital adapters introduced in \Cref{sec:dte:engineering-dt:physical-digital-adapters}.
+Synchronization is handled internally through the shadowing process,
+relationships are explicitly defined although manually handled by developers,
+and data access is adaptable via custom adapters, reflecting its research-oriented flexibility.
+
+\paragraph{DT-as-a-Service Platform (DTaaS)}~\cite{Talasila_Gomes_Mikkelsen_Arboleda_Kamburjan_Larsen_2023} is a research-oriented platform with service-level orchestration to manage the lifecycle of multiple \acp{DT} instances. DTaaS is selected as a representative of research prototypes which explores the ability to orchestrate and combine services to implement and run \acp{DT} instances. A similar approach is taken by the OpenTwins platform~\cite{robles2023cii} which extends Ditto with a composition of additional services.
+%
+DTaaS operates as a runtime platform orchestrating \acp{DT} as services and supporting both the development and execution of \ac{DT} models e.g., through co-simulation services~\cite{7496424}.
+Its microservice deployment supports flexible service composition, while governance remains centralized to control service-based DT lifecycles.
+\ac{DT} instances are bound to the service runtime, and representation is service-defined, allowing custom but platform-specific models.
+Synchronization occurs internally through orchestration, relationships are explicitly modeled in service definitions, and data retrieval is determined by implemented service APIs.
+
+\paragraph{TwinBase}~\cite{Autiosalo_Siegel_Tammi_2021} is a Git-based registry promoting Web standards and interoperability. TwinBase is selected as a representative of research efforts that support the management of multiple \acp{DT} with a decentralized approach to governance following the idea of a \emph{Digital Twin Web} that is close to the vision pursued in this thesis.
+%
+TwinBase's design emphasizes registry functionality with decentralized governance,
+allowing independently created \acp{DT} to be registered and integrated.
+Its Git-based deployment supports distributed \acp{DT} that must be aware of the platform to update their representation.
+\ac{DT} representation uses custom \ac{DT} documents (currently as YAML documents), synchronization relies on Git versioning, and relationships can be explicitly defined linking \acp{DT} within the platform.
+Data access is provided via APIs, reflecting the platform's focus on openness, interoperability, and adherence to web standards, but limiting complex interactions and query capabilities, reflecting the more static nature of the platform compared to the other approaches.
+
+\paragraph{HWoDT Platform} 
+The HWoDT platform is the approach proposed in this thesis to implement hypermedia-based \acp{DTE} on top of heterogeneous \ac{DT} technologies.
+%
+The HWoDT platform functions primarily as a registry of \acp{DT}, supporting the management of multiple \acp{DT} instances and their relationships within a unified ecosystem.
+It is deployed in containerized environments, which allows flexible distribution across heterogeneous infrastructures.
+Governance can be managed as centralized to limit the ability to register \ac{DT} instances or decentralized to allow more flexible participation of \acp{DT} in the ecosystem.
+Regardless of the governance model, \acp{DT} themselves are fully independent, meaning they can exist and operate outside the platform's direct control as long as they adhere to the uniform interface, which can be implemented as an external adapter as demonstrated in \Cref{sec:hwodt-impl}.
+HWoDT uses RDF-based representations combining DTD and DTKG, supporting semantic interoperability and explicit modeling of relationships between \acp{DT}.
+%
+Synchronization is managed internally through the DTKG observation mechanism which ensures that the platform maintains an up-to-date representation of the state of all registered \acp{DT}.
+This inversion of control compared to other platforms, where the platform actively retrieves updates from \acp{DT}, allows for the integration of independently developed \acp{DT} and simplifies the synchronization process.
+%
+Data retrieval is performed via SPARQL queries, enabling rich semantic access.
+
+Compared to the other platforms, this positions HWoDT as a bridge between centralized commercial clouds like Azure Digital Twins, open-source registries like Ditto, research runtimes like WLDT and DTaaS, and decentralized approaches like TwinBase. It combines their strengths -- support for multiple DTs, cross-platform relationships, semantic expressiveness, and operational flexibility -- while overcoming typical limitations such as platform lock-in, constrained representation formats, and lack of independent DT deployment. In the broader DT ecosystem, HWoDT thus occupies a unique position as a heterogeneous, open, and interoperable platform, capable of supporting both experimental research and operational deployments across diverse infrastructures.
+
 
 %==========================================
 \section{Prototype Performance Evaluation}

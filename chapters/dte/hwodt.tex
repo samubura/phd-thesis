@@ -766,6 +766,7 @@ The HWoDT platform functions primarily as a registry of \acp{DT}, supporting the
 It is deployed in containerized environments, which allows flexible distribution across heterogeneous infrastructures.
 Governance can be managed as centralized to limit the ability to register \ac{DT} instances or decentralized to allow more flexible participation of \acp{DT} in the ecosystem.
 Regardless of the governance model, \acp{DT} themselves are fully independent, meaning they can exist and operate outside the platform's direct control as long as they adhere to the uniform interface, which can be implemented as an external adapter as demonstrated in \Cref{sec:hwodt-impl}.
+The only platform-aware behavior required from \acp{DT} is to expose the \ac{URI} of the platform in their \ac{DTD} to enable discoverability of ecosystems the \ac{DT} is part of. 
 HWoDT uses RDF-based representations combining DTD and DTKG, supporting semantic interoperability and explicit modeling of relationships between \acp{DT}.
 %
 Synchronization is managed internally through the DTKG observation mechanism which ensures that the platform maintains an up-to-date representation of the state of all registered \acp{DT}.
